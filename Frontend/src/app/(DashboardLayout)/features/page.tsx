@@ -15,7 +15,7 @@ const FeaturesPage = () => {
           <br />
           <b>Goal:</b> Showcase the unique selling points of your service to convince visitors of its value.
           <br />
-          <b>Connections:</b> Links from the Home Page, leads to the "Pricing" and "How It Works" pages.
+          <b>Connections:</b> Links from the Home Page, leads to the &quot;Pricing&quot; and &quot;How It Works&quot; pages.
         </Typography>
       </DashboardCard>
     </PageContainer>

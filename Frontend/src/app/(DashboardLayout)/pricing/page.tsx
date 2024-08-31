@@ -15,7 +15,7 @@ const PricingPage = () => {
           <br />
           <b>Goal:</b> Help users choose the right plan, pushing them towards conversion.
           <br />
-          <b>Connections:</b> Linked from the Home Page, Features Page, and calls-to-action across the site. Leads to "Sign Up."
+          <b>Connections:</b> Linked from the Home Page, Features Page, and calls-to-action across the site. Leads to &quot;Sign Up.&quot;
         </Typography>
       </DashboardCard>
     </PageContainer>

@@ -15,7 +15,7 @@ const HowItWorksPage = () => {
           <br />
           <b>Goal:</b> Educate visitors on the process of using the service, reducing hesitation or confusion.
           <br />
-          <b>Connections:</b> Linked from the Home Page and Features Page, leads to the "Sign Up" and "Demo" pages.
+          <b>Connections:</b> Linked from the Home Page and Features Page, leads to the &quot;Sign Up&quot; and &quot;Demo&quot; pages.
         </Typography>
       </DashboardCard>
     </PageContainer>
