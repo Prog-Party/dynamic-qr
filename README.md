@@ -1,6 +1,11 @@
 # Dynamic QR
+[QR Code website](https://calm-moss-0dcca7e03.5.azurestaticapps.net/)
+
+The need of dynamic qr codes is real. We want to print them and change them later on. Keeping track of them would also be a huge plus for this product.
+
+## TODO
 - [x] Make the readme
-- [ ] Jens upload foto van krabbels naar deze readmy
+- [ ] Jens upload foto van krabbels naar deze readme
 - [ ] Implement stuff
 - [ ] Diederik laten testen
 
