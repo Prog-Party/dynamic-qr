@@ -1,6 +1,7 @@
-import { AppBar, Badge, Box, Button, IconButton, List, Stack, styled, Toolbar, useMediaQuery } from '@mui/material';
+import LoginButton from "@/app/authentication/auth/components/LoginButton";
+import LogoutButton from "@/app/authentication/auth/components/LogoutButton";
+import { AppBar, Badge, Box, IconButton, List, Stack, styled, Toolbar, useMediaQuery } from '@mui/material';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
-import Link from 'next/link';
 import { usePathname } from "next/navigation";
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -17,7 +18,6 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
 
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
-
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
@@ -73,7 +73,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         {/* ------------------------------------------- */}
         {lgUp && (
           <a href="/">
-            <Logo img="/images/logos/dark-logo.svg" />
+            <Logo img="/images/logos/Logo-64x64.png" />
           </a>
         )}
 
@@ -96,9 +96,9 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         <Box flexGrow={1} />
 
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button variant="contained" component={Link} href="/authentication/login" disableElevation color="primary" >
-            Login
-          </Button>
+
+          <LoginButton />
+          <LogoutButton />
           <Profile />
         </Stack>
       </ToolbarStyled>

@@ -1,6 +1,7 @@
 'use client';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
+import { withAuth } from '@/app/components/hocs/withAuth';
 import { Typography } from '@mui/material';
 
 
@@ -22,5 +23,5 @@ const ContactUsPage = () => {
   );
 };
 
-export default ContactUsPage;
+export default withAuth(ContactUsPage);
 
