@@ -1,5 +1,6 @@
 import LoginButton from "@/app/authentication/auth/components/LoginButton";
-import LogoutButton from "@/app/authentication/auth/components/LogoutButton";
+import Loading from "@/app/loading";
+import { useAuth0 } from "@auth0/auth0-react";
 import { AppBar, Badge, Box, IconButton, List, Stack, styled, Toolbar, useMediaQuery } from '@mui/material';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
 import { usePathname } from "next/navigation";
@@ -15,6 +16,9 @@ interface ItemType {
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
+
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
 
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -35,6 +39,9 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
 
   const pathname = usePathname();
   const pathDirect = pathname;
+
+  if (isLoading)
+    return <Loading />
 
   return (
     <AppBarStyled position="sticky" color="default">
@@ -97,9 +104,11 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
 
         <Stack spacing={1} direction="row" alignItems="center">
 
-          <LoginButton />
-          <LogoutButton />
-          <Profile />
+          {!isAuthenticated && <LoginButton />}
+          {isAuthenticated && (
+            <>
+              <Profile />
+            </>)}
         </Stack>
       </ToolbarStyled>
     </AppBarStyled>

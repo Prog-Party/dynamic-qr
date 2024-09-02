@@ -1,19 +1,23 @@
-import React, { useState } from "react";
-import Link from "next/link";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   Avatar,
   Box,
-  Menu,
-  Button,
   IconButton,
-  MenuItem,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
+  Typography
 } from "@mui/material";
+import { useState } from "react";
 
+import LogoutButton from "@/app/authentication/auth/components/LogoutButton";
+import Loading from "@/app/loading";
 import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react";
 
 const Profile = () => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
   const [anchorEl2, setAnchorEl2] = useState(null);
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
@@ -21,6 +25,9 @@ const Profile = () => {
   const handleClose2 = () => {
     setAnchorEl2(null);
   };
+
+  if (isLoading)
+    return <Loading />
 
   return (
     <Box>
@@ -38,8 +45,8 @@ const Profile = () => {
         onClick={handleClick2}
       >
         <Avatar
-          src="/images/profile/user-1.jpg"
-          alt="image"
+          src={user!.picture}
+          alt={user!.name}
           sx={{
             width: 35,
             height: 35,
@@ -59,10 +66,18 @@ const Profile = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         sx={{
           "& .MuiMenu-paper": {
-            width: "200px",
+            width: "300px",
           },
         }}
       >
+        <Box mt={1} py={1} px={2}>
+          <Typography>
+            Logged in as
+          </Typography>
+          <Typography color="textPrimary">
+            {user!.name}
+          </Typography>
+        </Box>
         <MenuItem>
           <ListItemIcon>
             <IconUser width={20} />
@@ -82,15 +97,7 @@ const Profile = () => {
           <ListItemText>My Tasks</ListItemText>
         </MenuItem>
         <Box mt={1} py={1} px={2}>
-          <Button
-            href="/authentication/login"
-            variant="outlined"
-            color="primary"
-            component={Link}
-            fullWidth
-          >
-            Logout
-          </Button>
+          <LogoutButton />
         </Box>
       </Menu>
     </Box>
