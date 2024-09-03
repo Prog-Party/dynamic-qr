@@ -12,14 +12,12 @@ const Menuitems = [
     navlabel: true,
     subheader: "Organization stuff",
   },
-
   {
     id: uniqueId(),
     title: "Organization",
     icon: IconLayoutDashboard,
     href: "/dashboard/organization",
   },
-
   {
     id: uniqueId(),
     title: "Wallet",
