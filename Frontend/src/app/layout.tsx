@@ -19,7 +19,8 @@ export default function RootLayout({
           domain="https://dev-bha1i8wi67urwpal.eu.auth0.com"
           clientId="HjBsSLqm8VnqjEmZbmju2eWMHE58JNlQ"
           authorizationParams={{
-            redirect_uri: window.location.origin
+            redirect_uri:
+              typeof window !== 'undefined' ? window.location.origin : undefined,
           }}
         >
           <ThemeProvider theme={baselightTheme}>

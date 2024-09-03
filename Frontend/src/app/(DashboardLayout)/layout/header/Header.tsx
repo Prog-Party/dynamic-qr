@@ -78,7 +78,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         {/* ------------------------------------------- */}
         {/* Logo */}
         {/* ------------------------------------------- */}
-        {lgUp && (
+        {lgUp && !isAuthenticated && (
           <a href="/">
             <Logo img="/images/logos/Logo-64x64.png" />
           </a>

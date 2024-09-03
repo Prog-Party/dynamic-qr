@@ -1,5 +1,6 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { Box, Drawer, useMediaQuery } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo, Sidebar } from 'react-mui-sidebar';
 import SidebarItems from "./SidebarItems";
 import { Upgrade } from "./Updrade";
@@ -18,9 +19,14 @@ const MSidebar = ({
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
 
   const [showSidebar, setShowSidebar] = useState(false);
-  //only show the desktop sidebar if the user is logged in
+  const { isAuthenticated } = useAuth0();
 
-  //TODO: add check if the user is logged in
+  useEffect(() => {
+    //only show the desktop sidebar if the user is logged in
+    if (isAuthenticated) {
+      setShowSidebar(true)
+    }
+  }, [isAuthenticated])
 
   const sidebarWidth = "270px";
 
@@ -89,7 +95,7 @@ const MSidebar = ({
                 {/* Sidebar Items */}
                 {/* ------------------------------------------- */}
                 <SidebarItems />
-                <Upgrade />
+                {!isAuthenticated && <Upgrade />}
               </Box>
             </Sidebar >
           </Box>
