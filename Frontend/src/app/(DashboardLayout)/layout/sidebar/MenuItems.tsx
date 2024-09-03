@@ -28,25 +28,25 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: "Dev previews",
+    subheader: "Design",
   },
   {
     id: uniqueId(),
     title: "Typography",
     icon: IconTypography,
-    href: "/utilities/typography",
+    href: "/design/typography",
   },
   {
     id: uniqueId(),
     title: "Shadow",
     icon: IconCopy,
-    href: "/utilities/shadow",
+    href: "/design/shadow",
   },
   {
     id: uniqueId(),
     title: "Icons",
     icon: IconMoodHappy,
-    href: "/icons",
+    href: "/design/icons",
   }
 ];
 
