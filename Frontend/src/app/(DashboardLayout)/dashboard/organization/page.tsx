@@ -17,7 +17,7 @@ const OrganizationPage = () => {
             <li>E-mail: {user?.email}</li>
           </ul>
           <Typography>
-            <b>Description:</b> Information about this person's organization. Invite colleagues, maybe some rolebased stuff, etc.
+            <b>Description:</b> Information about this person&apos;s organization. Invite colleagues, maybe some rolebased stuff, etc.
           </Typography>
         </>
       </DashboardCard>
