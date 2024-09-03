@@ -15,7 +15,8 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
     <Box sx={{ px: 3 }}>
       <List sx={{ pt: 0 }} className="sidebarNav" component="div">
 
-        {HeaderMenuItems.map((item) => {
+        {/* Only show the headermenu on mobile */}
+        {!lgUp && HeaderMenuItems.map((item) => {
           return (
             <NavItem
               item={item}

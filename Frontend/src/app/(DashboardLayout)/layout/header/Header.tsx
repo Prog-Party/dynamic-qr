@@ -1,6 +1,8 @@
-import { AppBar, Badge, Box, Button, IconButton, List, Stack, styled, Toolbar, useMediaQuery } from '@mui/material';
+import LoginButton from "@/app/authentication/auth/components/LoginButton";
+import Loading from "@/app/loading";
+import { useAuth0 } from "@auth0/auth0-react";
+import { AppBar, Badge, Box, IconButton, List, Stack, styled, Toolbar, useMediaQuery } from '@mui/material';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
-import Link from 'next/link';
 import { usePathname } from "next/navigation";
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -15,9 +17,11 @@ interface ItemType {
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
 
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
-
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
@@ -35,6 +39,9 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
 
   const pathname = usePathname();
   const pathDirect = pathname;
+
+  if (isLoading)
+    return <Loading />
 
   return (
     <AppBarStyled position="sticky" color="default">
@@ -71,9 +78,9 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         {/* ------------------------------------------- */}
         {/* Logo */}
         {/* ------------------------------------------- */}
-        {lgUp && (
+        {lgUp && !isAuthenticated && (
           <a href="/">
-            <Logo img="/images/logos/dark-logo.svg" />
+            <Logo img="/images/logos/Logo-64x64.png" />
           </a>
         )}
 
@@ -96,10 +103,12 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         <Box flexGrow={1} />
 
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button variant="contained" component={Link} href="/authentication/login" disableElevation color="primary" >
-            Login
-          </Button>
-          <Profile />
+
+          {!isAuthenticated && <LoginButton />}
+          {isAuthenticated && (
+            <>
+              <Profile />
+            </>)}
         </Stack>
       </ToolbarStyled>
     </AppBarStyled>
