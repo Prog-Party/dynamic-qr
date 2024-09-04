@@ -9,6 +9,12 @@ import { uniqueId } from "lodash";
 
 const Menuitems = [
   {
+    id: uniqueId(),
+    title: "Home",
+    icon: IconLayoutDashboard,
+    href: "/",
+  },
+  {
     navlabel: true,
     subheader: "Organization stuff",
   },

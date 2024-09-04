@@ -8,8 +8,8 @@ import ProductPerformance from '@/app/(DashboardLayout)/components/dashboard/Pro
 import RecentTransactions from '@/app/(DashboardLayout)/components/dashboard/RecentTransactions';
 import SalesOverview from '@/app/(DashboardLayout)/components/dashboard/SalesOverview';
 import YearlyBreakup from '@/app/(DashboardLayout)/components/dashboard/YearlyBreakup';
+import GenerateStaticQr from './components/generate/GenerateStaticQR';
 import DashboardCard from './components/shared/DashboardCard';
-import Menuitems from './layout/sidebar/MenuItems';
 
 const Dashboard = () => {
 
@@ -30,20 +30,15 @@ const Dashboard = () => {
             </DashboardCard>
           </Grid>
           <Grid item xs={12} lg={12}>
-            <DashboardCard title="Template Menu ">
-              <ul>
+            <DashboardCard title="Generate static QR ">
+              <>
+                <Typography>
+                  Generate your static QR code now. It can be anything, from text to an url.
 
-                {Menuitems.map((item) => {
+                </Typography>
+                <GenerateStaticQr />
 
-                  if (item.subheader)
-                    return <></>
-
-                  return <li key={item.id}>
-                    <Box component={item.icon} sx={{ mr: 1 }} />
-                    <a href={item.href}>{item.title}</a>
-                  </li>
-                })}
-              </ul>
+              </>
             </DashboardCard>
           </Grid>
           <Grid item xs={12} lg={8}>
