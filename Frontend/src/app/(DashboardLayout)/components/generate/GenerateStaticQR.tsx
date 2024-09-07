@@ -8,6 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { QRProps } from './GenerateStaticQR.d';
+import GenerateStaticQrContent from "./GenerateStaticQrContent";
 
 const SlimTableCell = styled(TableCell)(({ theme }) => ({
     paddingTop: '0px',
@@ -17,7 +18,7 @@ const SlimTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const GenerateStaticQr = () => {
-    const [value, setValue] = useState("Welcome world") //TODO: Make a more fun default text value
+    const [value, setValue] = useState("")
     const [includeMargin, setMargin] = useState(false)
     const [backgroundColor, setBackgroundColor] = useState("#ffffff")
     const [foregroundColor, setForegroundColor] = useState("#000000")
@@ -25,6 +26,7 @@ const GenerateStaticQr = () => {
     const [imageHeight, setImageHeight] = useState(15) //in percentage
     const [imageWidth, setImageWidth] = useState(15)// in percentage
     const [imageHeightSameAsWidth, setImageHeightSameAsWidth] = useState(true)
+    const [imageRatioExceeded, setImageRatioExceeded] = useState(false)
 
     /*
      * The minimum contrast for the background and foreground color of a QR code is typically defined by the contrast ratio between the two colors. To ensure reliable scanning, the contrast ratio should be at least 4:1.
@@ -42,6 +44,15 @@ const GenerateStaticQr = () => {
         if (imageHeightSameAsWidth)
             setImageHeight(imageWidth)
     }, [imageWidth, imageHeightSameAsWidth])
+
+    useEffect(() => {
+        if (imageHeight > 25 && imageWidth > 15)
+            setImageRatioExceeded(true)
+        else if (imageHeight > 15 && imageWidth > 25)
+            setImageRatioExceeded(true)
+        else
+            setImageRatioExceeded(false)
+    }, [imageHeight, imageWidth])
 
     useEffect(() => {
         const size = 156
@@ -80,18 +91,7 @@ const GenerateStaticQr = () => {
                 <QRCodeSVG {...qrCodeProps} />
             </Grid>
             <Grid item xs={12} lg={4} >
-                <Stack spacing={2}>
-                    <Typography variant="h2" color="textSecondary" >
-                        Content
-                    </Typography>
-                    {/* TODO: Add options so an URL can be added, VCard, E-mail, etc. */}
-                    <TextField
-                        fullWidth
-                        label="Value"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                    />
-                </Stack>
+                <GenerateStaticQrContent value={value} setValue={setValue} />
             </Grid>
             <Grid item xs={12} lg={6}>
                 <Typography variant="h2" color="textSecondary">
@@ -207,7 +207,7 @@ const GenerateStaticQr = () => {
                                             step={1}
                                             marks
                                             min={10}
-                                            max={25}
+                                            max={50}
                                             onChange={(e, value) => setImageWidth(value as number)}
                                         />
 
@@ -234,10 +234,21 @@ const GenerateStaticQr = () => {
                                                 step={1}
                                                 marks
                                                 min={10}
-                                                max={25}
+                                                max={50}
                                                 onChange={(e, value) => setImageHeight(value as number)}
                                             />
                                         )}
+                                    </SlimTableCell>
+                                </TableRow>
+                            )}
+
+                            {imageUrl && imageRatioExceeded && (
+                                <TableRow>
+                                    <SlimTableCell colSpan={2}>
+                                        <Alert severity="error">
+                                            If you want to add a horizontal image, the height must be less than 15%.
+                                            <br />If you want to add a vertical image, the width must be less than 15%.
+                                        </Alert>
                                     </SlimTableCell>
                                 </TableRow>
                             )}
