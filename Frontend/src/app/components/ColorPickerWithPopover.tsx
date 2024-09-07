@@ -4,12 +4,16 @@ import { ColorResult, SketchPicker } from 'react-color';
 
 type ColorPickerWithPopoverProps = {
     color: string;
+    size?: string;
     onChange: (color: string) => void;
 };
 
 const ColorPickerWithPopover = (props: ColorPickerWithPopoverProps) => {
     const [color, setColor] = useState<string>(props.color);
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+    const width = props.size ?? "36px";
+    const height = props.size ?? "36px";
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -32,8 +36,8 @@ const ColorPickerWithPopover = (props: ColorPickerWithPopoverProps) => {
             <div
                 style={{
                     backgroundColor: color,
-                    width: '36px',
-                    height: '36px',
+                    width: width,
+                    height: height,
                     cursor: 'pointer',
                     border: '2px solid #000000',
                 }}
