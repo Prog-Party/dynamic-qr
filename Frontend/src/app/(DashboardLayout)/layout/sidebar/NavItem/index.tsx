@@ -1,15 +1,15 @@
-import React from "react";
+import React from "react"
 // mui imports
 import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  styled,
-  useTheme,
-} from "@mui/material";
-import Link from "next/link";
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    styled,
+    useTheme,
+} from "@mui/material"
+import Link from "next/link"
 
 type NavGroup = {
   [x: string]: any;
@@ -31,63 +31,63 @@ interface ItemType {
 }
 
 const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
-  const theme = useTheme();
+    const theme = useTheme()
 
-  const Icon = item.icon;
+    const Icon = item.icon
 
-  const ListItemStyled = styled(ListItem)(() => ({
-    padding: 0,
-    ".MuiButtonBase-root": {
-      whiteSpace: "nowrap",
-      marginBottom: "2px",
-      padding: "8px 10px",
-      borderRadius: "8px",
-      backgroundColor: level > 1 ? "transparent !important" : "inherit",
-      color: theme.palette.text.secondary,
-      paddingLeft: "10px",
-      "&:hover": {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.primary.main,
-      },
-      "&.Mui-selected": {
-        color: "white",
-        backgroundColor: theme.palette.primary.main,
-        "&:hover": {
-          backgroundColor: theme.palette.primary.main,
-          color: "white",
+    const ListItemStyled = styled(ListItem)(() => ({
+        padding: 0,
+        ".MuiButtonBase-root": {
+            whiteSpace: "nowrap",
+            marginBottom: "2px",
+            padding: "8px 10px",
+            borderRadius: "8px",
+            backgroundColor: level > 1 ? "transparent !important" : "inherit",
+            color: theme.palette.text.secondary,
+            paddingLeft: "10px",
+            "&:hover": {
+                backgroundColor: theme.palette.primary.light,
+                color: theme.palette.primary.main,
+            },
+            "&.Mui-selected": {
+                color: "white",
+                backgroundColor: theme.palette.primary.main,
+                "&:hover": {
+                    backgroundColor: theme.palette.primary.main,
+                    color: "white",
+                },
+            },
         },
-      },
-    },
-  }));
+    }))
 
-  return (
-    <List component="div" disablePadding key={item.id}>
-      <ListItemStyled>
-        <ListItemButton
-          component={Link}
-          href={item.href}
-          disabled={item.disabled}
-          selected={pathDirect === item.href}
-          target={item.external ? "_blank" : ""}
-          onClick={onClick}
-        >
-          {item.icon && <ListItemIcon
-            sx={{
-              minWidth: "36px",
-              p: "3px 0",
-              color: "inherit",
-            }}
-          >
-            <Icon stroke={1.5} size="1.3rem" />
-          </ListItemIcon>
-          }
-          <ListItemText>
-            <>{item.title}</>
-          </ListItemText>
-        </ListItemButton>
-      </ListItemStyled>
-    </List>
-  );
-};
+    return (
+        <List component="div" disablePadding key={item.id}>
+            <ListItemStyled>
+                <ListItemButton
+                    component={Link}
+                    href={item.href}
+                    disabled={item.disabled}
+                    selected={pathDirect === item.href}
+                    target={item.external ? "_blank" : ""}
+                    onClick={onClick}
+                >
+                    {item.icon && <ListItemIcon
+                        sx={{
+                            minWidth: "36px",
+                            p: "3px 0",
+                            color: "inherit",
+                        }}
+                    >
+                        <Icon stroke={1.5} size="1.3rem" />
+                    </ListItemIcon>
+                    }
+                    <ListItemText>
+                        <>{item.title}</>
+                    </ListItemText>
+                </ListItemButton>
+            </ListItemStyled>
+        </List>
+    )
+}
 
-export default NavItem;
+export default NavItem

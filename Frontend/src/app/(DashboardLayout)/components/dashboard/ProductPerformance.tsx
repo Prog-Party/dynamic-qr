@@ -7,8 +7,8 @@ import {
     TableHead,
     TableRow,
     Chip
-} from '@mui/material';
-import DashboardCard from '@/app/(DashboardLayout)//components/shared/DashboardCard';
+} from "@mui/material"
+import DashboardCard from "@/app/(DashboardLayout)//components/shared/DashboardCard"
 
 const products = [
     {
@@ -47,14 +47,13 @@ const products = [
         pbg: "success.main",
         budget: "2.4",
     },
-];
-
+]
 
 const ProductPerformance = () => {
     return (
 
         <DashboardCard title="Product Performance">
-            <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
+            <Box sx={{ overflow: "auto", width: { xs: "280px", sm: "auto" } }}>
                 <Table
                     aria-label="simple table"
                     sx={{
@@ -151,7 +150,7 @@ const ProductPerformance = () => {
                 </Table>
             </Box>
         </DashboardCard>
-    );
-};
+    )
+}
 
-export default ProductPerformance;
+export default ProductPerformance
