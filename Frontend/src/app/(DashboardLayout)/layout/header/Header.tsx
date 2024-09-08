@@ -17,103 +17,103 @@ interface ItemType {
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
 
-    const { isAuthenticated, isLoading } = useAuth0()
+  const { isAuthenticated, isLoading } = useAuth0()
 
-    const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"))
-    // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"))
+  // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
-    const AppBarStyled = styled(AppBar)(({ theme }) => ({
-        boxShadow: "none",
-        background: theme.palette.background.paper,
-        justifyContent: "center",
-        backdropFilter: "blur(4px)",
-        [theme.breakpoints.up("lg")]: {
-            minHeight: "70px",
-        },
-    }))
-    const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
-        width: "100%",
-        color: theme.palette.text.secondary,
-    }))
+  const AppBarStyled = styled(AppBar)(({ theme }) => ({
+    boxShadow: "none",
+    background: theme.palette.background.paper,
+    justifyContent: "center",
+    backdropFilter: "blur(4px)",
+    [theme.breakpoints.up("lg")]: {
+      minHeight: "70px",
+    },
+  }))
+  const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
+    width: "100%",
+    color: theme.palette.text.secondary,
+  }))
 
-    const pathname = usePathname()
-    const pathDirect = pathname
+  const pathname = usePathname()
+  const pathDirect = pathname
 
-    if (isLoading)
-        return <Loading />
+  if (isLoading)
+    return <Loading />
 
-    return (
-        <AppBarStyled position="sticky" color="default">
-            <ToolbarStyled>
-                <IconButton
-                    color="inherit"
-                    aria-label="menu"
+  return (
+    <AppBarStyled position="sticky" color="default">
+      <ToolbarStyled>
+        <IconButton
+          color="inherit"
+          aria-label="menu"
+          onClick={toggleMobileSidebar}
+          sx={{
+            display: {
+              lg: "none",
+              xs: "inline",
+            },
+          }}
+        >
+          <IconMenu width="20" height="20" />
+        </IconButton>
+
+        <IconButton
+          size="large"
+          aria-label="show 11 new notifications"
+          color="inherit"
+          aria-controls="msgs-menu"
+          aria-haspopup="true"
+        >
+          <Badge variant="dot" color="primary">
+            <IconBellRinging size="21" stroke="1.5" />
+          </Badge>
+
+        </IconButton>
+
+        {/* ------------------------------------------- */}
+        {/* Logo */}
+        {/* ------------------------------------------- */}
+        {lgUp && !isAuthenticated && (
+          <a href="/">
+            <Logo img="/images/logos/Logo-64x64.png" />
+          </a>
+        )}
+
+        {lgUp && (
+          <Box sx={{ px: 3 }}>
+            <List sx={{ pt: 0 }} className="sidebarNav" component="div">
+              {Menuitems.map((item) => {
+                return (
+                  <NavItem
+                    item={item}
+                    key={item.id}
+                    pathDirect={pathDirect}
                     onClick={toggleMobileSidebar}
-                    sx={{
-                        display: {
-                            lg: "none",
-                            xs: "inline",
-                        },
-                    }}
-                >
-                    <IconMenu width="20" height="20" />
-                </IconButton>
+                  />
+                )
+              })}
+            </List>
+          </Box>)}
 
-                <IconButton
-                    size="large"
-                    aria-label="show 11 new notifications"
-                    color="inherit"
-                    aria-controls="msgs-menu"
-                    aria-haspopup="true"
-                >
-                    <Badge variant="dot" color="primary">
-                        <IconBellRinging size="21" stroke="1.5" />
-                    </Badge>
+        <Box flexGrow={1} />
 
-                </IconButton>
+        <Stack spacing={1} direction="row" alignItems="center">
 
-                {/* ------------------------------------------- */}
-                {/* Logo */}
-                {/* ------------------------------------------- */}
-                {lgUp && !isAuthenticated && (
-                    <a href="/">
-                        <Logo img="/images/logos/Logo-64x64.png" />
-                    </a>
-                )}
-
-                {lgUp && (
-                    <Box sx={{ px: 3 }}>
-                        <List sx={{ pt: 0 }} className="sidebarNav" component="div">
-                            {Menuitems.map((item) => {
-                                return (
-                                    <NavItem
-                                        item={item}
-                                        key={item.id}
-                                        pathDirect={pathDirect}
-                                        onClick={toggleMobileSidebar}
-                                    />
-                                )
-                            })}
-                        </List>
-                    </Box>)}
-
-                <Box flexGrow={1} />
-
-                <Stack spacing={1} direction="row" alignItems="center">
-
-                    {!isAuthenticated && <LoginButton />}
-                    {isAuthenticated && (
-                        <>
-                            <Profile />
-                        </>)}
-                </Stack>
-            </ToolbarStyled>
-        </AppBarStyled>
-    )
+          {!isAuthenticated && <LoginButton />}
+          {isAuthenticated && (
+            <>
+              <Profile />
+            </>)}
+        </Stack>
+      </ToolbarStyled>
+    </AppBarStyled>
+  )
 }
 
 Header.propTypes = {
-    sx: PropTypes.object,
+  sx: PropTypes.object,
 }
 
 export default Header

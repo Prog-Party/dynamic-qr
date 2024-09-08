@@ -6,23 +6,23 @@ import { Typography } from "@mui/material"
 
 const OrganizationPage = () => {
 
-    const { user } = useAuth0()
+  const { user } = useAuth0()
 
-    return (
-        <PageContainer title="Organization" description="this is Organization page">
-            <DashboardCard title="Organization">
-                <>
-                    <ul>
-                        <li>Name: {user?.nickname}</li>
-                        <li>E-mail: {user?.email}</li>
-                    </ul>
-                    <Typography>
-                        <b>Description:</b> Information about this person&apos;s organization. Invite colleagues, maybe some rolebased stuff, etc.
-                    </Typography>
-                </>
-            </DashboardCard>
-        </PageContainer>
-    )
+  return (
+    <PageContainer title="Organization" description="this is Organization page">
+      <DashboardCard title="Organization">
+        <>
+          <ul>
+            <li>Name: {user?.nickname}</li>
+            <li>E-mail: {user?.email}</li>
+          </ul>
+          <Typography>
+            <b>Description:</b> Information about this person&apos;s organization. Invite colleagues, maybe some rolebased stuff, etc.
+          </Typography>
+        </>
+      </DashboardCard>
+    </PageContainer>
+  )
 }
 
 export default withAuthenticationRequired(OrganizationPage)

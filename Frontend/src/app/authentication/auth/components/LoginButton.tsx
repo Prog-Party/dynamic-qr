@@ -2,11 +2,11 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { Button } from "@mui/material"
 
 const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0()
+  const { loginWithRedirect } = useAuth0()
 
-    return <Button variant="contained" onClick={() => loginWithRedirect()} disableElevation color="primary" >
+  return <Button variant="contained" onClick={() => loginWithRedirect()} disableElevation color="primary" >
         Login
-    </Button>
+  </Button>
 }
 
 export default LoginButton

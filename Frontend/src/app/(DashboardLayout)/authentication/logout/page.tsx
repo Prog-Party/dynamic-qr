@@ -18,22 +18,22 @@ import { useEffect } from "react"
  */
 const LogoutPage = () => {
 
-    const { logout } = useAuth0()
+  const { logout } = useAuth0()
 
-    useEffect(() => {
+  useEffect(() => {
     //Logout when the page loads
-        logout()
-    }, [])
+    logout()
+  }, [])
 
-    return (
-        <PageContainer title="Log out" description="Log out">
-            <DashboardCard title="Logging out">
-                <Typography>
+  return (
+    <PageContainer title="Log out" description="Log out">
+      <DashboardCard title="Logging out">
+        <Typography>
           We are logging you out.
-                </Typography>
-            </DashboardCard>
-        </PageContainer>
-    )
+        </Typography>
+      </DashboardCard>
+    </PageContainer>
+  )
 }
 
 export default LogoutPage
