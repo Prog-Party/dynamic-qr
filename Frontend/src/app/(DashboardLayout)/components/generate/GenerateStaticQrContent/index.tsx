@@ -1,16 +1,26 @@
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import EmailIcon from "@mui/icons-material/Email";
+import WebIcon from "@mui/icons-material/Web";
 import { Box, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useState } from "react";
 import EmailContent from "./EmailContent";
 import { GenerateStaticQRContentProps } from "./GenerateStaticQRContent";
 import PlainContent from "./PlainContent";
+import UrlContent from "./UrlContent";
 import VCardContent from "./VCardContent";
 
 const GenerateStaticQrContent = ({ value, setValue }: GenerateStaticQRContentProps) => {
 
     const options = [
         { value: 'plain', label: 'Plain', Type: PlainContent },
+        {
+            value: 'website', label: <>
+                <WebIcon />
+                <Typography variant="body1">
+                    Website
+                </Typography>
+            </>, Type: UrlContent
+        },
         {
             value: 'email', label: <>
                 <EmailIcon />

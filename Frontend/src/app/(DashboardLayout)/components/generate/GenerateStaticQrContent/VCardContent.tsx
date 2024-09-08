@@ -49,7 +49,6 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
             content += `N:${lastName ?? ""};${firstName ?? ""}\n`
         }
 
-        // LABEL;QUOTED-PRINTABLE;WORK;PREF:Bar Street 99=0AFootown 12345=0AFooland
         const addressVCard = getAddress()
         if (addressVCard)
             content += addressVCard
@@ -62,13 +61,13 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
         if (organisation)
             content += `ORG:${organisation}\n`
         if (phone)
-            content += `TEL:${phone}\n`
+            content += `TEL;TYPE=CELL:${phone}\n`
         if (jobTitle)
             content += `TITLE:${jobTitle}\n`
         if (website)
             content += `URL:${website}\n`
         if (email)
-            content += `EMAIL:${email}\n`
+            content += `EMAIL;TYPE=HOME:${email}\n`
         if (categories)
             content += `CATEGORIES:${categories}\n`
         if (dateOfBirth)
@@ -81,7 +80,7 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
 
     const getAddress = () => {
         if (address.street || address.city || address.state || address.zip || address.country) {
-            let addressContent = `ADR;TYPE=${address.type}:;`
+            let addressContent = `ADR;TYPE=${address.type}:;;`
             addressContent += `${address.street ?? ""};`
             addressContent += `${address.city ?? ""};`
             addressContent += `${address.state ?? ""};`
