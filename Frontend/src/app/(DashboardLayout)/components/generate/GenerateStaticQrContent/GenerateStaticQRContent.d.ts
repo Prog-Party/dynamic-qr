@@ -3,10 +3,8 @@ export type GenerateStaticQRContentProps = {
     setValue: (value: string) => void
 };
 
-//ADR;TYPE=home:;;123 Main St.;Springfield;IL;12345;USA
-
 export type Address = {
-    /// The type of address. For example, "home", "work", etc.
+    // The type of address. For example, "home", "work", etc.
     type: string,
     street?: string,
     city?: string,
