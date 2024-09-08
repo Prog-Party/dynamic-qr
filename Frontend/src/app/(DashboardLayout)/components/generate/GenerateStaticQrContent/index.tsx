@@ -1,13 +1,21 @@
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import EmailIcon from "@mui/icons-material/Email";
+import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import SmsIcon from "@mui/icons-material/Sms";
 import WebIcon from "@mui/icons-material/Web";
-import { Box, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import Wifi2BarIcon from "@mui/icons-material/Wifi2Bar";
+import { Box, Grid, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useState } from "react";
 import EmailContent from "./EmailContent";
 import { GenerateStaticQRContentProps } from "./GenerateStaticQRContent";
+import PhoneContent from "./PhoneContent";
 import PlainContent from "./PlainContent";
+import SmsContent from "./SmsContent";
 import UrlContent from "./UrlContent";
 import VCardContent from "./VCardContent";
+import WifiContent from "./WifiContent";
+//TODO: Location: Geolocation coordinates (geo:latitude,longitude).
+//TODO: Event: Calendar events (BEGIN:VEVENT).
 
 const GenerateStaticQrContent = ({ value, setValue }: GenerateStaticQRContentProps) => {
 
@@ -28,6 +36,30 @@ const GenerateStaticQrContent = ({ value, setValue }: GenerateStaticQRContentPro
                     E-mail
                 </Typography>
             </>, Type: EmailContent
+        },
+        {
+            value: 'wifi', label: <>
+                <Wifi2BarIcon />
+                <Typography variant="body1">
+                    Wifi
+                </Typography>
+            </>, Type: WifiContent
+        },
+        {
+            value: 'phone', label: <>
+                <PhoneAndroidIcon />
+                <Typography variant="body1">
+                    Phone
+                </Typography>
+            </>, Type: PhoneContent
+        },
+        {
+            value: 'sms', label: <>
+                <SmsIcon />
+                <Typography variant="body1">
+                    SMS
+                </Typography>
+            </>, Type: SmsContent
         },
         {
             value: 'vcard', label: <>
@@ -60,11 +92,20 @@ const GenerateStaticQrContent = ({ value, setValue }: GenerateStaticQRContentPro
                 exclusive
                 onChange={handleChange}
             >
-                {options.map(({ value, label }) => (
-                    <ToggleButton key={value} value={value} aria-label={value}>
-                        {label}
-                    </ToggleButton>
-                ))}
+                <Grid container>
+                    {options.map(({ value, label }) => (
+                        <Grid item lg={4} spacing={1}>
+                            <ToggleButton
+                                sx={{ minWidth: '100px', mb: 1 }}
+                                key={value}
+                                value={value}
+                                aria-label={value}>
+                                {label}
+                            </ToggleButton>
+                        </Grid>
+                    ))}
+
+                </Grid>
             </ToggleButtonGroup>
 
             <Box
