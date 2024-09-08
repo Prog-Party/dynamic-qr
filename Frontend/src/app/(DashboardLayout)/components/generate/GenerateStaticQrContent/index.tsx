@@ -94,10 +94,13 @@ const GenerateStaticQrContent = ({ value, setValue }: GenerateStaticQRContentPro
             >
                 <Grid container>
                     {options.map(({ value, label }) => (
-                        <Grid item lg={4} spacing={1}>
+                        <Grid
+                            item
+                            lg={4}
+                            spacing={1}
+                            key={value}>
                             <ToggleButton
                                 sx={{ minWidth: '100px', mb: 1 }}
-                                key={value}
                                 value={value}
                                 aria-label={value}>
                                 {label}
