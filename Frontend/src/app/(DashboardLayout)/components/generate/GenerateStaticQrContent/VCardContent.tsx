@@ -1,6 +1,6 @@
-import { Stack, TextField } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { GenerateStaticQRContentProps } from "./GenerateStaticQRContent";
+import { Address, GenerateStaticQRContentProps } from "./GenerateStaticQRContent";
 
 const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
 
@@ -17,8 +17,10 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
     const [email, setEmail] = useState("")
     const [categories, setCategories] = useState("")
     const [dateOfBirth, setDateOfBirth] = useState("")
+    const [address, setAddress] = useState<Address>({
+        type: "home"
+    });
     //TODO: Geo
-    //TODO: Address
 
     function generateGuid() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -47,8 +49,10 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
             content += `N:${lastName ?? ""};${firstName ?? ""}\n`
         }
 
-        // ADR;WORK;PREF;QUOTED-PRINTABLE:;Footown 12345=0AFooland;Bar Street 99
         // LABEL;QUOTED-PRINTABLE;WORK;PREF:Bar Street 99=0AFootown 12345=0AFooland
+        const addressVCard = getAddress()
+        if (addressVCard)
+            content += addressVCard
         if (logoUrl)
             content += `LOGO;TYPE=${getImageType(logoUrl)}:${logoUrl}\n`
         if (photoUrl)
@@ -75,40 +79,26 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
         return content;
     };
 
+    const getAddress = () => {
+        if (address.street || address.city || address.state || address.zip || address.country) {
+            let addressContent = `ADR;TYPE=${address.type}:;`
+            addressContent += `${address.street ?? ""};`
+            addressContent += `${address.city ?? ""};`
+            addressContent += `${address.state ?? ""};`
+            addressContent += `${address.zip ?? ""};`
+            addressContent += `${address.country ?? ""};`
+            return addressContent + "\n"
+        }
+        return ""
+    }
+
     useEffect(() => {
         setValue(generateVcardContent())
-    }, [firstName, lastName, logoUrl, note, photoUrl, organisation, phone, jobTitle, website, email, categories, dateOfBirth])
+    }, [firstName, lastName, logoUrl, note, photoUrl, organisation, phone, jobTitle, website, email, categories, dateOfBirth, address])
 
     return <>
         <Stack spacing={2}>
-            <TextField
-                size="small"
-                fullWidth
-                label="First name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                label="Last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                label="Logo URL"
-                value={logoUrl}
-                onChange={(e) => setLogoUrl(e.target.value)}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                label="Photo URL"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-            />
+
             <TextField
                 size="small"
                 fullWidth
@@ -126,6 +116,27 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
             <TextField
                 size="small"
                 fullWidth
+                label="First name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                label="Last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+                size="small"
+                fullWidth
                 label="Phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -139,18 +150,10 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
             />
             <TextField
                 size="small"
-                multiline
                 fullWidth
-                label="Note"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                label="Date of birth"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
             />
             <TextField
                 size="small"
@@ -161,10 +164,64 @@ const VCardContent = ({ setValue }: GenerateStaticQRContentProps) => {
             />
             <TextField
                 size="small"
+                multiline
                 fullWidth
-                label="Date of birth"
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
+                label="Note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+            />
+
+            <Typography variant="h6">Address</Typography>
+            <TextField
+                size="small"
+                fullWidth
+                label="Street and housenumber"
+                value={address.street}
+                onChange={(e) => setAddress({ ...address, street: e.target.value })}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                label="Zip"
+                value={address.zip}
+                onChange={(e) => setAddress({ ...address, zip: e.target.value })}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                label="City"
+                value={address.city}
+                onChange={(e) => setAddress({ ...address, city: e.target.value })}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                label="State"
+                value={address.state}
+                onChange={(e) => setAddress({ ...address, state: e.target.value })}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                label="Country"
+                value={address.country}
+                onChange={(e) => setAddress({ ...address, country: e.target.value })}
+            />
+
+            <Typography variant="h6">Images</Typography>
+            <TextField
+                size="small"
+                fullWidth
+                label="Photo URL"
+                value={photoUrl}
+                onChange={(e) => setPhotoUrl(e.target.value)}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                label="Logo URL"
+                value={logoUrl}
+                onChange={(e) => setLogoUrl(e.target.value)}
             />
         </Stack>
     </>
