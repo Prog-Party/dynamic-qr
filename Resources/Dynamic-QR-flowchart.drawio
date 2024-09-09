@@ -1,0 +1,116 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.12">
+  <diagram name="Page-1" id="xm0qqevYfB8CA88mfpXX">
+    <mxGraphModel>
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Marketing Pages" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry y="502" width="165" height="329" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Home Page" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="35" y="537" width="94" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Features Page" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="25" y="679" width="115" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Pricing Page" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="32" y="762" width="101" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="Website" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="215" width="915" height="859" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Home" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="240" y="20" width="865" height="462" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Features" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="240" y="502" width="127" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="Pricing" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="240" y="626" width="865" height="213" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="Select Plan" style="rhombus;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="557" y="673" width="128" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="Pricing" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="272" y="721" width="63" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="Payment" style="ellipse;aspect=fixed;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="967" y="699" width="77" height="77" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="Features" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="265" y="537" width="77" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="Dynamic QR Code Generator" style="rhombus;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="495" y="126" width="253" height="253" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="Home" style="rounded=1;absoluteArcSize=1;arcSize=14;whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="276" y="110" width="56" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="Download QR Code" style="ellipse;aspect=fixed;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="930" y="81" width="150" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="QR Code Scanner" style="ellipse;aspect=fixed;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="936" y="281" width="137" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="Visit" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.49;entryX=0;entryY=0.17;" edge="1" parent="1" source="15" target="14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="431" y="127" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" value="Generate QR Code" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.28;entryX=0;entryY=0.5;" edge="1" parent="1" source="14" target="16">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="839" y="156" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" value="Try It" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.72;entryX=0;entryY=0.5;" edge="1" parent="1" source="14" target="17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="839" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" value="Explore" style="curved=1;startArrow=none;endArrow=block;exitX=1.01;exitY=0.5;entryX=0;entryY=0.85;" edge="1" parent="1" source="13" target="14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="367" y="554" />
+              <mxPoint x="431" y="387" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" value="View Plans" style="curved=1;startArrow=none;endArrow=block;exitX=1.01;exitY=0.48;entryX=0;entryY=0.5;" edge="1" parent="1" source="11" target="10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" value="Proceed" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=-0.01;entryY=0.5;" edge="1" parent="1" source="10" target="12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1.01;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="3" target="13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="25" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.49;entryX=0.1;entryY=-0.01;" edge="1" parent="1" source="4" target="11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="696" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="26" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0.1;entryY=0.98;" edge="1" parent="1" source="5" target="11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="779" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
