@@ -1,9 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { Box, Drawer, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Logo, Sidebar } from 'react-mui-sidebar';
-import SidebarItems from "./SidebarItems";
-import { Upgrade } from "./Updrade";
+import { useAuth0 } from "@auth0/auth0-react"
+import { Box, Drawer, useMediaQuery } from "@mui/material"
+import { useEffect, useState } from "react"
+import { Logo, Sidebar } from "react-mui-sidebar"
+import SidebarItems from "./SidebarItems"
+import { Upgrade } from "./Updrade"
 
 interface ItemType {
   isMobileSidebarOpen: boolean;
@@ -16,10 +16,10 @@ const MSidebar = ({
   onSidebarClose,
   isSidebarOpen,
 }: ItemType) => {
-  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
+  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"))
 
-  const [showSidebar, setShowSidebar] = useState(false);
-  const { isAuthenticated } = useAuth0();
+  const [showSidebar, setShowSidebar] = useState(false)
+  const { isAuthenticated } = useAuth0()
 
   useEffect(() => {
     //only show the desktop sidebar if the user is logged in
@@ -28,25 +28,24 @@ const MSidebar = ({
     }
   }, [isAuthenticated])
 
-  const sidebarWidth = "270px";
+  const sidebarWidth = "270px"
 
   // Custom CSS for short scrollbar
   const scrollbarStyles = {
-    '&::-webkit-scrollbar': {
-      width: '7px',
+    "&::-webkit-scrollbar": {
+      width: "7px",
 
     },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#eff2f7',
-      borderRadius: '15px',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#eff2f7",
+      borderRadius: "15px",
     },
-  };
-
+  }
 
   if (lgUp) {
 
     if (showSidebar === false) {
-      return null;
+      return null
     }
 
     return (
@@ -79,7 +78,7 @@ const MSidebar = ({
             }}
           >
             <Sidebar
-              width={'270px'}
+              width={"270px"}
               collapsewidth="80px"
               open={isSidebarOpen}
               themeColor="#5d87ff"
@@ -101,7 +100,7 @@ const MSidebar = ({
           </Box>
         </Drawer>
       </Box>
-    );
+    )
   }
 
   return (
@@ -122,7 +121,7 @@ const MSidebar = ({
       {/* ------------------------------------------- */}
       <Box px={2}>
         <Sidebar
-          width={'270px'}
+          width={"270px"}
           collapsewidth="80px"
           isCollapse={false}
           mode="light"
@@ -147,12 +146,8 @@ const MSidebar = ({
       {/* ------------------------------------------- */}
 
     </Drawer>
-  );
-};
+  )
+}
 
-export default MSidebar;
-
-
-
-
+export default MSidebar
 

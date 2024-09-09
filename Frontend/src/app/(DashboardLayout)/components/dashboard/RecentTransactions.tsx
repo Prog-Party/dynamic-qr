@@ -1,5 +1,5 @@
 
-import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard"
 import {
   Timeline,
   TimelineItem,
@@ -9,8 +9,8 @@ import {
   TimelineConnector,
   TimelineContent,
   timelineOppositeContentClasses,
-} from '@mui/lab';
-import { Link, Typography } from '@mui/material';
+} from "@mui/lab"
+import { Link, Typography } from "@mui/material"
 
 const RecentTransactions = () => {
   return (
@@ -23,10 +23,10 @@ const RecentTransactions = () => {
           onResizeCapture={undefined}
           sx={{
             p: 0,
-            mb: '-40px',
-            '& .MuiTimelineConnector-root': {
-              width: '1px',
-              backgroundColor: '#efefef'
+            mb: "-40px",
+            "& .MuiTimelineConnector-root": {
+              width: "1px",
+              backgroundColor: "#efefef"
             },
             [`& .${timelineOppositeContentClasses.root}`]: {
               flex: 0.5,
@@ -49,7 +49,7 @@ const RecentTransactions = () => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <Typography fontWeight="600">New sale recorded</Typography>{' '}
+              <Typography fontWeight="600">New sale recorded</Typography>{" "}
               <Link href="/" underline="none">
                 #ML-3467
               </Link>
@@ -70,7 +70,7 @@ const RecentTransactions = () => {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <Typography fontWeight="600">New sale recorded</Typography>{' '}
+              <Typography fontWeight="600">New sale recorded</Typography>{" "}
               <Link href="/" underline="none">
                 #ML-3467
               </Link>
@@ -96,7 +96,7 @@ const RecentTransactions = () => {
         </Timeline>
       </>
     </DashboardCard>
-  );
-};
+  )
+}
 
-export default RecentTransactions;
+export default RecentTransactions

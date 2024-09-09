@@ -1,18 +1,17 @@
-'use client'
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import { Box, Grid, Typography } from '@mui/material';
+"use client"
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer"
+import { Box, Grid, Typography } from "@mui/material"
 // components
-import Blog from '@/app/(DashboardLayout)/components/dashboard/Blog';
-import MonthlyEarnings from '@/app/(DashboardLayout)/components/dashboard/MonthlyEarnings';
-import ProductPerformance from '@/app/(DashboardLayout)/components/dashboard/ProductPerformance';
-import RecentTransactions from '@/app/(DashboardLayout)/components/dashboard/RecentTransactions';
-import SalesOverview from '@/app/(DashboardLayout)/components/dashboard/SalesOverview';
-import YearlyBreakup from '@/app/(DashboardLayout)/components/dashboard/YearlyBreakup';
-import DashboardCard from './components/shared/DashboardCard';
-import Menuitems from './layout/sidebar/MenuItems';
+import Blog from "@/app/(DashboardLayout)/components/dashboard/Blog"
+import MonthlyEarnings from "@/app/(DashboardLayout)/components/dashboard/MonthlyEarnings"
+import ProductPerformance from "@/app/(DashboardLayout)/components/dashboard/ProductPerformance"
+import RecentTransactions from "@/app/(DashboardLayout)/components/dashboard/RecentTransactions"
+import SalesOverview from "@/app/(DashboardLayout)/components/dashboard/SalesOverview"
+import YearlyBreakup from "@/app/(DashboardLayout)/components/dashboard/YearlyBreakup"
+import DashboardCard from "./components/shared/DashboardCard"
+import Menuitems from "./layout/sidebar/MenuItems"
 
 const Dashboard = () => {
-
 
   return (
     <PageContainer title="Dashboard" description="this is Dashboard">
@@ -74,4 +73,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard;
+export default Dashboard

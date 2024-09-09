@@ -1,12 +1,12 @@
-'use client';
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
-import { useAuth0 } from "@auth0/auth0-react";
-import { Typography } from '@mui/material';
+"use client"
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer"
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard"
+import { useAuth0 } from "@auth0/auth0-react"
+import { Typography } from "@mui/material"
 
 const ContactUsPage = () => {
 
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useAuth0()
 
   return (
     <PageContainer title="Contact us" description="this is Contact us page">
@@ -24,8 +24,8 @@ const ContactUsPage = () => {
         </Typography>
       </DashboardCard>
     </PageContainer>
-  );
-};
+  )
+}
 
-export default ContactUsPage;
+export default ContactUsPage
 

@@ -1,8 +1,7 @@
-'use client';
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
-import { Typography } from '@mui/material';
-
+"use client"
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer"
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard"
+import { Typography } from "@mui/material"
 
 const FeaturesPage = () => {
   return (
@@ -19,8 +18,8 @@ const FeaturesPage = () => {
         </Typography>
       </DashboardCard>
     </PageContainer>
-  );
-};
+  )
+}
 
-export default FeaturesPage;
+export default FeaturesPage
 

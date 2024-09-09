@@ -1,5 +1,5 @@
 
-import { uniqueId } from "lodash";
+import { uniqueId } from "lodash"
 
 const Menuitems = [
   {
@@ -27,6 +27,6 @@ const Menuitems = [
     title: "Contact us",
     href: "/contact-us",
   },
-];
+]
 
-export default Menuitems;
+export default Menuitems

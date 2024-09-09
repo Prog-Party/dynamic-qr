@@ -1,6 +1,19 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "quotes": [ "error", "double" ],
+    "semi": [ "error", "never" ],
+    "block-spacing": [ "error", "always" ],
+    "no-multiple-empty-lines": [ "error", { "max": 1 } ],
+    "indent": [ "error", 2 ],
+    "no-unused-vars": [ "off" ],
+    "linebreak-style": [ "error", "unix" ],
+    "no-trailing-spaces": [ "error" ],
+    "line-comment-position": [ "error", { "position": "above" } ],
+    "no-console": [ "warn" ],
+    "array-bracket-spacing": [ "error", "never" ],
+    "object-curly-spacing": [ "error", "always" ],
+    "prefer-arrow-callback": [ "error" ]
   }
 }
