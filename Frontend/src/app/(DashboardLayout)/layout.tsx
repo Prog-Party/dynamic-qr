@@ -2,7 +2,7 @@
 import Header from "@/app/(DashboardLayout)/layout/header/Header"
 import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar"
 import { Box, Container, styled } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
@@ -28,19 +28,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(true)
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
-  useEffect(() => {
-    // setSidebarOpen(false)
-  })
   return (
     <MainWrapper className="mainwrapper">
       {/* ------------------------------------------- */}
       {/* Sidebar */}
       {/* ------------------------------------------- */}
       <Sidebar
-        isSidebarOpen={isSidebarOpen}
+        isSidebarOpen={true}
         isMobileSidebarOpen={isMobileSidebarOpen}
         onSidebarClose={() => setMobileSidebarOpen(false)}
       />
