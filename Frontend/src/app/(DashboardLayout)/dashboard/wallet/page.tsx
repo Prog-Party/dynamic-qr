@@ -1,8 +1,8 @@
-'use client';
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { Typography } from '@mui/material';
+"use client"
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer"
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard"
+import { withAuthenticationRequired } from "@auth0/auth0-react"
+import { Typography } from "@mui/material"
 
 const WalletPage = () => {
 
@@ -14,8 +14,8 @@ const WalletPage = () => {
         </Typography>
       </DashboardCard>
     </PageContainer>
-  );
-};
+  )
+}
 
-export default withAuthenticationRequired(WalletPage);
+export default withAuthenticationRequired(WalletPage)
 

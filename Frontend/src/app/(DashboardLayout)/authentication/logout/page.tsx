@@ -1,24 +1,24 @@
-'use client';
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
-import { useAuth0 } from "@auth0/auth0-react";
-import { Typography } from '@mui/material';
-import { useEffect } from 'react';
+"use client"
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer"
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard"
+import { useAuth0 } from "@auth0/auth0-react"
+import { Typography } from "@mui/material"
+import { useEffect } from "react"
 
 /**
  * LogoutPage component.
- * 
+ *
  * This component renders a page for logging out the user.
- * 
- * Sometimes the user is logged in while the frontend doesn't know it yet. 
+ *
+ * Sometimes the user is logged in while the frontend doesn't know it yet.
  * Then the logout button isn't visible
  * Therefore this page exists, to ensure people can always explicitly logout
- * 
+ *
  * @returns The rendered LogoutPage component.
  */
 const LogoutPage = () => {
 
-  const { logout } = useAuth0();
+  const { logout } = useAuth0()
 
   useEffect(() => {
     //Logout when the page loads
@@ -33,8 +33,8 @@ const LogoutPage = () => {
         </Typography>
       </DashboardCard>
     </PageContainer>
-  );
-};
+  )
+}
 
-export default LogoutPage;
+export default LogoutPage
 

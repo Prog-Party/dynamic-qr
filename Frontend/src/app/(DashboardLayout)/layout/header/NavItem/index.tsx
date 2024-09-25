@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 // mui imports
 import {
   List,
@@ -8,8 +8,8 @@ import {
   styled,
   Typography,
   useTheme
-} from "@mui/material";
-import Link from "next/link";
+} from "@mui/material"
+import Link from "next/link"
 
 type NavGroup = {
   [x: string]: any;
@@ -30,8 +30,8 @@ interface ItemType {
 }
 
 const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
-  const Icon = item.icon;
-  const theme = useTheme();
+  const Icon = item.icon
+  const theme = useTheme()
 
   const ListItemStyled = styled(ListItem)(() => ({
     padding: 0,
@@ -50,14 +50,14 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
       "&.Mui-selected": {
         textDecoration: "underline",
         color: theme.palette.primary.main,
-        backgroundColor: 'inherit',
+        backgroundColor: "inherit",
 
         "&:hover": {
-          backgroundColor: 'inherit',
+          backgroundColor: "inherit",
         },
       },
     },
-  }));
+  }))
 
   return (
     <List
@@ -87,7 +87,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
         </ListItemButton>
       </ListItemStyled>
     </List>
-  );
-};
+  )
+}
 
-export default NavItem;
+export default NavItem

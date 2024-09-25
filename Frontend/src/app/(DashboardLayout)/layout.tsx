@@ -1,15 +1,14 @@
-"use client";
-import Header from "@/app/(DashboardLayout)/layout/header/Header";
-import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
-import { Box, Container, styled } from "@mui/material";
-import React, { useEffect, useState } from "react";
-
+"use client"
+import Header from "@/app/(DashboardLayout)/layout/header/Header"
+import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar"
+import { Box, Container, styled } from "@mui/material"
+import React, { useState } from "react"
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
   minHeight: "100vh",
   width: "100%",
-}));
+}))
 
 const PageWrapper = styled("div")(() => ({
   display: "flex",
@@ -18,32 +17,26 @@ const PageWrapper = styled("div")(() => ({
   flexDirection: "column",
   zIndex: 1,
   backgroundColor: "transparent",
-}));
+}))
 
 interface Props {
   children: React.ReactNode;
 }
-
-
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
-  useEffect(() => {
-    // setSidebarOpen(false)
-  })
   return (
     <MainWrapper className="mainwrapper">
       {/* ------------------------------------------- */}
       {/* Sidebar */}
       {/* ------------------------------------------- */}
       <Sidebar
-        isSidebarOpen={isSidebarOpen}
+        isSidebarOpen={true}
         isMobileSidebarOpen={isMobileSidebarOpen}
         onSidebarClose={() => setMobileSidebarOpen(false)}
       />
@@ -74,5 +67,5 @@ export default function RootLayout({
         </Container>
       </PageWrapper>
     </MainWrapper>
-  );
+  )
 }

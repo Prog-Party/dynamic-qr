@@ -1,4 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react"
 import {
   Avatar,
   Box,
@@ -8,23 +8,23 @@ import {
   Menu,
   MenuItem,
   Typography
-} from "@mui/material";
-import { useState } from "react";
+} from "@mui/material"
+import { useState } from "react"
 
-import LogoutButton from "@/app/authentication/auth/components/LogoutButton";
-import Loading from "@/app/loading";
-import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react";
+import LogoutButton from "@/app/authentication/auth/components/LogoutButton"
+import Loading from "@/app/loading"
+import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react"
 
 const Profile = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0()
 
-  const [anchorEl2, setAnchorEl2] = useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null)
   const handleClick2 = (event: any) => {
-    setAnchorEl2(event.currentTarget);
-  };
+    setAnchorEl2(event.currentTarget)
+  }
   const handleClose2 = () => {
-    setAnchorEl2(null);
-  };
+    setAnchorEl2(null)
+  }
 
   if (isLoading)
     return <Loading />
@@ -101,7 +101,7 @@ const Profile = () => {
         </Box>
       </Menu>
     </Box>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile
