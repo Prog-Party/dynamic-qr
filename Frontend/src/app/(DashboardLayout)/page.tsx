@@ -2,12 +2,6 @@
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import { Box, Grid, Typography } from '@mui/material';
 // components
-import Blog from '@/app/(DashboardLayout)/components/dashboard/Blog';
-import MonthlyEarnings from '@/app/(DashboardLayout)/components/dashboard/MonthlyEarnings';
-import ProductPerformance from '@/app/(DashboardLayout)/components/dashboard/ProductPerformance';
-import RecentTransactions from '@/app/(DashboardLayout)/components/dashboard/RecentTransactions';
-import SalesOverview from '@/app/(DashboardLayout)/components/dashboard/SalesOverview';
-import YearlyBreakup from '@/app/(DashboardLayout)/components/dashboard/YearlyBreakup';
 import GenerateStaticQr from './components/generate/GenerateStaticQR';
 import DashboardCard from './components/shared/DashboardCard';
 
@@ -34,34 +28,10 @@ const Dashboard = () => {
               <>
                 <Typography>
                   Generate your static QR code now. It can be anything, from text to an url.
-
                 </Typography>
                 <GenerateStaticQr />
-
               </>
             </DashboardCard>
-          </Grid>
-          <Grid item xs={12} lg={8}>
-            <SalesOverview />
-          </Grid>
-          <Grid item xs={12} lg={4}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <YearlyBreakup />
-              </Grid>
-              <Grid item xs={12}>
-                <MonthlyEarnings />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} lg={4}>
-            <RecentTransactions />
-          </Grid>
-          <Grid item xs={12} lg={8}>
-            <ProductPerformance />
-          </Grid>
-          <Grid item xs={12}>
-            <Blog />
           </Grid>
         </Grid>
       </Box>
