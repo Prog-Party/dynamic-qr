@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" xmlns:canvas="http://www.archimatetool.com/archimate/canvas" name="Dynamic QR" id="id-8982224ff594455690562eff69309d10" version="5.0.0">
+  <folder name="Strategy" id="id-725f27ce75ab42a78385eab13ab847b2" type="strategy"/>
+  <folder name="Business" id="id-458551741f6c4ddd943591e9937a735e" type="business">
+    <element xsi:type="archimate:BusinessActor" name="User" id="id-c420be7a203d4285a6994ce404061a7d"/>
+    <element xsi:type="archimate:Product" name="QR code software" id="id-4acfe20a251249309273fa7ebfcd7eb6"/>
+  </folder>
+  <folder name="Application" id="id-b0412cdc85d34f4f98aa217531a57bae" type="application">
+    <element xsi:type="archimate:ApplicationComponent" name="QR code software" id="id-296a353da42e40ed8349412ad4c8373d"/>
+    <element xsi:type="archimate:ApplicationComponent" name="Create QR code" id="id-7b18ff98a4ae4b9daabc29719debdfd0"/>
+  </folder>
+  <folder name="Technology &amp; Physical" id="id-27a42d6f7bfd4ff889bcd907bfd80845" type="technology">
+    <element xsi:type="archimate:Device" name="Phone" id="id-5ff05bf1fcb541d0baa332632fc7ad4f"/>
+    <element xsi:type="archimate:Artifact" name="QR Code" id="id-6fa2908ac87d4b8290e0c722598e3381"/>
+    <element xsi:type="archimate:SystemSoftware" name="Target website" id="id-bb97321c106f4b5d8e7e0b196d1e20de"/>
+  </folder>
+  <folder name="Motivation" id="id-3b2186c51ced4e53b976eec6ee260fd6" type="motivation"/>
+  <folder name="Implementation &amp; Migration" id="id-51c6b661623e4ae6bf3e7fab420ab5ef" type="implementation_migration"/>
+  <folder name="Other" id="id-9751aaae45be4addaba9a768a854f502" type="other"/>
+  <folder name="Relations" id="id-5feb2c537a6b42508b284010f9d09eb2" type="relations">
+    <element xsi:type="archimate:ServingRelationship" name="Uses" id="id-9b84f50f405c4b1e947ddaf52e725fc6" source="id-c420be7a203d4285a6994ce404061a7d" target="id-5ff05bf1fcb541d0baa332632fc7ad4f"/>
+    <element xsi:type="archimate:AccessRelationship" name="Scans" id="id-d0e8ad4690204067a567e99fd2142253" source="id-5ff05bf1fcb541d0baa332632fc7ad4f" target="id-6fa2908ac87d4b8290e0c722598e3381"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-e56d1b0431364c00a2fc8f737fb428d4" source="id-6fa2908ac87d4b8290e0c722598e3381" target="id-4acfe20a251249309273fa7ebfcd7eb6"/>
+    <element xsi:type="archimate:AssociationRelationship" name="Uses" id="id-92ab5763f9d14179805cd51b5a9414e6" source="id-6fa2908ac87d4b8290e0c722598e3381" target="id-296a353da42e40ed8349412ad4c8373d"/>
+    <element xsi:type="archimate:FlowRelationship" name="Returns" id="id-0e4806bf1ce44b058808fe9a0c16b401" source="id-296a353da42e40ed8349412ad4c8373d" target="id-bb97321c106f4b5d8e7e0b196d1e20de"/>
+  </folder>
+  <folder name="Views" id="id-76a9658f54924283b2be61661078a231" type="diagrams">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="Default View" id="id-21d7f653633f48ba9c0625ca08bf59b4">
+      <child xsi:type="archimate:DiagramObject" id="id-c5189554e02c42b79ba5f6a9e7803087" archimateElement="id-c420be7a203d4285a6994ce404061a7d">
+        <bounds x="120" y="98" width="120" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-b9c44371897e4973935dc141ddeb3ac0" source="id-c5189554e02c42b79ba5f6a9e7803087" target="id-8367d19a3e614abab1cad8fda509b739" archimateRelationship="id-9b84f50f405c4b1e947ddaf52e725fc6"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-8367d19a3e614abab1cad8fda509b739" targetConnections="id-b9c44371897e4973935dc141ddeb3ac0" archimateElement="id-5ff05bf1fcb541d0baa332632fc7ad4f">
+        <bounds x="300" y="152" width="120" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-ae853feb7bbf40c3ba5b914adbb4365c" source="id-8367d19a3e614abab1cad8fda509b739" target="id-52e51e605cef45f2972317b52f8d1f5d" archimateRelationship="id-d0e8ad4690204067a567e99fd2142253"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-52e51e605cef45f2972317b52f8d1f5d" targetConnections="id-ae853feb7bbf40c3ba5b914adbb4365c" archimateElement="id-6fa2908ac87d4b8290e0c722598e3381">
+        <bounds x="492" y="206" width="120" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-0a88d7f62cce4f60b10eacb5d5caa098" source="id-52e51e605cef45f2972317b52f8d1f5d" target="id-77aa3b3592834c3ca10c4c3b9826ebf3" archimateRelationship="id-92ab5763f9d14179805cd51b5a9414e6"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-77aa3b3592834c3ca10c4c3b9826ebf3" targetConnections="id-0a88d7f62cce4f60b10eacb5d5caa098" archimateElement="id-296a353da42e40ed8349412ad4c8373d">
+        <bounds x="672" y="260" width="120" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-6c94bb9043024abc86830682a6a00c58" source="id-77aa3b3592834c3ca10c4c3b9826ebf3" target="id-ef826b4cb8ff4f23ae984f6aafcf5d7b" archimateRelationship="id-0e4806bf1ce44b058808fe9a0c16b401"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-ef826b4cb8ff4f23ae984f6aafcf5d7b" targetConnections="id-6c94bb9043024abc86830682a6a00c58" archimateElement="id-bb97321c106f4b5d8e7e0b196d1e20de">
+        <bounds x="300" y="314" width="120" height="55"/>
+      </child>
+    </element>
+    <element xsi:type="canvas:CanvasModel" name="New Canvas" id="id-571ddfd26b384c789ef1642eb625ff5d"/>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="Create new QR code" id="id-9c9093a87fdf494286b64693a49ed16c">
+      <child xsi:type="archimate:DiagramObject" id="id-66c13c1821614f28b82ff7bb8c14b718" archimateElement="id-7b18ff98a4ae4b9daabc29719debdfd0">
+        <bounds x="232" y="217" width="120" height="55"/>
+      </child>
+    </element>
+  </folder>
+</archimate:model>
