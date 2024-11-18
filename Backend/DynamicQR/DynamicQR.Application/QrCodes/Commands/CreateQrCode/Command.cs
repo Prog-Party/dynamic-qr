@@ -12,4 +12,5 @@ public sealed record Command : IRequest<Response>
     public int? ImageHeight { get; init; }
     public int? ImageWidth { get; init; }
     public string Value { get; init; }
+    public string OrganisationId { get; init; }
 }

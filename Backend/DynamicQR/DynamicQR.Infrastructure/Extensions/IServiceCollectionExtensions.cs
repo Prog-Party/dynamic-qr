@@ -24,7 +24,7 @@ public static class IServiceCollectionExtensions
 
         services.AddAzureClients(clientBuilder =>
         {
-            clientBuilder.AddTableServiceClient(configuration.GetConnectionString(connectionString));
+            clientBuilder.AddTableServiceClient(connectionString);
         });
 
         return services;

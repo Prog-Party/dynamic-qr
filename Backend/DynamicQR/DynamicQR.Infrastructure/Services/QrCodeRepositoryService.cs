@@ -14,15 +14,16 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
         _tableClient = tableServiceClient.GetTableClient(tableName: "qrcodes");
     }
 
-    public async Task<bool> SaveAsync(QrCode qrCode, CancellationToken cancellationToken)
+    public async Task<bool> CreateAsync(string organizationId, QrCode qrCode, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(organizationId);
         ArgumentNullException.ThrowIfNull(qrCode);
 
-        var qrCodeData = qrCode.ToInfrastructure();
+        var qrCodeData = qrCode.ToInfrastructure(organizationId);
 
         Azure.Response response = await _tableClient.AddEntityAsync(qrCodeData, cancellationToken);
 
-        return response.IsError;
+        return !response.IsError;
     }
 
     public async Task<QrCode> ReadAsync(string id, CancellationToken cancellationToken)

@@ -4,7 +4,7 @@ namespace DynamicQR.Domain.Interfaces;
 
 public interface IQrCodeTargetRepositoryService
 {
-    public Task<bool> SaveAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken);
+    public Task<bool> CreateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken);
 
     public Task<QrCodeTarget> ReadAsync(string id, CancellationToken cancellationToken);
 

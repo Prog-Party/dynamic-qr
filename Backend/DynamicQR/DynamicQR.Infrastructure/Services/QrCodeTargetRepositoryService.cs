@@ -2,7 +2,6 @@
 using DynamicQR.Domain.Interfaces;
 using DynamicQR.Domain.Models;
 using DynamicQR.Infrastructure.Mappers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DynamicQR.Infrastructure.Services;
 
@@ -12,10 +11,10 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
     public QrCodeTargetRepositoryService(TableServiceClient tableServiceClient)
     {
-        _tableClient = tableServiceClient.GetTableClient(tableName: "QrCodeTargets");
+        _tableClient = tableServiceClient.GetTableClient(tableName: "qrcodetargets");
     }
 
-    public async Task<bool> SaveAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken)
+    public async Task<bool> CreateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(qrCodeTarget);
 
@@ -23,7 +22,7 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
         Azure.Response response = await _tableClient.AddEntityAsync(qrCodeTargetData, cancellationToken);
 
-        return response.IsError;
+        return !response.IsError;
     }
 
     public async Task<QrCodeTarget> ReadAsync(string id, CancellationToken cancellationToken)
@@ -36,7 +35,7 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
         {
             return new QrCodeTarget
             {
-                QrCodeId = data.Value.QrCodeId,
+                QrCodeId = data.Value.PartitionKey,
                 Value = data.Value.Value
             };
         }

@@ -8,8 +8,9 @@ public static class QrCodeTargetMappers
     {
         return new QrCodeTarget
         {
-            QrCodeId = qrCodeTarget.QrCodeId,
-            Value = qrCodeTarget.Value
+            Value = qrCodeTarget.Value,
+            PartitionKey = qrCodeTarget.QrCodeId,
+            RowKey = qrCodeTarget.QrCodeId
         };
     }
 }

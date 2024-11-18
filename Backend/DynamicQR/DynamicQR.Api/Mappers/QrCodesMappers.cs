@@ -4,7 +4,7 @@ namespace DynamicQR.Api.Mappers;
 
 public static class QrCodesMappers
 {
-    public static Application.QrCodes.Commands.CreateQrCode.Command ToCore(this Contracts.CreateQrCode.Request request)
+    public static Application.QrCodes.Commands.CreateQrCode.Command ToCore(this Contracts.CreateQrCode.Request request, string organizationId)
     {
         return request is null ? null : new Application.QrCodes.Commands.CreateQrCode.Command
         {
@@ -14,7 +14,8 @@ public static class QrCodesMappers
             ImageUrl = request.ImageUrl,
             ImageWidth = request.ImageWidth,
             IncludeMargin = request.IncludeMargin,
-            Value = request.Value
+            Value = request.Value,
+            OrganisationId = organizationId
         };
     }
 

@@ -36,13 +36,13 @@ public class CommandHandler : IRequestHandler<Command, Response>
             Value = command.Value
         };
 
-        var succeded = await _qrCodeRepositoryService.SaveAsync(qrCode, cancellationToken);
+        var succeded = await _qrCodeRepositoryService.CreateAsync(command.OrganisationId, qrCode, cancellationToken);
         if (!succeded)
         {
             throw new Exception();
         }
 
-        var succededCodeTarget = await _qrCodeTargetRepositoryService.SaveAsync(qrCodeTarget, cancellationToken);
+        var succededCodeTarget = await _qrCodeTargetRepositoryService.CreateAsync(qrCodeTarget, cancellationToken);
 
         if (!succededCodeTarget)
         {
