@@ -9,4 +9,5 @@ public sealed record Request
     public int? ImageHeight { get; init; }
     public int? ImageWidth { get; init; }
     public string Value { get; init; }
+    //some code change for push check
 }
