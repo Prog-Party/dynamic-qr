@@ -2,6 +2,7 @@
 using DynamicQR.Domain.Interfaces;
 using DynamicQR.Domain.Models;
 using DynamicQR.Infrastructure.Mappers;
+using Microsoft.Azure.Storage;
 
 namespace DynamicQR.Infrastructure.Services;
 
@@ -23,7 +24,10 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
         Azure.Response response = await _tableClient.AddEntityAsync(qrCodeData, cancellationToken);
 
-        return !response.IsError;
+        if (response.IsError)
+            throw new StorageException(response.ReasonPhrase);
+
+        return true;
     }
 
     public async Task<QrCode> ReadAsync(string organisationId, string id, CancellationToken cancellationToken)
@@ -37,7 +41,7 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
             return data.Value.ToCore();
         }
 
-        throw new NotImplementedException();
+        throw new StorageException();
     }
 
     public async Task<bool> UpdateAsync(string organisationId, QrCode qrCode, CancellationToken cancellationToken)
@@ -59,10 +63,13 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
             Azure.Response response = await _tableClient.UpdateEntityAsync(data, Azure.ETag.All, TableUpdateMode.Merge, cancellationToken);
 
-            return !response.IsError;
+            if (response.IsError)
+                throw new StorageException(response.ReasonPhrase);
+
+            return true;
         }
 
-        throw new NotImplementedException();
+        throw new StorageException();
     }
 
     public async Task<bool> DeleteAsync(string organisationId, string id, CancellationToken cancellationToken)
@@ -75,9 +82,12 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
         {
             Azure.Response response = await _tableClient.DeleteEntityAsync(qrCodeFound.Id, qrCodeFound.Id, Azure.ETag.All, cancellationToken);
 
-            return !response.IsError;
+            if (response.IsError)
+                throw new StorageException(response.ReasonPhrase);
+
+            return true;
         }
 
-        throw new NotImplementedException();
+        throw new StorageException();
     }
 }

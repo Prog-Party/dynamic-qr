@@ -1,12 +1,12 @@
 ﻿using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Mappers;
 using MediatR;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
-using System.Net;
 using Microsoft.OpenApi.Models;
-using DynamicQR.Api.Mappers;
+using System.Net;
 
 namespace DynamicQR.Api.EndPoints.QrCodes.QrCodePut;
 
@@ -21,7 +21,7 @@ public sealed class QrCodePut : EndPointsBase
        Summary = "Update a certain qr code.")
     ]
     [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
-    [OpenApiParameter("Organization-Id", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
+    [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-codes/{id}")] HttpRequestData req, string id)
@@ -29,10 +29,10 @@ public sealed class QrCodePut : EndPointsBase
         _logger.LogInformation($"{typeof(QrCodePut).FullName}.triggered");
 
         // Check if the header is present (place this in middleware)
-        if (!req.Headers.TryGetValues("Organization-Id", out var headerValues))
+        if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
         {
             var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            errorResponse.WriteString("Missing required header: Organization-Id");
+            errorResponse.WriteString("Missing required header: Organization-Identifier");
             return errorResponse;
         }
 

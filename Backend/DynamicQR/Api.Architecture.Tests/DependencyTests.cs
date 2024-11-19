@@ -1,12 +1,11 @@
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Reflection;
 
 namespace Api.Architecture.Tests
 {
     public class DependencyTests
     {
-        protected readonly Assembly apiAssembly = typeof(Program).Assembly;
+        protected readonly Assembly apiAssembly = typeof(DynamicQR.Api.EndPoints.QrCodes.QrCodeGet.QrCodeGet).Assembly;
         protected readonly Assembly coreAssembly = typeof(DynamicQR.Domain.Models.QrCode).Assembly;
         protected readonly Assembly applicationAssembly = typeof(DynamicQR.Application.QrCodes.Commands.CreateQrCode.CommandHandler).Assembly;
         protected readonly Assembly infrastructureAssembly = typeof(DynamicQR.Infrastructure.Services.QrCodeRepositoryService).Assembly;
@@ -14,7 +13,7 @@ namespace Api.Architecture.Tests
         [Fact]
         public void ApiAssemblyHasDependenciesNeededToSetupContainer()
         {
-            apiAssembly.Should().Reference(coreAssembly);
+            apiAssembly.Should().NotReference(coreAssembly);
             apiAssembly.Should().Reference(applicationAssembly);
             apiAssembly.Should().Reference(infrastructureAssembly);
         }
@@ -38,8 +37,8 @@ namespace Api.Architecture.Tests
         [Fact]
         public void InfrastructureAssemblyHasOnlyInwardsDependencies()
         {
-            //infrastructureAssembly.Should().NotReference(coreAssembly);
-            //infrastructureAssembly.Should().Reference(applicationAssembly);
+            infrastructureAssembly.Should().Reference(coreAssembly);
+            infrastructureAssembly.Should().NotReference(applicationAssembly);
             infrastructureAssembly.Should().NotReference(apiAssembly);
         }
     }

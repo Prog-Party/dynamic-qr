@@ -50,7 +50,7 @@ public class QrCodeGetTests
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var body = await ((MockHttpResponseData)response).ReadAsStringAsync();
-        body.Should().Be("Missing required header: Organization-Id");
+        body.Should().Be("Missing required header: Organization-Identifier");
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class QrCodeGetTests
         // Arrange
         var req = new HttpRequestDataHelper().CreateHttpRequestData(new Dictionary<string, string>
         {
-            { "Organization-Id", "org-123" }
+            { "Organization-Identifier", "org-123" }
         });
         string id = "test-id";
 
@@ -82,7 +82,7 @@ public class QrCodeGetTests
         // Arrange
         var req = new HttpRequestDataHelper().CreateHttpRequestData(new Dictionary<string, string>
         {
-            { "Organization-Id", "org-123" }
+            { "Organization-Identifier", "org-123" }
         });
         string id = "test-id";
 

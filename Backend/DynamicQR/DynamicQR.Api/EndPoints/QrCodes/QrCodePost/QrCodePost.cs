@@ -20,7 +20,7 @@ public sealed class QrCodePost : EndPointsBase
     [OpenApiOperation("qrcode", "QrCode",
        Summary = "Create a new qr code.")
     ]
-    [OpenApiParameter("Organization-Id", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
+    [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Get a certain qr code")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
@@ -28,10 +28,10 @@ public sealed class QrCodePost : EndPointsBase
         _logger.LogInformation($"{typeof(QrCodePost).FullName}.triggered");
 
         // Check if the header is present (place this in middleware)
-        if (!req.Headers.TryGetValues("Organization-Id", out var headerValues))
+        if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
         {
             var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            errorResponse.WriteString("Missing required header: Organization-Id");
+            errorResponse.WriteString("Missing required header: Organization-Identifier");
             return errorResponse;
         }
 

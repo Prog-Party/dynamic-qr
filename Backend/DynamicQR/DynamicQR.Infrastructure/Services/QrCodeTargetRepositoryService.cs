@@ -2,6 +2,7 @@
 using DynamicQR.Domain.Interfaces;
 using DynamicQR.Domain.Models;
 using DynamicQR.Infrastructure.Mappers;
+using Microsoft.Azure.Storage;
 
 namespace DynamicQR.Infrastructure.Services;
 
@@ -22,7 +23,10 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
         Azure.Response response = await _tableClient.AddEntityAsync(qrCodeTargetData, cancellationToken);
 
-        return !response.IsError;
+        if (response.IsError)
+            throw new StorageException(response.ReasonPhrase);
+
+        return true;
     }
 
     public async Task<QrCodeTarget> ReadAsync(string id, CancellationToken cancellationToken)
@@ -32,11 +36,9 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
         Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>("Value", id, cancellationToken: cancellationToken);
 
         if (data.HasValue)
-        {
             return data.Value.ToCore();
-        }
 
-        throw new EntryPointNotFoundException();
+        throw new StorageException();
     }
 
     public async Task<bool> UpdateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken)
@@ -53,10 +55,13 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
             Azure.Response response = await _tableClient.UpdateEntityAsync(data, Azure.ETag.All, TableUpdateMode.Merge, cancellationToken);
 
-            return !response.IsError;
+            if (response.IsError)
+                throw new StorageException(response.ReasonPhrase);
+
+            return true;
         }
 
-        throw new EntryPointNotFoundException();
+        throw new StorageException();
     }
 
     public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken)
@@ -69,9 +74,12 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
         {
             Azure.Response response = await _tableClient.DeleteEntityAsync(qrCodeTargetFound.QrCodeId, qrCodeTargetFound.QrCodeId, Azure.ETag.All, cancellationToken);
 
-            return !response.IsError;
+            if (response.IsError)
+                throw new StorageException(response.ReasonPhrase);
+
+            return true;
         }
 
-        throw new NotImplementedException();
+        throw new StorageException();
     }
 }

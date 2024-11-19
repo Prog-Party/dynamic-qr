@@ -20,7 +20,7 @@ public sealed class QrCodeGet : EndPointsBase
     [OpenApiOperation("qr-codes/{id}", "QrCode",
        Summary = "Retrieve a certain qr code.")
     ]
-    [OpenApiParameter("Organization-Id", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
+    [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
     [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
     [OpenApiJsonResponse(typeof(Response), Description = "The retrieved qr code by its identifier")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]
@@ -31,10 +31,10 @@ public sealed class QrCodeGet : EndPointsBase
         _logger.LogInformation($"{typeof(QrCodeGet).FullName}.triggered");
 
         // Check if the header is present (place this in middleware)
-        if (!req.Headers.TryGetValues("Organization-Id", out var headerValues))
+        if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
         {
             var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            errorResponse.WriteString("Missing required header: Organization-Id");
+            errorResponse.WriteString("Missing required header: Organization-Identifier");
             return errorResponse;
         }
 
