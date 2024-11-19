@@ -1,4 +1,4 @@
-﻿namespace DynamicQR.Application.QrCodes.Commands.CreateQrCode;
+﻿namespace DynamicQR.Application.QrCodes.Commands.UpdateQrCode;
 
 public sealed record Response
 {

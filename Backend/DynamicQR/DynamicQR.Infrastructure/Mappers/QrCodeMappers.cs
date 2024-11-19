@@ -19,4 +19,18 @@ public static class QrCodeMappers
             RowKey = qrCode.Id
         };
     }
+
+    public static Domain.Models.QrCode ToCore(this QrCode qrCode)
+    {
+        return new Domain.Models.QrCode
+        {
+            Id = qrCode.PartitionKey,
+            IncludeMargin = qrCode.IncludeMargin,
+            BackgroundColor = ColorTranslator.FromHtml(qrCode.BackgroundColor),
+            ForegroundColor = ColorTranslator.FromHtml(qrCode.ForegroundColor),
+            ImageUrl = qrCode.ImageUrl,
+            ImageHeight = qrCode.ImageHeight,
+            ImageWidth = qrCode.ImageWidth,
+        };
+    }
 }

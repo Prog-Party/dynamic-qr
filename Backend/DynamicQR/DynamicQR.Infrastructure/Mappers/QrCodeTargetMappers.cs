@@ -13,4 +13,13 @@ public static class QrCodeTargetMappers
             RowKey = qrCodeTarget.QrCodeId
         };
     }
+
+    public static Domain.Models.QrCodeTarget ToCore(this QrCodeTarget qrCodeTarget)
+    {
+        return new Domain.Models.QrCodeTarget
+        {
+            Value = qrCodeTarget.Value,
+            QrCodeId = qrCodeTarget.PartitionKey
+        };
+    }
 }

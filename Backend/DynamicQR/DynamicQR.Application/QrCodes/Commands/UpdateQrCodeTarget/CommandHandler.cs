@@ -6,33 +6,30 @@ namespace DynamicQR.Application.QrCodes.Commands.UpdateQrCodeTarget;
 
 public class CommandHandler : IRequestHandler<Command, Response>
 {
-    private readonly IQrCodeRepositoryService _qrCodeRepositoryService;
+    private readonly IQrCodeTargetRepositoryService _qrCodeRepositoryService;
 
-    public CommandHandler(IQrCodeRepositoryService qrCodeRepositoryService)
+    public CommandHandler(IQrCodeTargetRepositoryService qrCodeTargetRepositoryService)
     {
-        _qrCodeRepositoryService = qrCodeRepositoryService ?? throw new ArgumentNullException(nameof(qrCodeRepositoryService));
+        _qrCodeRepositoryService = qrCodeTargetRepositoryService ?? throw new ArgumentNullException(nameof(qrCodeTargetRepositoryService));
     }
 
-    public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+    public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
     {
-        QrCode qrCode = new()
+        ArgumentNullException.ThrowIfNull(command);
+
+        QrCodeTarget qrCodeTarget = new()
         {
-            BackgroundColor = request.BackgroundColor,
-            ForegroundColor = request.ForegroundColor,
-            Id = request.Id,
-            ImageHeight = request.ImageHeight,
-            ImageUrl = request.ImageUrl,
-            ImageWidth = request.ImageWidth,
-            IncludeMargin = request.IncludeMargin,
+            QrCodeId = command.Id,
+            Value = command.Value,
         };
 
-        bool succeded = await _qrCodeRepositoryService.UpdateAsync(qrCode, cancellationToken);
+        bool succeded = await _qrCodeRepositoryService.UpdateAsync(qrCodeTarget, cancellationToken);
 
         if (!succeded)
         {
             throw new Exception();
         }
 
-        return new Response { Id = request.Id };
+        return new Response { Id = command.Id };
     }
 }

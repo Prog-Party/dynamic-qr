@@ -29,15 +29,11 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
     {
         ArgumentNullException.ThrowIfNull(id);
 
-        var data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>("qrCodeTarget", id, cancellationToken: cancellationToken);
+        Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>("Value", id, cancellationToken: cancellationToken);
 
         if (data.HasValue)
         {
-            return new QrCodeTarget
-            {
-                QrCodeId = data.Value.PartitionKey,
-                Value = data.Value.Value
-            };
+            return data.Value.ToCore();
         }
 
         throw new EntryPointNotFoundException();
@@ -47,16 +43,34 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
     {
         ArgumentNullException.ThrowIfNull(qrCodeTarget);
 
-        //var data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>("qrCodeTarget", qrCodeTarget.QrCodeId, cancellationToken: cancellationToken);
-        //if (!data.HasValue)
-        throw new EntryPointNotFoundException();
+        QrCodeTarget qrCodeTargetFound = await ReadAsync(qrCodeTarget.QrCodeId, cancellationToken);
 
-        //await _tableClient.UpdateEntityAsync(, poem.Value.ETag);
+        if (qrCodeTargetFound != null)
+        {
+            qrCodeTargetFound.Value = qrCodeTarget.Value;
+
+            var data = QrCodeTargetMappers.ToInfrastructure(qrCodeTargetFound);
+
+            Azure.Response response = await _tableClient.UpdateEntityAsync(data, Azure.ETag.All, TableUpdateMode.Merge, cancellationToken);
+
+            return !response.IsError;
+        }
+
+        throw new EntryPointNotFoundException();
     }
 
     public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(id);
+
+        QrCodeTarget qrCodeTargetFound = await ReadAsync(id, cancellationToken);
+
+        if (qrCodeTargetFound != null)
+        {
+            Azure.Response response = await _tableClient.DeleteEntityAsync(qrCodeTargetFound.QrCodeId, qrCodeTargetFound.QrCodeId, Azure.ETag.All, cancellationToken);
+
+            return !response.IsError;
+        }
 
         throw new NotImplementedException();
     }

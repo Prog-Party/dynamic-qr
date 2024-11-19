@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DynamicQR\DynamicQR.csproj" />
+    <ProjectReference Include="..\DynamicQR.Api\DynamicQR.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

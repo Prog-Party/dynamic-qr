@@ -1,14 +1,14 @@
 using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Mappers;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System.Drawing;
 using System.Net;
 
-namespace DynamicQR.Api.EndPoints.QrCodes;
+namespace DynamicQR.Api.EndPoints.QrCodes.QrCodePost;
 
 public sealed class QrCodePost : EndPointsBase
 {
@@ -21,8 +21,8 @@ public sealed class QrCodePost : EndPointsBase
        Summary = "Create a new qr code.")
     ]
     [OpenApiParameter("Organization-Id", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
-    [OpenApiJsonPayload(typeof(Contracts.CreateQrCode.Request))]
-    [OpenApiJsonResponse(typeof(Contracts.CreateQrCode.Response), Description = "Get a certain qr code")]
+    [OpenApiJsonPayload(typeof(Request))]
+    [OpenApiJsonResponse(typeof(Response), Description = "Get a certain qr code")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
     {
         _logger.LogInformation($"{typeof(QrCodePost).FullName}.triggered");
@@ -37,16 +37,15 @@ public sealed class QrCodePost : EndPointsBase
 
         var organizationId = headerValues.First();
 
-        var command = await ParseBody<Contracts.CreateQrCode.Request>(req);
-        if (command.Error != null) return command.Error;
+        var request = await ParseBody<Request>(req);
+        if (request.Error != null) return request.Error;
 
-        var command1 = Mappers.QrCodesMappers.ToCore(command.Result, organizationId);
+        Application.QrCodes.Commands.CreateQrCode.Command? coreCommand = QrCodesMappers.ToCore(request.Result, organizationId);
 
-        var id = await _mediator.Send(command1);
+        Application.QrCodes.Commands.CreateQrCode.Response coreResponse = await _mediator.Send(coreCommand);
 
-        var response = req.CreateResponse(HttpStatusCode.Created);
-        await response.WriteAsJsonAsync(id);
+        Response? responseContent = coreResponse.ToContract();
 
-        return response;
+        return await CreateJsonResponse(req, responseContent, HttpStatusCode.Created);
     }
 }
