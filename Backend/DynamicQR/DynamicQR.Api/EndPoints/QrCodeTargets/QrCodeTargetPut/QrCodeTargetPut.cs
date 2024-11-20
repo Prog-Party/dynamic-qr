@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using Microsoft.OpenApi.Models;
 using DynamicQR.Api.Mappers;
+using Microsoft.Azure.Storage;
 
 namespace DynamicQR.Api.EndPoints.QrCodeTargets.QrCodeTargetPut;
 
@@ -32,7 +33,16 @@ public sealed class QrCodeTargetPut : EndPointsBase
 
         Application.QrCodes.Commands.UpdateQrCodeTarget.Command? coreCommand = request.Result.ToCore(id);
 
-        Application.QrCodes.Commands.UpdateQrCodeTarget.Response coreResponse = await _mediator.Send(coreCommand);
+        Application.QrCodes.Commands.UpdateQrCodeTarget.Response coreResponse;
+
+        try
+        {
+            coreResponse = await _mediator.Send(coreCommand);
+        }
+        catch (StorageException)
+        {
+            return await CreateJsonResponse(req, null, HttpStatusCode.BadGateway);
+        }
 
         Response? responseContent = coreResponse.ToContract();
 

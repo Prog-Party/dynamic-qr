@@ -3,6 +3,7 @@ using DynamicQR.Api.Mappers;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.Storage;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -43,7 +44,16 @@ public sealed class QrCodePut : EndPointsBase
 
         Application.QrCodes.Commands.UpdateQrCode.Command? coreCommand = QrCodesMappers.ToCore(request.Result, id, organizationId);
 
-        Application.QrCodes.Commands.UpdateQrCode.Response coreResponse = await _mediator.Send(coreCommand);
+        Application.QrCodes.Commands.UpdateQrCode.Response coreResponse;
+
+        try
+        {
+            coreResponse = await _mediator.Send(coreCommand);
+        }
+        catch (StorageException)
+        {
+            return await CreateJsonResponse(req, null, HttpStatusCode.BadGateway);
+        }
 
         Response? responseContent = coreResponse.ToContract();
 

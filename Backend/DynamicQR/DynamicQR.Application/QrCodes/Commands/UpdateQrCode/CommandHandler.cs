@@ -28,12 +28,7 @@ public class CommandHandler : IRequestHandler<Command, Response>
             IncludeMargin = command.IncludeMargin,
         };
 
-        bool succeded = await _qrCodeRepositoryService.UpdateAsync(command.OrganisationId, qrCode, cancellationToken);
-
-        if (!succeded)
-        {
-            throw new Exception();
-        }
+        await _qrCodeRepositoryService.UpdateAsync(command.OrganisationId, qrCode, cancellationToken);
 
         return new Response { Id = command.Id };
     }

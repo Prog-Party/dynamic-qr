@@ -23,12 +23,7 @@ public class CommandHandler : IRequestHandler<Command, Response>
             Value = command.Value,
         };
 
-        bool succeded = await _qrCodeRepositoryService.UpdateAsync(qrCodeTarget, cancellationToken);
-
-        if (!succeded)
-        {
-            throw new Exception();
-        }
+        await _qrCodeRepositoryService.UpdateAsync(qrCodeTarget, cancellationToken);
 
         return new Response { Id = command.Id };
     }

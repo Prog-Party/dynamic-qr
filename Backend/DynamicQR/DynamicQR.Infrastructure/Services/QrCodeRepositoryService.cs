@@ -15,7 +15,7 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
         _tableClient = tableServiceClient.GetTableClient(tableName: "qrcodes");
     }
 
-    public async Task<bool> CreateAsync(string organizationId, QrCode qrCode, CancellationToken cancellationToken)
+    public async Task CreateAsync(string organizationId, QrCode qrCode, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(organizationId);
         ArgumentNullException.ThrowIfNull(qrCode);
@@ -26,8 +26,6 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
         if (response.IsError)
             throw new StorageException(response.ReasonPhrase);
-
-        return true;
     }
 
     public async Task<QrCode> ReadAsync(string organisationId, string id, CancellationToken cancellationToken)
@@ -44,7 +42,7 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
         throw new StorageException();
     }
 
-    public async Task<bool> UpdateAsync(string organisationId, QrCode qrCode, CancellationToken cancellationToken)
+    public async Task UpdateAsync(string organisationId, QrCode qrCode, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(qrCode);
 
@@ -65,14 +63,12 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
             if (response.IsError)
                 throw new StorageException(response.ReasonPhrase);
-
-            return true;
         }
-
-        throw new StorageException();
+        else
+            throw new StorageException();
     }
 
-    public async Task<bool> DeleteAsync(string organisationId, string id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(string organisationId, string id, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(id);
 
@@ -84,10 +80,8 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
             if (response.IsError)
                 throw new StorageException(response.ReasonPhrase);
-
-            return true;
         }
-
-        throw new StorageException();
+        else
+            throw new StorageException();
     }
 }

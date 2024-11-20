@@ -15,7 +15,7 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
         _tableClient = tableServiceClient.GetTableClient(tableName: "qrcodetargets");
     }
 
-    public async Task<bool> CreateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken)
+    public async Task CreateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(qrCodeTarget);
 
@@ -25,8 +25,6 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
         if (response.IsError)
             throw new StorageException(response.ReasonPhrase);
-
-        return true;
     }
 
     public async Task<QrCodeTarget> ReadAsync(string id, CancellationToken cancellationToken)
@@ -41,7 +39,7 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
         throw new StorageException();
     }
 
-    public async Task<bool> UpdateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken)
+    public async Task UpdateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(qrCodeTarget);
 
@@ -57,14 +55,12 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
             if (response.IsError)
                 throw new StorageException(response.ReasonPhrase);
-
-            return true;
         }
-
-        throw new StorageException();
+        else
+            throw new StorageException();
     }
 
-    public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(string id, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(id);
 
@@ -76,10 +72,8 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
             if (response.IsError)
                 throw new StorageException(response.ReasonPhrase);
-
-            return true;
         }
-
-        throw new StorageException();
+        else
+            throw new StorageException();
     }
 }
