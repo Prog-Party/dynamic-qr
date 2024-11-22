@@ -1,14 +1,17 @@
 ﻿using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker;
 using System.Security.Claims;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Api.Tests.EndPoints.QrCodes.Mocks;
 
 public class MockHttpRequestData : HttpRequestData
 {
     private readonly MemoryStream _bodyStream;
+    private readonly HttpMethod _method;
 
-    public MockHttpRequestData(FunctionContext context, Dictionary<string, string>? headers = null)
+    public MockHttpRequestData(FunctionContext context, HttpMethod method, Dictionary<string, string>? headers = null, object body = null)
         : base(context)
     {
         Headers = new HttpHeadersCollection();
@@ -21,14 +24,16 @@ public class MockHttpRequestData : HttpRequestData
             }
         }
 
-        _bodyStream = new MemoryStream();
+        var jsonBody = JsonConvert.SerializeObject(body);
+        _bodyStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonBody));
+        _method = method;
     }
 
     public override HttpHeadersCollection Headers { get; }
     public override Stream Body => _bodyStream;
     public override Uri Url => new Uri("https://localhost");
     public override IEnumerable<ClaimsIdentity> Identities => new List<ClaimsIdentity>();
-    public override string Method => "GET";
+    public override string Method => _method.Method;
 
     public override IReadOnlyCollection<IHttpCookie> Cookies => throw new NotImplementedException();
 

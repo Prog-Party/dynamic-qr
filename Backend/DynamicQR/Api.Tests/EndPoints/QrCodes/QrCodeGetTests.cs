@@ -41,7 +41,7 @@ public class QrCodeGetTests
     public async Task RunAsync_MissingOrganizationIdHeader_ReturnsBadRequest()
     {
         // Arrange
-        var req = new HttpRequestDataHelper().CreateHttpRequestData(new Dictionary<string, string> { });
+        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Get);
         string id = "test-id";
 
         // Act
@@ -57,7 +57,7 @@ public class QrCodeGetTests
     public async Task RunAsync_NoQrCodeFound_ReturnsBadRequest()
     {
         // Arrange
-        var req = new HttpRequestDataHelper().CreateHttpRequestData(new Dictionary<string, string>
+        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Get, new Dictionary<string, string>
         {
             { "Organization-Identifier", "org-123" }
         });
@@ -80,7 +80,7 @@ public class QrCodeGetTests
     public async Task RunAsync_ValidQrCodeFound_ReturnsOk()
     {
         // Arrange
-        var req = new HttpRequestDataHelper().CreateHttpRequestData(new Dictionary<string, string>
+        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Get, new Dictionary<string, string>
         {
             { "Organization-Identifier", "org-123" }
         });

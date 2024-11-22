@@ -38,15 +38,7 @@ public class CommandHandler : IRequestHandler<Command, Response>
             Value = command.Value
         };
 
-        try
-        {
-            await _qrCodeRepositoryService.CreateAsync(command.OrganisationId, qrCode, cancellationToken);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
+        await _qrCodeRepositoryService.CreateAsync(command.OrganisationId, qrCode, cancellationToken);
         await _qrCodeTargetRepositoryService.CreateAsync(qrCodeTarget, cancellationToken);
 
         return new Response

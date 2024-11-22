@@ -1,4 +1,5 @@
 ﻿using Azure.Data.Tables;
+using DynamicQR.Domain.Exceptions;
 using DynamicQR.Domain.Interfaces;
 using DynamicQR.Domain.Models;
 using DynamicQR.Infrastructure.Mappers;
@@ -65,7 +66,7 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
                 throw new StorageException(response.ReasonPhrase);
         }
         else
-            throw new StorageException();
+            throw new QrCodeNotFoundException(organisationId, qrCode.Id, null);
     }
 
     public async Task DeleteAsync(string organisationId, string id, CancellationToken cancellationToken)
@@ -82,6 +83,6 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
                 throw new StorageException(response.ReasonPhrase);
         }
         else
-            throw new StorageException();
+            throw new QrCodeNotFoundException(organisationId, id, null);
     }
 }

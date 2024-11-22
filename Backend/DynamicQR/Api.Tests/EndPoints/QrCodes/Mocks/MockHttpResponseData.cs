@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Text.Json;
 
 namespace Api.Tests.EndPoints.QrCodes.Mocks;
 
@@ -32,5 +33,14 @@ public class MockHttpResponseData : HttpResponseData
         Body.Seek(0, SeekOrigin.Begin);
         using var reader = new StreamReader(Body);
         return await reader.ReadToEndAsync();
+    }
+
+    public async Task<T?> ReadAsJsonAsync<T>()
+    {
+        var content = await ReadAsStringAsync();
+        return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true // Handles case-insensitive property matching
+        });
     }
 }
