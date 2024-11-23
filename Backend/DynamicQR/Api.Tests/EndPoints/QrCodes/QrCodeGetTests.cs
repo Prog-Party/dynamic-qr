@@ -12,7 +12,7 @@ using System.Text.Json;
 namespace Api.Tests.EndPoints.QrCodes;
 
 [ExcludeFromCodeCoverage]
-public class QrCodeGetTests
+public sealed class QrCodeGetTests
 {
     private readonly Mock<ILogger<QrCodeGet>> _loggerMock;
     private readonly Mock<ILoggerFactory> _loggerFactoryMock;

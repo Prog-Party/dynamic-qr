@@ -49,24 +49,22 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
         QrCode qrCodeFound = await ReadAsync(organisationId, qrCode.Id, cancellationToken);
 
-        if (qrCodeFound != null)
-        {
-            qrCodeFound.IncludeMargin = qrCode.IncludeMargin;
-            qrCodeFound.ForegroundColor = qrCode.ForegroundColor;
-            qrCodeFound.BackgroundColor = qrCode.BackgroundColor;
-            qrCodeFound.ImageHeight = qrCode.ImageHeight;
-            qrCodeFound.ImageWidth = qrCode.ImageWidth;
-            qrCodeFound.ImageUrl = qrCode.ImageUrl;
-
-            Entities.QrCode data = QrCodeMappers.ToInfrastructure(qrCodeFound, organisationId);
-
-            Azure.Response response = await _tableClient.UpdateEntityAsync(data, Azure.ETag.All, TableUpdateMode.Merge, cancellationToken);
-
-            if (response.IsError)
-                throw new StorageException(response.ReasonPhrase);
-        }
-        else
+        if (qrCodeFound == null)
             throw new QrCodeNotFoundException(organisationId, qrCode.Id, null);
+
+        qrCodeFound.IncludeMargin = qrCode.IncludeMargin;
+        qrCodeFound.ForegroundColor = qrCode.ForegroundColor;
+        qrCodeFound.BackgroundColor = qrCode.BackgroundColor;
+        qrCodeFound.ImageHeight = qrCode.ImageHeight;
+        qrCodeFound.ImageWidth = qrCode.ImageWidth;
+        qrCodeFound.ImageUrl = qrCode.ImageUrl;
+
+        Entities.QrCode data = QrCodeMappers.ToInfrastructure(qrCodeFound, organisationId);
+
+        Azure.Response response = await _tableClient.UpdateEntityAsync(data, Azure.ETag.All, TableUpdateMode.Merge, cancellationToken);
+
+        if (response.IsError)
+            throw new StorageException(response.ReasonPhrase);
     }
 
     public async Task DeleteAsync(string organisationId, string id, CancellationToken cancellationToken)
@@ -75,14 +73,12 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
         QrCode qrCodeFound = await ReadAsync(organisationId, id, cancellationToken);
 
-        if (qrCodeFound != null)
-        {
-            Azure.Response response = await _tableClient.DeleteEntityAsync(qrCodeFound.Id, qrCodeFound.Id, Azure.ETag.All, cancellationToken);
-
-            if (response.IsError)
-                throw new StorageException(response.ReasonPhrase);
-        }
-        else
+        if (qrCodeFound == null)
             throw new QrCodeNotFoundException(organisationId, id, null);
+
+        Azure.Response response = await _tableClient.DeleteEntityAsync(qrCodeFound.Id, qrCodeFound.Id, Azure.ETag.All, cancellationToken);
+
+        if (response.IsError)
+            throw new StorageException(response.ReasonPhrase);
     }
 }

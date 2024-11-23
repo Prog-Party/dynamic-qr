@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DynamicQR.Application\DynamicQR.Application.csproj" />
-    <ProjectReference Include="..\DynamicQR.Domain\DynamicQR.Domain.csproj" />
     <ProjectReference Include="..\DynamicQR.Infrastructure\DynamicQR.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
