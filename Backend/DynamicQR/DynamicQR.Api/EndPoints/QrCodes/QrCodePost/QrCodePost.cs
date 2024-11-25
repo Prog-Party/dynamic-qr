@@ -18,12 +18,12 @@ public sealed class QrCodePost : EndPointsBase
     { }
 
     [Function(nameof(QrCodePost))]
-    [OpenApiOperation("qrcode", "QrCode",
+    [OpenApiOperation("qr-codes", Tags.QrCode,
        Summary = "Create a new qr code.")
     ]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
     [OpenApiJsonPayload(typeof(Request))]
-    [OpenApiJsonResponse(typeof(Response), Description = "Get a certain qr code")]
+    [OpenApiJsonResponse(typeof(Response), HttpStatusCode.Created, Description = "Get a certain qr code")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
     {
         _logger.LogInformation($"{typeof(QrCodePost).FullName}.triggered");

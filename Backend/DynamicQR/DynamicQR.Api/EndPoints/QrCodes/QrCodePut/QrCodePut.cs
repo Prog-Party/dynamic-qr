@@ -18,13 +18,14 @@ public sealed class QrCodePut : EndPointsBase
     { }
 
     [Function(nameof(QrCodePut))]
-    [OpenApiOperation("qrcode", "QrCode",
+    [OpenApiOperation("qr-codes/{id}", Tags.QrCode,
        Summary = "Update a certain qr code.")
     ]
     [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code")]
+    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-codes/{id}")] HttpRequestData req, string id)
     {
         _logger.LogInformation($"{typeof(QrCodePut).FullName}.triggered");
@@ -57,6 +58,6 @@ public sealed class QrCodePut : EndPointsBase
 
         Response? responseContent = coreResponse.ToContract();
 
-        return await CreateJsonResponse(req, responseContent, HttpStatusCode.Created);
+        return await CreateJsonResponse(req, responseContent, HttpStatusCode.OK);
     }
 }

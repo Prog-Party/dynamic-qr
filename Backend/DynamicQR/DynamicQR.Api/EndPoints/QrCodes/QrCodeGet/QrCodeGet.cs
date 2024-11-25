@@ -17,7 +17,7 @@ public sealed class QrCodeGet : EndPointsBase
     { }
 
     [Function(nameof(QrCodeGet))]
-    [OpenApiOperation("qr-codes/{id}", "QrCode",
+    [OpenApiOperation("qr-codes/{id}", Tags.QrCode,
        Summary = "Retrieve a certain qr code.")
     ]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]

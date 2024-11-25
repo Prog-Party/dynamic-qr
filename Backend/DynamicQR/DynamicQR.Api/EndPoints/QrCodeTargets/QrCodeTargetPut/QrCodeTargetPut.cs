@@ -18,13 +18,14 @@ public sealed class QrCodeTargetPut : EndPointsBase
     { }
 
     [Function(nameof(QrCodeTargetPut))]
-    [OpenApiOperation("qrcode", "QrCode",
-       Summary = "Update a certain qr code.")
+    [OpenApiOperation("qr-code-targets/{id}", Tags.QrCodeTarget,
+       Summary = "Update a certain qr code target.")
     ]
     [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
     [OpenApiJsonPayload(typeof(Request))]
-    [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code")]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-codes/{id}")] HttpRequestData req, string id)
+    [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code target")]
+    [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Description = "No qr code target found with the given identifier.")]
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-code-targets/{id}")] HttpRequestData req, string id)
     {
         _logger.LogInformation($"{typeof(QrCodeTargetPut).FullName}.triggered");
 
@@ -46,6 +47,6 @@ public sealed class QrCodeTargetPut : EndPointsBase
 
         Response? responseContent = coreResponse.ToContract();
 
-        return await CreateJsonResponse(req, responseContent, HttpStatusCode.Created);
+        return await CreateJsonResponse(req, responseContent, HttpStatusCode.OK);
     }
 }
