@@ -1,13 +1,14 @@
+using DynamicQR.Api.Middleware;
+using DynamicQR.Application.Extensions;
+using DynamicQR.Infrastructure.Extensions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Configurations;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using DynamicQR.Application.Extensions;
-using DynamicQR.Infrastructure.Extensions;
-using Microsoft.Extensions.Configuration;
 
 internal class Program
 {
@@ -21,6 +22,7 @@ internal class Program
             .ConfigureFunctionsWebApplication()
             .ConfigureServices((context, services) =>
             {
+                services.AddTransient<ExceptionHandlingMiddleware>();
                 services.AddApplicationInsightsTelemetryWorkerService();
                 services.ConfigureFunctionsApplicationInsights();
                 services.AddApplicationServices();
