@@ -1,4 +1,5 @@
 using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Extensions;
 using DynamicQR.Api.Mappers;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
@@ -26,7 +27,7 @@ public sealed class QrCodePost : EndpointsBase
     [OpenApiJsonResponse(typeof(Response), HttpStatusCode.Created, Description = "Get a certain qr code")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
     {
-        OpenApiHeaderOrganizationIdentifierAttribute.TryGetAttribute(req, out var organizationId);
+        var organizationId = req.GetAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;

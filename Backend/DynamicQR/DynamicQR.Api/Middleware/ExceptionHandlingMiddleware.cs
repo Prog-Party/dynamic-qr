@@ -1,4 +1,5 @@
 ﻿using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Extensions;
 using DynamicQR.Domain.Exceptions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -26,19 +27,15 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
     {
         try
         {
+            var req = (await context.GetHttpRequestDataAsync())!;
+
             _logger.LogInformation($"{context.FunctionDefinition.EntryPoint}.triggered");
+            _logger.LogInformation($"Url: {req.Url}");
 
-            var req = await context.GetHttpRequestDataAsync();
+            if (!await EnsureAttributes(context, req))
+                return;
 
-            if (req != null)
-            {
-                _logger.LogInformation($"Url: {req.Url}");
-
-                if (!await EnsureAttributes(context, req))
-                    return;
-
-                await next.Invoke(context);
-            }
+            await next.Invoke(context);
         }
         catch (Exception e)
         {
@@ -73,14 +70,14 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
     {
         var functionAttributes = GetFunctionAttributes(context);
 
-        if (functionAttributes.Any(x => x is OpenApiHeaderOrganizationIdentifierAttribute))
+        // If the function has the attribute OpenApiHeader OrganizationIdentifier,
+        // then the request must have the header as well
+        if (functionAttributes.Any(x => x is OpenApiHeaderOrganizationIdentifierAttribute)
+            && !req.HasAttribute<OpenApiHeaderOrganizationIdentifierAttribute>())
         {
-            if (!OpenApiHeaderOrganizationIdentifierAttribute.TryGetAttribute(req, out var value))
-            {
-                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-                await errorResponse.WriteStringAsync($"Missing required header: {OpenApiHeaderOrganizationIdentifierAttribute.HeaderName}");
-                return false;
-            }
+            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+            await errorResponse.WriteStringAsync($"Missing required header: {new OpenApiHeaderOrganizationIdentifierAttribute().Name}");
+            return false;
         }
 
         return true;

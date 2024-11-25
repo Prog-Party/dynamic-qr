@@ -1,4 +1,5 @@
 using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Extensions;
 using DynamicQR.Api.Mappers;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
@@ -28,7 +29,7 @@ public sealed class QrCodeGet : EndpointsBase
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "qr-codes/{id}")]
         HttpRequestData req, string id)
     {
-        OpenApiHeaderOrganizationIdentifierAttribute.TryGetAttribute(req, out var organizationId);
+        var organizationId = req.GetAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
         Application.QrCodes.Queries.GetQrCode.Request coreRequest = new() { Id = id, OrganizationId = organizationId };
 
