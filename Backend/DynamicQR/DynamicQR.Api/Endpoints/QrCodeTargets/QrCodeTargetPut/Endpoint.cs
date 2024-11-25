@@ -27,8 +27,6 @@ public sealed class QrCodeTargetPut : EndpointsBase
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Description = "No qr code target found with the given identifier.")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-code-targets/{id}")] HttpRequestData req, string id)
     {
-        _logger.LogInformation($"{typeof(QrCodeTargetPut).FullName}.triggered");
-
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;
 

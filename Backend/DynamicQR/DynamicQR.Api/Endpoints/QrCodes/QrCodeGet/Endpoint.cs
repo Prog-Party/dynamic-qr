@@ -20,7 +20,7 @@ public sealed class QrCodeGet : EndpointsBase
     [OpenApiOperation(nameof(QrCodeGet), Tags.QrCode,
        Summary = "Retrieve a certain qr code.")
     ]
-    [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
+    [OpenApiHeaderOrganizationIdentifier]
     [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
     [OpenApiJsonResponse(typeof(Response), Description = "The retrieved qr code by its identifier")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]
@@ -28,18 +28,7 @@ public sealed class QrCodeGet : EndpointsBase
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "qr-codes/{id}")]
         HttpRequestData req, string id)
     {
-        _logger.LogInformation($"{typeof(QrCodeGet).FullName}.triggered");
-
-        throw new NotImplementedException("TEST");
-        // Check if the header is present (place this in middleware)
-        if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
-        {
-            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            errorResponse.WriteString("Missing required header: Organization-Identifier");
-            return errorResponse;
-        }
-
-        string organizationId = headerValues.First();
+        OpenApiHeaderOrganizationIdentifierAttribute.TryGetAttribute(req, out var organizationId);
 
         Application.QrCodes.Queries.GetQrCode.Request coreRequest = new() { Id = id, OrganizationId = organizationId };
 

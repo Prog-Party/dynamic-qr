@@ -22,23 +22,13 @@ public sealed class QrCodePut : EndpointsBase
        Summary = "Update a certain qr code.")
     ]
     [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
-    [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
+    [OpenApiHeaderOrganizationIdentifier]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-codes/{id}")] HttpRequestData req, string id)
     {
-        _logger.LogInformation($"{typeof(QrCodePut).FullName}.triggered");
-
-        // Check if the header is present (place this in middleware)
-        if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
-        {
-            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            errorResponse.WriteString("Missing required header: Organization-Identifier");
-            return errorResponse;
-        }
-
-        var organizationId = headerValues.First();
+        OpenApiHeaderOrganizationIdentifierAttribute.TryGetAttribute(req, out var organizationId);
 
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;
