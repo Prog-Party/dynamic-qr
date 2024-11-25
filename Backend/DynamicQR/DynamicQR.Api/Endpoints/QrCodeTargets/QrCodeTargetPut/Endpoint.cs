@@ -9,15 +9,15 @@ using Microsoft.OpenApi.Models;
 using DynamicQR.Api.Mappers;
 using Microsoft.Azure.Storage;
 
-namespace DynamicQR.Api.EndPoints.QrCodeTargets.QrCodeTargetPut;
+namespace DynamicQR.Api.Endpoints.QrCodeTargets.QrCodeTargetPut;
 
-public sealed class QrCodeTargetPut : EndPointsBase
+public sealed class Endpoint : EndpointsBase
 {
-    public QrCodeTargetPut(IMediator mediator, ILoggerFactory loggerFactory) :
-        base(mediator, loggerFactory.CreateLogger<QrCodeTargetPut>())
+    public Endpoint(IMediator mediator, ILoggerFactory loggerFactory) :
+        base(mediator, loggerFactory.CreateLogger<Endpoint>())
     { }
 
-    [Function(nameof(QrCodeTargetPut))]
+    [Function(nameof(Endpoint))]
     [OpenApiOperation("qr-code-targets/{id}", Tags.QrCodeTarget,
        Summary = "Update a certain qr code target.")
     ]
@@ -27,7 +27,7 @@ public sealed class QrCodeTargetPut : EndPointsBase
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Description = "No qr code target found with the given identifier.")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-code-targets/{id}")] HttpRequestData req, string id)
     {
-        _logger.LogInformation($"{typeof(QrCodeTargetPut).FullName}.triggered");
+        _logger.LogInformation($"{typeof(Endpoint).FullName}.triggered");
 
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;

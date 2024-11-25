@@ -6,7 +6,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace Api.Tests.EndPoints.QrCodes.Mocks;
+namespace Api.Tests.Endpoints.QrCodes.Mocks;
 
 // Helper class for creating HttpRequestData for testing
 internal class HttpRequestDataHelper
