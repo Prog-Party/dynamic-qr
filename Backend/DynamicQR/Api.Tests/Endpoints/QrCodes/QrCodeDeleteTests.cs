@@ -13,14 +13,14 @@ namespace Api.Tests.Endpoints.QrCodes;
 [ExcludeFromCodeCoverage]
 public sealed class QrCodeDeleteTests
 {
-    private readonly Mock<ILogger<Endpoint>> _loggerMock;
+    private readonly Mock<ILogger<QrCodeDelete>> _loggerMock;
     private readonly Mock<ILoggerFactory> _loggerFactoryMock;
     private readonly Mock<IMediator> _mediatorMock;
-    private readonly Endpoint _function;
+    private readonly QrCodeDelete _function;
 
     public QrCodeDeleteTests()
     {
-        _loggerMock = new Mock<ILogger<Endpoint>>();
+        _loggerMock = new Mock<ILogger<QrCodeDelete>>();
         _loggerMock.Setup(x => x.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
@@ -33,7 +33,7 @@ public sealed class QrCodeDeleteTests
         _loggerFactoryMock = new Mock<ILoggerFactory>();
         _loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(() => _loggerMock.Object);
 
-        _function = new Endpoint(_mediatorMock.Object, _loggerFactoryMock.Object);
+        _function = new QrCodeDelete(_mediatorMock.Object, _loggerFactoryMock.Object);
     }
 
     [Fact]
