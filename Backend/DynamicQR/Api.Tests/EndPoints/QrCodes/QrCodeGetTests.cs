@@ -1,12 +1,12 @@
-﻿using Api.Tests.Endpoints.QrCodes.Mocks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using Api.Tests.Endpoints.QrCodes.Mocks;
 using DynamicQR.Api.Endpoints.QrCodes.QrCodeGet;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Net;
 using System.Text.Json;
 
 namespace Api.Tests.Endpoints.QrCodes;
@@ -14,14 +14,14 @@ namespace Api.Tests.Endpoints.QrCodes;
 [ExcludeFromCodeCoverage]
 public sealed class QrCodeGetTests
 {
-    private readonly Mock<ILogger<Endpoint>> _loggerMock;
+    private readonly Mock<ILogger<QrCodeGet>> _loggerMock;
     private readonly Mock<ILoggerFactory> _loggerFactoryMock;
     private readonly Mock<IMediator> _mediatorMock;
-    private readonly Endpoint _function;
+    private readonly QrCodeGet _function;
 
     public QrCodeGetTests()
     {
-        _loggerMock = new Mock<ILogger<Endpoint>>();
+        _loggerMock = new Mock<ILogger<QrCodeGet>>();
         _loggerMock.Setup(x => x.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
@@ -34,7 +34,7 @@ public sealed class QrCodeGetTests
         _loggerFactoryMock = new Mock<ILoggerFactory>();
         _loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(() => _loggerMock.Object);
 
-        _function = new Endpoint(_mediatorMock.Object, _loggerFactoryMock.Object);
+        _function = new QrCodeGet(_mediatorMock.Object, _loggerFactoryMock.Object);
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public sealed class QrCodeGetTests
         });
         string id = "test-id";
 
-        var qrCodeResponse = new Response
+        var qrCodeResponse = new DynamicQR.Api.Endpoints.QrCodes.QrCodeGet.Response
         {
             IncludeMargin = true,
             BackgroundColor = "#FFFFFF",

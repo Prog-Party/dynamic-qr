@@ -10,13 +10,13 @@ using System.Net;
 
 namespace DynamicQR.Api.Endpoints.QrCodes.QrCodeGet;
 
-public sealed class Endpoint : EndpointsBase
+public sealed class QrCodeGet : EndpointsBase
 {
-    public Endpoint(IMediator mediator, ILoggerFactory loggerFactory) :
-        base(mediator, loggerFactory.CreateLogger<Endpoint>())
+    public QrCodeGet(IMediator mediator, ILoggerFactory loggerFactory) :
+        base(mediator, loggerFactory.CreateLogger<QrCodeGet>())
     { }
 
-    [Function(nameof(Endpoint))]
+    [Function(nameof(QrCodeGet))]
     [OpenApiOperation("qr-codes/{id}", Tags.QrCode,
        Summary = "Retrieve a certain qr code.")
     ]
@@ -28,7 +28,7 @@ public sealed class Endpoint : EndpointsBase
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "qr-codes/{id}")]
         HttpRequestData req, string id)
     {
-        _logger.LogInformation($"{typeof(Endpoint).FullName}.triggered");
+        _logger.LogInformation($"{typeof(QrCodeGet).FullName}.triggered");
 
         // Check if the header is present (place this in middleware)
         if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))

@@ -1,4 +1,4 @@
-﻿using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Attributes;
 using DynamicQR.Api.Mappers;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
@@ -9,26 +9,24 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Net;
 
-namespace DynamicQR.Api.Endpoints.QrCodes.QrCodePut;
+namespace DynamicQR.Api.Endpoints.QrCodes.QrCodePost;
 
-public sealed class Endpoint : EndpointsBase
+public sealed class QrCodePost : EndpointsBase
 {
-    public Endpoint(IMediator mediator, ILoggerFactory loggerFactory) :
-        base(mediator, loggerFactory.CreateLogger<Endpoint>())
+    public QrCodePost(IMediator mediator, ILoggerFactory loggerFactory) :
+        base(mediator, loggerFactory.CreateLogger<QrCodePost>())
     { }
 
-    [Function(nameof(Endpoint))]
-    [OpenApiOperation("qr-codes/{id}", Tags.QrCode,
-       Summary = "Update a certain qr code.")
+    [Function(nameof(QrCodePost))]
+    [OpenApiOperation("qr-codes", Tags.QrCode,
+       Summary = "Create a new qr code.")
     ]
-    [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
     [OpenApiJsonPayload(typeof(Request))]
-    [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code")]
-    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-codes/{id}")] HttpRequestData req, string id)
+    [OpenApiJsonResponse(typeof(Response), HttpStatusCode.Created, Description = "Get a certain qr code")]
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
     {
-        _logger.LogInformation($"{typeof(Endpoint).FullName}.triggered");
+        _logger.LogInformation($"{typeof(QrCodePost).FullName}.triggered");
 
         // Check if the header is present (place this in middleware)
         if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
@@ -43,9 +41,9 @@ public sealed class Endpoint : EndpointsBase
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;
 
-        Application.QrCodes.Commands.UpdateQrCode.Command? coreCommand = QrCodesMappers.ToCore(request.Result, id, organizationId);
+        Application.QrCodes.Commands.CreateQrCode.Command? coreCommand = QrCodesMappers.ToCore(request.Result, organizationId);
 
-        Application.QrCodes.Commands.UpdateQrCode.Response coreResponse;
+        Application.QrCodes.Commands.CreateQrCode.Response coreResponse;
 
         try
         {
@@ -58,6 +56,6 @@ public sealed class Endpoint : EndpointsBase
 
         Response? responseContent = coreResponse.ToContract();
 
-        return await CreateJsonResponse(req, responseContent, HttpStatusCode.OK);
+        return await CreateJsonResponse(req, responseContent, HttpStatusCode.Created);
     }
 }
