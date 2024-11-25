@@ -17,6 +17,8 @@ public class CommandHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(command);
+
         string id = Guid.NewGuid().ToString();
 
         QrCode qrCode = new()
@@ -36,18 +38,8 @@ public class CommandHandler : IRequestHandler<Command, Response>
             Value = command.Value
         };
 
-        var succeded = await _qrCodeRepositoryService.SaveAsync(qrCode, cancellationToken);
-        if (!succeded)
-        {
-            throw new Exception();
-        }
-
-        var succededCodeTarget = await _qrCodeTargetRepositoryService.SaveAsync(qrCodeTarget, cancellationToken);
-
-        if (!succededCodeTarget)
-        {
-            throw new Exception();
-        }
+        await _qrCodeRepositoryService.CreateAsync(command.OrganisationId, qrCode, cancellationToken);
+        await _qrCodeTargetRepositoryService.CreateAsync(qrCodeTarget, cancellationToken);
 
         return new Response
         {

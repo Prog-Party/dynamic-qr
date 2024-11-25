@@ -1,4 +1,4 @@
-﻿namespace DynamicQR.Api.Contracts.CreateQrCode;
+﻿namespace DynamicQR.Api.Contracts.UpdateQrCode;
 
 public sealed record Response
 {

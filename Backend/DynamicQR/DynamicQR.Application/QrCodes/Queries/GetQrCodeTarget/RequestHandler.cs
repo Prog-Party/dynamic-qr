@@ -14,6 +14,8 @@ public class RequestHandler : IRequestHandler<Request, Response>
 
     public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         var qrCodeTarget = await _qrCodeTargetRepositoryService.ReadAsync(request.Id, cancellationToken);
 
         return new Response

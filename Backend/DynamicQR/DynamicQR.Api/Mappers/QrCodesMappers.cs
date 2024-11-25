@@ -4,7 +4,7 @@ namespace DynamicQR.Api.Mappers;
 
 public static class QrCodesMappers
 {
-    public static Application.QrCodes.Commands.CreateQrCode.Command ToCore(this Contracts.CreateQrCode.Request request)
+    public static Application.QrCodes.Commands.CreateQrCode.Command? ToCore(this EndPoints.QrCodes.QrCodePost.Request request, string organizationId)
     {
         return request is null ? null : new Application.QrCodes.Commands.CreateQrCode.Command
         {
@@ -14,31 +14,52 @@ public static class QrCodesMappers
             ImageUrl = request.ImageUrl,
             ImageWidth = request.ImageWidth,
             IncludeMargin = request.IncludeMargin,
-            Value = request.Value
+            Value = request.Value,
+            OrganisationId = organizationId
         };
     }
 
-    public static Contracts.CreateQrCode.Response ToContract(this Application.QrCodes.Commands.CreateQrCode.Response response)
+    public static EndPoints.QrCodes.QrCodePost.Response? ToContract(this Application.QrCodes.Commands.CreateQrCode.Response response)
     {
-        return response is null ? null : new Contracts.CreateQrCode.Response
+        return response is null ? null : new EndPoints.QrCodes.QrCodePost.Response
         {
             Id = response.Id,
         };
     }
 
-    public static Contracts.GetQrCode.Response ToContract(this Application.QrCodes.Queries.GetQrCode.Response response)
+    public static EndPoints.QrCodes.QrCodeGet.Response? ToContract(this Application.QrCodes.Queries.GetQrCode.Response response)
     {
-        return response is null ? null : new Contracts.GetQrCode.Response
+        return response is null ? null : new EndPoints.QrCodes.QrCodeGet.Response
         {
-            //Target = response. Target,
+            BackgroundColor = ColorTranslator.ToHtml(response.BackgroundColor),
+            ForegroundColor = ColorTranslator.ToHtml(response.ForegroundColor),
+            ImageHeight = response.ImageHeight.GetValueOrDefault(),
+            ImageUrl = response.ImageUrl,
+            ImageWidth = response.ImageWidth.GetValueOrDefault(),
+            IncludeMargin = response.IncludeMargin,
         };
     }
 
-    public static Contracts.UpdateQrCodeTarget.Response ToContract(this Application.QrCodes.Commands.UpdateQrCodeTarget.Response response)
+    public static EndPoints.QrCodes.QrCodePut.Response? ToContract(this Application.QrCodes.Commands.UpdateQrCode.Response response)
     {
-        return response is null ? null : new Contracts.UpdateQrCodeTarget.Response
+        return response is null ? null : new EndPoints.QrCodes.QrCodePut.Response
         {
             Id = response.Id,
+        };
+    }
+
+    public static Application.QrCodes.Commands.UpdateQrCode.Command? ToCore(this EndPoints.QrCodes.QrCodePut.Request request, string id, string organizationId)
+    {
+        return request is null ? null : new Application.QrCodes.Commands.UpdateQrCode.Command
+        {
+            BackgroundColor = ColorTranslator.FromHtml(request.BackgroundColor),
+            ForegroundColor = ColorTranslator.FromHtml(request.ForegroundColor),
+            ImageHeight = request.ImageHeight,
+            ImageUrl = request.ImageUrl,
+            ImageWidth = request.ImageWidth,
+            IncludeMargin = request.IncludeMargin,
+            Id = id,
+            OrganisationId = organizationId
         };
     }
 }

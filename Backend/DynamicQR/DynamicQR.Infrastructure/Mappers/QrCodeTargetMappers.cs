@@ -8,8 +8,18 @@ public static class QrCodeTargetMappers
     {
         return new QrCodeTarget
         {
-            QrCodeId = qrCodeTarget.QrCodeId,
-            Value = qrCodeTarget.Value
+            Value = qrCodeTarget.Value,
+            PartitionKey = qrCodeTarget.QrCodeId,
+            RowKey = qrCodeTarget.QrCodeId
+        };
+    }
+
+    public static Domain.Models.QrCodeTarget ToCore(this QrCodeTarget qrCodeTarget)
+    {
+        return new Domain.Models.QrCodeTarget
+        {
+            Value = qrCodeTarget.Value,
+            QrCodeId = qrCodeTarget.PartitionKey
         };
     }
 }

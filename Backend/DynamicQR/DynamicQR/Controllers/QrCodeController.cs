@@ -58,31 +58,31 @@ public class QrCodeController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPut("/qrcodes/{id}/target")]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    public async Task<IActionResult> PutAsync(string id, [FromBody] Contracts.UpdateQrCodeTarget.Request request)
-    {
-        _logger.LogInformation($"{nameof(PutAsync)}.triggered");
+    //[HttpPut("/qrcodes/{id}/target")]
+    //[Consumes("application/json")]
+    //[Produces("application/json")]
+    //public async Task<IActionResult> PutAsync(string id, [FromBody] Contracts.UpdateQrCodeTarget.Request request)
+    //{
+    //    _logger.LogInformation($"{nameof(PutAsync)}.triggered");
 
-        var coreRequest = new Application.QrCodes.Commands.UpdateQrCodeTarget.Command()
-        {
-            BackgroundColor = ColorTranslator.FromHtml(request.BackgroundColor),
-            ForegroundColor = ColorTranslator.FromHtml(request.ForegroundColor),
-            Id = id,
-            ImageHeight = request.ImageHeight,
-            ImageUrl = request.ImageUrl,
-            ImageWidth = request.ImageWidth,
-            IncludeMargin = request.IncludeMargin
-        };
+    //    var coreRequest = new Application.QrCodes.Commands.UpdateQrCodeTarget.Command()
+    //    {
+    //        BackgroundColor = ColorTranslator.FromHtml(request.BackgroundColor),
+    //        ForegroundColor = ColorTranslator.FromHtml(request.ForegroundColor),
+    //        Id = id,
+    //        ImageHeight = request.ImageHeight,
+    //        ImageUrl = request.ImageUrl,
+    //        ImageWidth = request.ImageWidth,
+    //        IncludeMargin = request.IncludeMargin
+    //    };
 
-        var coreResponse = await _mediator.Send(coreRequest);
+    //    var coreResponse = await _mediator.Send(coreRequest);
 
-        var response = coreResponse.ToContract();
+    //    var response = coreResponse.ToContract();
 
-        if (response is null)
-            return UnprocessableEntity();
+    //    if (response is null)
+    //        return UnprocessableEntity();
 
-        return NoContent();
-    }
+    //    return NoContent();
+    //}
 }
