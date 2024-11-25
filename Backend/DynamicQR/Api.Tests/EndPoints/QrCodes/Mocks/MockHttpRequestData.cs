@@ -4,7 +4,7 @@ using System.Security.Claims;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace Api.Tests.EndPoints.QrCodes.Mocks;
+namespace Api.Tests.Endpoints.QrCodes.Mocks;
 
 public class MockHttpRequestData : HttpRequestData
 {

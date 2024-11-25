@@ -1,4 +1,4 @@
-﻿namespace DynamicQR.Api.EndPoints.QrCodes.QrCodePut;
+﻿namespace DynamicQR.Api.Endpoints.QrCodes.QrCodePost;
 
 public sealed record Request
 {
@@ -8,4 +8,5 @@ public sealed record Request
     public string? ImageUrl { get; init; }
     public int? ImageHeight { get; init; }
     public int? ImageWidth { get; init; }
+    public string Value { get; init; } = string.Empty;
 }

@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Net;
 
-namespace DynamicQR.Api.EndPoints.QrCodes.QrCodeGet;
+namespace DynamicQR.Api.Endpoints.QrCodes.QrCodeGet;
 
-public sealed class QrCodeGet : EndPointsBase
+public sealed class QrCodeGet : EndpointsBase
 {
     public QrCodeGet(IMediator mediator, ILoggerFactory loggerFactory) :
         base(mediator, loggerFactory.CreateLogger<QrCodeGet>())

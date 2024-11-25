@@ -4,7 +4,7 @@ namespace DynamicQR.Api.Mappers;
 
 public static class QrCodesMappers
 {
-    public static Application.QrCodes.Commands.CreateQrCode.Command? ToCore(this EndPoints.QrCodes.QrCodePost.Request request, string organizationId)
+    public static Application.QrCodes.Commands.CreateQrCode.Command? ToCore(this Endpoints.QrCodes.QrCodePost.Request request, string organizationId)
     {
         return request is null ? null : new Application.QrCodes.Commands.CreateQrCode.Command
         {
@@ -19,17 +19,17 @@ public static class QrCodesMappers
         };
     }
 
-    public static EndPoints.QrCodes.QrCodePost.Response? ToContract(this Application.QrCodes.Commands.CreateQrCode.Response response)
+    public static Endpoints.QrCodes.QrCodePost.Response? ToContract(this Application.QrCodes.Commands.CreateQrCode.Response response)
     {
-        return response is null ? null : new EndPoints.QrCodes.QrCodePost.Response
+        return response is null ? null : new Endpoints.QrCodes.QrCodePost.Response
         {
             Id = response.Id,
         };
     }
 
-    public static EndPoints.QrCodes.QrCodeGet.Response? ToContract(this Application.QrCodes.Queries.GetQrCode.Response response)
+    public static Endpoints.QrCodes.QrCodeGet.Response? ToContract(this Application.QrCodes.Queries.GetQrCode.Response response)
     {
-        return response is null ? null : new EndPoints.QrCodes.QrCodeGet.Response
+        return response is null ? null : new Endpoints.QrCodes.QrCodeGet.Response
         {
             BackgroundColor = ColorTranslator.ToHtml(response.BackgroundColor),
             ForegroundColor = ColorTranslator.ToHtml(response.ForegroundColor),
@@ -40,15 +40,15 @@ public static class QrCodesMappers
         };
     }
 
-    public static EndPoints.QrCodes.QrCodePut.Response? ToContract(this Application.QrCodes.Commands.UpdateQrCode.Response response)
+    public static Endpoints.QrCodes.QrCodePut.Response? ToContract(this Application.QrCodes.Commands.UpdateQrCode.Response response)
     {
-        return response is null ? null : new EndPoints.QrCodes.QrCodePut.Response
+        return response is null ? null : new Endpoints.QrCodes.QrCodePut.Response
         {
             Id = response.Id,
         };
     }
 
-    public static Application.QrCodes.Commands.UpdateQrCode.Command? ToCore(this EndPoints.QrCodes.QrCodePut.Request request, string id, string organizationId)
+    public static Application.QrCodes.Commands.UpdateQrCode.Command? ToCore(this Endpoints.QrCodes.QrCodePut.Request request, string id, string organizationId)
     {
         return request is null ? null : new Application.QrCodes.Commands.UpdateQrCode.Command
         {

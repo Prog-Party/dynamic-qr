@@ -1,15 +1,15 @@
-﻿using Api.Tests.EndPoints.QrCodes.Mocks;
-using DynamicQR.Api.EndPoints.QrCodes.QrCodeGet;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using Api.Tests.Endpoints.QrCodes.Mocks;
+using DynamicQR.Api.Endpoints.QrCodes.QrCodeGet;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Net;
 using System.Text.Json;
 
-namespace Api.Tests.EndPoints.QrCodes;
+namespace Api.Tests.Endpoints.QrCodes;
 
 [ExcludeFromCodeCoverage]
 public sealed class QrCodeGetTests
@@ -86,7 +86,7 @@ public sealed class QrCodeGetTests
         });
         string id = "test-id";
 
-        var qrCodeResponse = new Response
+        var qrCodeResponse = new DynamicQR.Api.Endpoints.QrCodes.QrCodeGet.Response
         {
             IncludeMargin = true,
             BackgroundColor = "#FFFFFF",

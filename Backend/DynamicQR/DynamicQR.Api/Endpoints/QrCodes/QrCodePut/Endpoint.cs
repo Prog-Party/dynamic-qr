@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Net;
 
-namespace DynamicQR.Api.EndPoints.QrCodes.QrCodePut;
+namespace DynamicQR.Api.Endpoints.QrCodes.QrCodePut;
 
-public sealed class QrCodePut : EndPointsBase
+public sealed class QrCodePut : EndpointsBase
 {
     public QrCodePut(IMediator mediator, ILoggerFactory loggerFactory) :
         base(mediator, loggerFactory.CreateLogger<QrCodePut>())

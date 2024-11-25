@@ -1,17 +1,17 @@
 ﻿using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Mappers;
 using MediatR;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.Storage;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
-using System.Net;
 using Microsoft.OpenApi.Models;
-using DynamicQR.Api.Mappers;
-using Microsoft.Azure.Storage;
+using System.Net;
 
-namespace DynamicQR.Api.EndPoints.QrCodeTargets.QrCodeTargetPut;
+namespace DynamicQR.Api.Endpoints.QrCodeTargets.QrCodeTargetPut;
 
-public sealed class QrCodeTargetPut : EndPointsBase
+public sealed class QrCodeTargetPut : EndpointsBase
 {
     public QrCodeTargetPut(IMediator mediator, ILoggerFactory loggerFactory) :
         base(mediator, loggerFactory.CreateLogger<QrCodeTargetPut>())
