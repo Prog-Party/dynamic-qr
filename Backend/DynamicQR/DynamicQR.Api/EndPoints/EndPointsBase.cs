@@ -5,14 +5,14 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace DynamicQR.Api.Endpoints;
+namespace DynamicQR.Api.EndPoints;
 
-public abstract class EndpointsBase
+public abstract class EndPointsBase
 {
     protected readonly IMediator _mediator;
     protected readonly ILogger _logger;
 
-    public EndpointsBase(IMediator mediator, ILogger logger)
+    public EndPointsBase(IMediator mediator, ILogger logger)
     {
         _mediator = mediator;
         _logger = logger;
