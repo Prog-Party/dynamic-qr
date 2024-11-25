@@ -17,7 +17,7 @@ public sealed class QrCodeDelete : EndpointsBase
     { }
 
     [Function(nameof(QrCodeDelete))]
-    [OpenApiOperation("qr-codes/{id}", Tags.QrCode,
+    [OpenApiOperation(nameof(QrCodeDelete), Tags.QrCode,
        Summary = "Delete a specific new qr code.")
     ]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
