@@ -1,6 +1,0 @@
-@DynamicQR_HostAddress = http://localhost:5058
-
-GET {{DynamicQR_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
