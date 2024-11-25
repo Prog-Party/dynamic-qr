@@ -17,7 +17,7 @@ public class OpenApiHeaderOrganizationIdentifierAttribute : OpenApiParameterAttr
 
     public static bool TryGetAttribute(HttpRequestData req, out string value)
     {
-        if (req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
+        if (req.Headers.TryGetValues(HeaderName, out var headerValues))
         {
             value = headerValues.First();
             return true;
