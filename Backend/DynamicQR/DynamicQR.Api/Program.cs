@@ -1,4 +1,3 @@
-using DynamicQR.Api.Middleware;
 using DynamicQR.Application.Extensions;
 using DynamicQR.Infrastructure.Extensions;
 using Microsoft.Azure.Functions.Worker;
@@ -20,9 +19,12 @@ internal class Program
                 configurationBuilder.AddCommandLine(args);
             })
             .ConfigureFunctionsWebApplication()
+            //.ConfigureFunctionsWorkerDefaults(worker =>
+            //{
+            //    worker.UseMiddleware<ExceptionHandlingMiddleware>();
+            //})
             .ConfigureServices((context, services) =>
             {
-                services.AddTransient<ExceptionHandlingMiddleware>();
                 services.AddApplicationInsightsTelemetryWorkerService();
                 services.ConfigureFunctionsApplicationInsights();
                 services.AddApplicationServices();
