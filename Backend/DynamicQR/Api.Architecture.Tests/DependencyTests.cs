@@ -5,7 +5,7 @@ namespace Api.Architecture.Tests;
 
 public sealed class DependencyTests
 {
-    private readonly Assembly apiAssembly = typeof(DynamicQR.Api.EndPoints.QrCodes.QrCodeGet.QrCodeGet).Assembly;
+    private readonly Assembly apiAssembly = typeof(DynamicQR.Api.Endpoints.QrCodes.QrCodeGet.Endpoint).Assembly;
     private readonly Assembly coreAssembly = typeof(DynamicQR.Domain.Models.QrCode).Assembly;
     private readonly Assembly applicationAssembly = typeof(DynamicQR.Application.QrCodes.Commands.CreateQrCode.CommandHandler).Assembly;
     private readonly Assembly infrastructureAssembly = typeof(DynamicQR.Infrastructure.Services.QrCodeRepositoryService).Assembly;

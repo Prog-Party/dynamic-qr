@@ -8,15 +8,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Net;
 
-namespace DynamicQR.Api.EndPoints.QrCodes.QrCodeGet;
+namespace DynamicQR.Api.Endpoints.QrCodes.QrCodeGet;
 
-public sealed class QrCodeGet : EndPointsBase
+public sealed class Endpoint : EndpointsBase
 {
-    public QrCodeGet(IMediator mediator, ILoggerFactory loggerFactory) :
-        base(mediator, loggerFactory.CreateLogger<QrCodeGet>())
+    public Endpoint(IMediator mediator, ILoggerFactory loggerFactory) :
+        base(mediator, loggerFactory.CreateLogger<Endpoint>())
     { }
 
-    [Function(nameof(QrCodeGet))]
+    [Function(nameof(Endpoint))]
     [OpenApiOperation("qr-codes/{id}", Tags.QrCode,
        Summary = "Retrieve a certain qr code.")
     ]
@@ -28,7 +28,7 @@ public sealed class QrCodeGet : EndPointsBase
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "qr-codes/{id}")]
         HttpRequestData req, string id)
     {
-        _logger.LogInformation($"{typeof(QrCodeGet).FullName}.triggered");
+        _logger.LogInformation($"{typeof(Endpoint).FullName}.triggered");
 
         // Check if the header is present (place this in middleware)
         if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))

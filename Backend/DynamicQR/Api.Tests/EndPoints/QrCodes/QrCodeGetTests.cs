@@ -1,5 +1,5 @@
-﻿using Api.Tests.EndPoints.QrCodes.Mocks;
-using DynamicQR.Api.EndPoints.QrCodes.QrCodeGet;
+﻿using Api.Tests.Endpoints.QrCodes.Mocks;
+using DynamicQR.Api.Endpoints.QrCodes.QrCodeGet;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -9,19 +9,19 @@ using System.Drawing;
 using System.Net;
 using System.Text.Json;
 
-namespace Api.Tests.EndPoints.QrCodes;
+namespace Api.Tests.Endpoints.QrCodes;
 
 [ExcludeFromCodeCoverage]
 public sealed class QrCodeGetTests
 {
-    private readonly Mock<ILogger<QrCodeGet>> _loggerMock;
+    private readonly Mock<ILogger<Endpoint>> _loggerMock;
     private readonly Mock<ILoggerFactory> _loggerFactoryMock;
     private readonly Mock<IMediator> _mediatorMock;
-    private readonly QrCodeGet _function;
+    private readonly Endpoint _function;
 
     public QrCodeGetTests()
     {
-        _loggerMock = new Mock<ILogger<QrCodeGet>>();
+        _loggerMock = new Mock<ILogger<Endpoint>>();
         _loggerMock.Setup(x => x.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
@@ -34,7 +34,7 @@ public sealed class QrCodeGetTests
         _loggerFactoryMock = new Mock<ILoggerFactory>();
         _loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(() => _loggerMock.Object);
 
-        _function = new QrCodeGet(_mediatorMock.Object, _loggerFactoryMock.Object);
+        _function = new Endpoint(_mediatorMock.Object, _loggerFactoryMock.Object);
     }
 
     [Fact]

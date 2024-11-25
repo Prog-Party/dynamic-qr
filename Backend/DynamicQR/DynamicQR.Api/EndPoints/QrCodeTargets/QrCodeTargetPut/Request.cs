@@ -1,4 +1,4 @@
-﻿namespace DynamicQR.Api.EndPoints.QrCodeTargets.QrCodeTargetPut;
+﻿namespace DynamicQR.Api.Endpoints.QrCodeTargets.QrCodeTargetPut;
 
 public sealed record Request
 {
