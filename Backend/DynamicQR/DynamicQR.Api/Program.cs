@@ -18,11 +18,10 @@ internal class Program
             {
                 configurationBuilder.AddCommandLine(args);
             })
-            .ConfigureFunctionsWebApplication()
-            //.ConfigureFunctionsWorkerDefaults(worker =>
-            //{
-            //    worker.UseMiddleware<ExceptionHandlingMiddleware>();
-            //})
+            .ConfigureFunctionsWebApplication(worker =>
+            {
+                worker.UseMiddleware<DynamicQR.Api.Middleware.ExceptionHandlingMiddleware>();
+            })
             .ConfigureServices((context, services) =>
             {
                 services.AddApplicationInsightsTelemetryWorkerService();

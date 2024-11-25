@@ -18,7 +18,7 @@ public sealed class QrCodePost : EndpointsBase
     { }
 
     [Function(nameof(QrCodePost))]
-    [OpenApiOperation("qr-codes", Tags.QrCode,
+    [OpenApiOperation(nameof(QrCodePost), Tags.QrCode,
        Summary = "Create a new qr code.")
     ]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]

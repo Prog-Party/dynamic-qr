@@ -17,7 +17,7 @@ public sealed class QrCodeGet : EndpointsBase
     { }
 
     [Function(nameof(QrCodeGet))]
-    [OpenApiOperation("qr-codes/{id}", Tags.QrCode,
+    [OpenApiOperation(nameof(QrCodeGet), Tags.QrCode,
        Summary = "Retrieve a certain qr code.")
     ]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
@@ -30,6 +30,7 @@ public sealed class QrCodeGet : EndpointsBase
     {
         _logger.LogInformation($"{typeof(QrCodeGet).FullName}.triggered");
 
+        throw new NotImplementedException("TEST");
         // Check if the header is present (place this in middleware)
         if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
         {

@@ -1,7 +1,9 @@
-﻿using Microsoft.Azure.Functions.Worker;
+﻿using DynamicQR.Domain.Exceptions;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
-using System.Text.Json;
+using Microsoft.Azure.Storage;
+using System.Net;
 
 namespace DynamicQR.Api.Middleware;
 
@@ -10,43 +12,36 @@ namespace DynamicQR.Api.Middleware;
 /// </summary>
 public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
 {
-    public ExceptionHandlingMiddleware()
-    {
-    }
-
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
         try
         {
-            await next(context);
+            await next.Invoke(context);
         }
-        //catch (ItemNotFoundException e)
-        //{
-        //    HttpResponseData response = context.GetHttpResponseData();
-        //    response.StatusCode = HttpStatusCode.NotFound;
-        //    var message = $"Item could not be found in the database, message: {e.Message}";
-        //    await response.WriteStringAsync(message);
-        //}
-        //catch (StorageException e)
-        //{
-        //    HttpResponseData response = context.GetHttpResponseData();
-        //    response.StatusCode = HttpStatusCode.BadGateway;
-        //    var message = $"Database failed to execute request, message: {e.Message}";
-        //    await response.WriteStringAsync(message);
-        //}
         catch (Exception e)
         {
-            var request = await context.GetHttpRequestDataAsync();
-            var response = request!.CreateResponse();
-            response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+            var req = await context.GetHttpRequestDataAsync();
+            var res = req!.CreateResponse();
 
-            var errorMessage = new { Message = "An unhandled exception occurred. Please try again later", Exception = e.Message };
-            string responseBody = JsonSerializer.Serialize(errorMessage);
+            var statusCode = HttpStatusCode.InternalServerError;
+            var message = "An unexpected exception occurred. ";
 
-            await response.WriteStringAsync(responseBody);
+            switch (e)
+            {
+                case ItemNotFoundException:
+                    statusCode = HttpStatusCode.NotFound;
+                    message = "Item could not be found in the database.";
+                    break;
 
-            Console.WriteLine("Exception occurred");
-            context.GetInvocationResult().Value = response;
+                case StorageException:
+                    statusCode = HttpStatusCode.BadGateway;
+                    message = "Database failed to execute request.";
+                    break;
+            }
+
+            res.StatusCode = statusCode;
+            await res.WriteStringAsync(message + " - Error message: " + e.Message);
+            context.GetInvocationResult().Value = res;
         }
     }
 }
