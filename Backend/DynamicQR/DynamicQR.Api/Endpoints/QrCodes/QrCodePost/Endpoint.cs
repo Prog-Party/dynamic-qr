@@ -27,7 +27,7 @@ public sealed class QrCodePost : EndpointsBase
     [OpenApiJsonResponse(typeof(Response), HttpStatusCode.Created, Description = "Get a certain qr code")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
     {
-        var organizationId = req.GetAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
+        string organizationId = req.GetAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;
