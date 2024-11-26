@@ -21,7 +21,7 @@ public sealed class QrCodeGet : EndpointsBase
        Summary = "Retrieve a certain qr code.")
     ]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
-    [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
+    [OpenApiPathIdentifier]
     [OpenApiJsonResponse(typeof(Response), Description = "The retrieved qr code by its identifier")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]
     public async Task<HttpResponseData> RunAsync(
