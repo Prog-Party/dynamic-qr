@@ -21,6 +21,8 @@ internal class Program
             .ConfigureFunctionsWebApplication(worker =>
             {
                 worker.UseMiddleware<DynamicQR.Api.Middleware.ExceptionHandlingMiddleware>();
+                worker.UseMiddleware<DynamicQR.Api.Middleware.LogRequestMiddleware>();
+                worker.UseMiddleware<DynamicQR.Api.Middleware.ValidateHttpRequestMiddleware>();
             })
             .ConfigureServices((context, services) =>
             {

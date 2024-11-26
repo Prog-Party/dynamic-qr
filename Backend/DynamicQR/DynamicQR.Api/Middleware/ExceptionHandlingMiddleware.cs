@@ -1,13 +1,10 @@
-﻿using DynamicQR.Api.Attributes;
-using DynamicQR.Api.Extensions;
-using DynamicQR.Domain.Exceptions;
+﻿using DynamicQR.Domain.Exceptions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Azure.Storage;
 using Microsoft.Extensions.Logging;
 using System.Net;
-using System.Reflection;
 
 namespace DynamicQR.Api.Middleware;
 
@@ -27,20 +24,12 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
     {
         try
         {
-            var req = (await context.GetHttpRequestDataAsync())!;
-
-            _logger.LogInformation($"{context.FunctionDefinition.EntryPoint}.triggered");
-            _logger.LogInformation($"Url: {req.Url}");
-
-            if (!await EnsureAttributes(context, req))
-                return;
-
             await next.Invoke(context);
         }
         catch (Exception e)
         {
-            var req = await context.GetHttpRequestDataAsync();
-            var res = req!.CreateResponse();
+            HttpRequestData? req = await context.GetHttpRequestDataAsync();
+            HttpResponseData res = req!.CreateResponse();
 
             var statusCode = HttpStatusCode.InternalServerError;
             var message = "An unexpected exception occurred. ";
@@ -64,42 +53,5 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
             await res.WriteStringAsync($"{message} - Error message: {e.Message}");
             context.GetInvocationResult().Value = res;
         }
-    }
-
-    private static async Task<bool> EnsureAttributes(FunctionContext context, HttpRequestData req)
-    {
-        var functionAttributes = GetFunctionAttributes(context);
-
-        // If the function has the attribute OpenApiHeader OrganizationIdentifier,
-        // then the request must have the header as well
-        if (functionAttributes.Any(x => x is OpenApiHeaderOrganizationIdentifierAttribute)
-            && !req.HasAttribute<OpenApiHeaderOrganizationIdentifierAttribute>())
-        {
-            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            await errorResponse.WriteStringAsync($"Missing required header: {new OpenApiHeaderOrganizationIdentifierAttribute().Name}");
-            return false;
-        }
-
-        return true;
-    }
-
-    public static IEnumerable<Attribute> GetFunctionAttributes(FunctionContext context)
-    {
-        // Get the function name from the context
-        var functionName = context.FunctionDefinition.Name;
-
-        // Find the method associated with this function
-        var method = Assembly.GetExecutingAssembly()
-                             .GetTypes()
-                             .SelectMany(t => t.GetMethods())
-                             .FirstOrDefault(m => m.GetCustomAttribute<FunctionAttribute>()?.Name == functionName);
-
-        if (method != null)
-        {
-            // Return all attributes applied to the method
-            return method.GetCustomAttributes();
-        }
-
-        return Enumerable.Empty<Attribute>();
     }
 }
