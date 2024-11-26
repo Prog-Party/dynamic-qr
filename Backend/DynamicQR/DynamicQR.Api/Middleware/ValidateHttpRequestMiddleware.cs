@@ -43,7 +43,7 @@ public class ValidateHttpRequestMiddleware : IFunctionsWorkerMiddleware
         var functionAttributes = context.GetFunctionAttributes();
 
         if (functionAttributes.Any(x => x is OpenApiHeaderOrganizationIdentifierAttribute)
-            && !req.HasAttribute<OpenApiHeaderOrganizationIdentifierAttribute>())
+            && !req.HasHeaderAttribute<OpenApiHeaderOrganizationIdentifierAttribute>())
         {
             var message = $"Missing required header: {new OpenApiHeaderOrganizationIdentifierAttribute().Name}";
             HttpResponseData errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);

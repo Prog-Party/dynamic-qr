@@ -29,7 +29,7 @@ public sealed class QrCodeGet : EndpointsBase
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "qr-codes/{id}")]
         HttpRequestData req, string id)
     {
-        string organizationId = req.GetAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
+        string organizationId = req.GetHeaderAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
         Application.QrCodes.Queries.GetQrCode.Request coreRequest = new() { Id = id, OrganizationId = organizationId };
 

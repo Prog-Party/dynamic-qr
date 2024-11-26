@@ -3,19 +3,12 @@ using Microsoft.OpenApi.Models;
 
 namespace DynamicQR.Api.Attributes;
 
-public abstract class OpenApiHeaderAttribute : OpenApiParameterAttribute
-{
-    public OpenApiHeaderAttribute(string name) : base(name)
-    {
-        In = ParameterLocation.Header;
-        Required = true;
-    }
-}
-
-public class OpenApiHeaderOrganizationIdentifierAttribute : OpenApiHeaderAttribute
+public class OpenApiHeaderOrganizationIdentifierAttribute : OpenApiParameterAttribute
 {
     public OpenApiHeaderOrganizationIdentifierAttribute() : base("Organization-Identifier")
     {
-        Description = "The organization identifier.";
+        Description = "The organization identifier";
+        In = ParameterLocation.Header;
+        Required = true;
     }
 }
