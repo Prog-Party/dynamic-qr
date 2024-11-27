@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" name="Dynamic QR" id="id-8982224ff594455690562eff69309d10" version="5.0.0">
+  <folder name="Strategy" id="id-725f27ce75ab42a78385eab13ab847b2" type="strategy"/>
+  <folder name="Business" id="id-458551741f6c4ddd943591e9937a735e" type="business"/>
+  <folder name="Application" id="id-b0412cdc85d34f4f98aa217531a57bae" type="application"/>
+  <folder name="Technology &amp; Physical" id="id-27a42d6f7bfd4ff889bcd907bfd80845" type="technology"/>
+  <folder name="Motivation" id="id-3b2186c51ced4e53b976eec6ee260fd6" type="motivation"/>
+  <folder name="Implementation &amp; Migration" id="id-51c6b661623e4ae6bf3e7fab420ab5ef" type="implementation_migration"/>
+  <folder name="Other" id="id-9751aaae45be4addaba9a768a854f502" type="other"/>
+  <folder name="Relations" id="id-5feb2c537a6b42508b284010f9d09eb2" type="relations"/>
+  <folder name="Views" id="id-76a9658f54924283b2be61661078a231" type="diagrams">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="Default View" id="id-21d7f653633f48ba9c0625ca08bf59b4"/>
+  </folder>
+</archimate:model>
