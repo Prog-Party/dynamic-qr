@@ -24,6 +24,7 @@ public sealed class QrCodePost : EndpointsBase
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), HttpStatusCode.Created, Description = "Get a certain qr code")]
+    [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway)]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
     {
         _logger.LogInformation($"{typeof(QrCodePost).FullName}.triggered");
@@ -51,7 +52,7 @@ public sealed class QrCodePost : EndpointsBase
         }
         catch (StorageException)
         {
-            return await CreateJsonResponse(req, null, HttpStatusCode.BadGateway);
+            return req.CreateResponse(HttpStatusCode.BadGateway);
         }
 
         Response? responseContent = coreResponse.ToContract();
