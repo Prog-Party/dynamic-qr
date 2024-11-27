@@ -22,8 +22,8 @@ public sealed class QrCodePut : EndpointsBase
     [OpenApiOperation(nameof(QrCodePut), Tags.QrCode,
        Summary = "Update a certain qr code.")
     ]
-    [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
     [OpenApiHeaderOrganizationIdentifier]
+    [OpenApiPathIdentifier]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]

@@ -1,4 +1,5 @@
-﻿using DynamicQR.Domain.Exceptions;
+﻿using DynamicQR.Api.Attributes;
+using DynamicQR.Domain.Exceptions;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -21,7 +22,7 @@ public sealed class QrCodeDelete : EndpointsBase
        Summary = "Delete a specific new qr code.")
     ]
     [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
-    [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
+    [OpenApiPathIdentifier]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway)]
     [OpenApiResponseWithoutBody(HttpStatusCode.NotFound)]
     [OpenApiResponseWithoutBody(HttpStatusCode.NoContent)]
