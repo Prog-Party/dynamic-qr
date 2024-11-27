@@ -1,4 +1,5 @@
 using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Extensions;
 using DynamicQR.Api.Mappers;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
@@ -18,26 +19,16 @@ public sealed class QrCodePost : EndpointsBase
     { }
 
     [Function(nameof(QrCodePost))]
-    [OpenApiOperation("qr-codes", Tags.QrCode,
+    [OpenApiOperation(nameof(QrCodePost), Tags.QrCode,
        Summary = "Create a new qr code.")
     ]
-    [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
+    [OpenApiHeaderOrganizationIdentifier]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), HttpStatusCode.Created, Description = "Get a certain qr code")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway)]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
     {
-        _logger.LogInformation($"{typeof(QrCodePost).FullName}.triggered");
-
-        // Check if the header is present (place this in middleware)
-        if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
-        {
-            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            errorResponse.WriteString("Missing required header: Organization-Identifier");
-            return errorResponse;
-        }
-
-        var organizationId = headerValues.First();
+        string organizationId = req.GetHeaderAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;
