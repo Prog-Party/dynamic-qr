@@ -32,7 +32,7 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
             HttpResponseData res = req!.CreateResponse();
 
             var statusCode = HttpStatusCode.InternalServerError;
-            var message = "An unexpected exception occurred. ";
+            var message = "An unexpected exception occurred.";
 
             switch (e)
             {
