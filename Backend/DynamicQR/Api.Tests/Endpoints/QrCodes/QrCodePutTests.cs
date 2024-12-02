@@ -58,7 +58,7 @@ public sealed class QrCodePutTests
         var req = HttpRequestDataHelper.CreateWithJsonBody(HttpMethod.Put, new Dictionary<string, string>
         {
             { "Organization-Identifier", "org-123" }
-        }, null);
+        }, null!);
 
         string id = "qr123";
 
