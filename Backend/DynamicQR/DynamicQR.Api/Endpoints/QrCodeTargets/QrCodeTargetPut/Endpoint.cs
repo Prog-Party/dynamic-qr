@@ -18,17 +18,15 @@ public sealed class QrCodeTargetPut : EndpointsBase
     { }
 
     [Function(nameof(QrCodeTargetPut))]
-    [OpenApiOperation("qr-code-targets/{id}", Tags.QrCodeTarget,
+    [OpenApiOperation(nameof(QrCodeTargetPut), Tags.QrCodeTarget,
        Summary = "Update a certain qr code target.")
     ]
-    [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Identifier")]
+    [OpenApiPathIdentifier]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code target")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Description = "No qr code target found with the given identifier.")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-code-targets/{id}")] HttpRequestData req, string id)
     {
-        _logger.LogInformation($"{typeof(QrCodeTargetPut).FullName}.triggered");
-
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;
 

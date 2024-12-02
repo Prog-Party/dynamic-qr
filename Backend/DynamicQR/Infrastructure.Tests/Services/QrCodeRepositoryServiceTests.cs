@@ -1,6 +1,5 @@
 ﻿using Azure;
 using Azure.Data.Tables;
-using DynamicQR.Application.QrCodes.Commands.CreateQrCode;
 using DynamicQR.Domain.Exceptions;
 using DynamicQR.Domain.Models;
 using DynamicQR.Infrastructure.Services;
@@ -15,18 +14,19 @@ namespace Infrastructure.Tests.Services;
 public sealed class QrCodeRepositoryServiceTests
 {
     private readonly Mock<TableClient> _tableClientMock;
+    private readonly Mock<TableServiceClient> _tableServiceClientMock;
     private readonly QrCodeRepositoryService _repositoryService;
 
     public QrCodeRepositoryServiceTests()
     {
-        var tableServiceClientMock = new Mock<TableServiceClient>();
         _tableClientMock = new Mock<TableClient>();
+        _tableServiceClientMock = new Mock<TableServiceClient>();
 
-        tableServiceClientMock
-            .Setup(client => client.GetTableClient("qrcodes"))
+        _tableServiceClientMock
+            .Setup(client => client.GetTableClient(It.IsAny<string>()))
             .Returns(_tableClientMock.Object);
 
-        _repositoryService = new QrCodeRepositoryService(tableServiceClientMock.Object);
+        _repositoryService = new QrCodeRepositoryService(_tableServiceClientMock.Object);
     }
 
     [Fact]
@@ -44,24 +44,24 @@ public sealed class QrCodeRepositoryServiceTests
     {
         // Arrange
         var organizationId = "org123";
-        var qrCode = new QrCode { Id = "qr123", Value = "SampleValue" };
+        var qrCode = new QrCode { Id = "qr123" };
 
         _tableClientMock
             .Setup(client => client.AddEntityAsync(It.IsAny<DynamicQR.Infrastructure.Entities.QrCode>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Response.FromValue(new Mock<Response>().Object, new Mock<Response>().Object));
+            .ReturnsAsync(Azure.Response.FromValue(new Mock<Azure.Response>().Object, new Mock<Azure.Response>().Object));
 
         // Act
         await _repositoryService.CreateAsync(organizationId, qrCode, CancellationToken.None);
 
         // Assert
-        _tableClientMock.Verify(client => client.AddEntityAsync(It.IsAny<Entities.QrCode>(), It.IsAny<CancellationToken>()), Times.Once);
+        _tableClientMock.Verify(client => client.AddEntityAsync(It.IsAny<DynamicQR.Infrastructure.Entities.QrCode>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
     public async Task CreateAsync_NullOrganizationId_ShouldThrowArgumentNullException()
     {
         // Arrange
-        var qrCode = new QrCode { Id = "qr123", Value = "SampleValue" };
+        var qrCode = new QrCode { Id = "qr123" };
 
         // Act
         Func<Task> act = async () => await _repositoryService.CreateAsync(null!, qrCode, CancellationToken.None);
@@ -89,20 +89,19 @@ public sealed class QrCodeRepositoryServiceTests
         // Arrange
         var organizationId = "org123";
         var id = "qr123";
-        var qrCodeEntity = new Entities.QrCode { PartitionKey = organizationId, RowKey = id, Value = "SampleValue" };
+        var qrCodeEntity = new DynamicQR.Infrastructure.Entities.QrCode { PartitionKey = organizationId, RowKey = id };
 
         _tableClientMock
-            .Setup(client => client.GetEntityIfExistsAsync<Entities.QrCode>(organizationId, id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Response.FromValue(qrCodeEntity, new Mock<Response>().Object));
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Azure.Response.FromValue(qrCodeEntity, new Mock<Azure.Response>().Object));
 
         // Act
         var result = await _repositoryService.ReadAsync(organizationId, id, CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull();
-        result.Value.Should().Be("SampleValue");
 
-        _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<Entities.QrCode>(organizationId, id, It.IsAny<CancellationToken>()), Times.Once);
+        _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -113,8 +112,8 @@ public sealed class QrCodeRepositoryServiceTests
         var id = "nonexistentId";
 
         _tableClientMock
-            .Setup(client => client.GetEntityIfExistsAsync<Entities.QrCode>(organizationId, id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Response.FromValue<Entities.QrCode>(null, new Mock<Response>().Object));
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Azure.Response.FromValue<DynamicQR.Infrastructure.Entities.QrCode>(null!, new Mock<Azure.Response>().Object));
 
         // Act
         Func<Task> act = async () => await _repositoryService.ReadAsync(organizationId, id, CancellationToken.None);
@@ -122,7 +121,7 @@ public sealed class QrCodeRepositoryServiceTests
         // Assert
         await act.Should().ThrowAsync<StorageException>();
 
-        _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<Entities.QrCode>(organizationId, id, It.IsAny<CancellationToken>()), Times.Once);
+        _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -130,22 +129,22 @@ public sealed class QrCodeRepositoryServiceTests
     {
         // Arrange
         var organizationId = "org123";
-        var qrCode = new QrCode { Id = "qr123", Value = "UpdatedValue" };
-        var qrCodeEntity = new Entities.QrCode { PartitionKey = organizationId, RowKey = qrCode.Id, Value = "OldValue", ETag = new ETag("*") };
+        var qrCode = new QrCode { Id = "qr123" };
+        var qrCodeEntity = new DynamicQR.Infrastructure.Entities.QrCode { PartitionKey = organizationId, RowKey = qrCode.Id, ImageUrl = "OldValue", ETag = new ETag("*") };
 
         _tableClientMock
-            .Setup(client => client.GetEntityIfExistsAsync<Entities.QrCode>(organizationId, qrCode.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Response.FromValue(qrCodeEntity, new Mock<Response>().Object));
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, qrCode.Id, null, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Azure.Response.FromValue(qrCodeEntity, new Mock<Azure.Response>().Object));
 
         _tableClientMock
-            .Setup(client => client.UpdateEntityAsync(It.IsAny<Entities.QrCode>(), It.IsAny<ETag>(), TableUpdateMode.Merge, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Response.FromValue(new Mock<Response>().Object, new Mock<Response>().Object));
+            .Setup(client => client.UpdateEntityAsync(It.IsAny<DynamicQR.Infrastructure.Entities.QrCode>(), It.IsAny<ETag>(), TableUpdateMode.Merge, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Azure.Response.FromValue(new Mock<Azure.Response>().Object, new Mock<Azure.Response>().Object));
 
         // Act
         await _repositoryService.UpdateAsync(organizationId, qrCode, CancellationToken.None);
 
         // Assert
-        _tableClientMock.Verify(client => client.UpdateEntityAsync(It.IsAny<Entities.QrCode>(), It.IsAny<ETag>(), TableUpdateMode.Merge, It.IsAny<CancellationToken>()), Times.Once);
+        _tableClientMock.Verify(client => client.UpdateEntityAsync(It.IsAny<DynamicQR.Infrastructure.Entities.QrCode>(), It.IsAny<ETag>(), TableUpdateMode.Merge, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -156,8 +155,8 @@ public sealed class QrCodeRepositoryServiceTests
         var id = "nonexistentId";
 
         _tableClientMock
-            .Setup(client => client.GetEntityIfExistsAsync<Entities.QrCode>(organizationId, id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Response.FromValue<Entities.QrCode>(null, new Mock<Response>().Object));
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Azure.Response.FromValue<DynamicQR.Infrastructure.Entities.QrCode>(null!, new Mock<Azure.Response>().Object));
 
         // Act
         Func<Task> act = async () => await _repositoryService.DeleteAsync(organizationId, id, CancellationToken.None);
@@ -165,6 +164,6 @@ public sealed class QrCodeRepositoryServiceTests
         // Assert
         await act.Should().ThrowAsync<QrCodeNotFoundException>();
 
-        _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<Entities.QrCode>(organizationId, id, It.IsAny<CancellationToken>()), Times.Once);
+        _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()), Times.Once);
     }
 }
