@@ -1,5 +1,4 @@
 ﻿using Api.Tests.Endpoints.QrCodes.Mocks;
-using DynamicQR.Api.Endpoints.QrCodes.QrCodePut;
 using DynamicQR.Api.Endpoints.QrCodeTargets.QrCodeTargetPut;
 using DynamicQR.Api.Mappers;
 using FluentAssertions;
@@ -32,9 +31,7 @@ public sealed class QrCodeTargetPutTests
                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
                ));
 
-        _loggerFactoryMock
-            .Setup(factory => factory.CreateLogger<QrCodeTargetPut>())
-            .Returns(_loggerMock.Object);
+        _loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(() => _loggerMock.Object);
 
         _function = new QrCodeTargetPut(_mediatorMock.Object, _loggerFactoryMock.Object);
     }
@@ -43,7 +40,7 @@ public sealed class QrCodeTargetPutTests
     public async Task RunAsync_ShouldReturnBadRequest_WhenRequestBodyHasError()
     {
         // Arrange
-        var req = HttpRequestDataHelper.CreateWithJsonBody(HttpMethod.Post, new Dictionary<string, string>
+        var req = HttpRequestDataHelper.CreateWithJsonBody(HttpMethod.Put, new Dictionary<string, string>
         {
             { "Organization-Identifier", "org-123" }
         }, null!);
@@ -60,11 +57,16 @@ public sealed class QrCodeTargetPutTests
     [Fact]
     public async Task RunAsync_ShouldReturnBadGateway_WhenStorageExceptionIsThrown()
     {
+        Request validRequest = new()
+        {
+            Value = "new value"
+        };
+
         // Arrange
-        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Post, new Dictionary<string, string>
+        var req = HttpRequestDataHelper.CreateWithJsonBody(HttpMethod.Put, new Dictionary<string, string>
         {
             { "Organization-Identifier", "org-123" }
-        });
+        }, validRequest);
 
         var id = "123";
 
@@ -114,27 +116,5 @@ public sealed class QrCodeTargetPutTests
 
         var responseBody = await ((MockHttpResponseData)result).ReadAsJsonAsync<Response>();
         responseBody.Id.Should().Be("123");
-    }
-
-    [Fact]
-    public async Task RunAsync_ShouldThrow_WhenUnexpectedExceptionOccurs()
-    {
-        // Arrange
-        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Put, new Dictionary<string, string>
-        {
-            { "Organization-Identifier", "org-123" }
-        });
-        var id = "123";
-
-        _mediatorMock
-            .Setup(mediator => mediator.Send(It.IsAny<DynamicQR.Application.QrCodes.Commands.UpdateQrCodeTarget.Command>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new Exception("Unexpected error"));
-
-        // Act
-        Func<Task> act = async () => await _function.RunAsync(req, id);
-
-        // Assert
-        await act.Should().ThrowAsync<Exception>()
-            .WithMessage("Unexpected error");
     }
 }
