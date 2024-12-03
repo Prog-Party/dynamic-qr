@@ -40,7 +40,7 @@ public sealed class QrCodeTargetPut : EndpointsBase
         }
         catch (StorageException)
         {
-            return await CreateJsonResponse(req, null, HttpStatusCode.BadGateway);
+            return req.CreateResponse(HttpStatusCode.BadGateway);
         }
 
         Response? responseContent = coreResponse.ToContract();
