@@ -8,6 +8,7 @@ using Microsoft.Azure.Storage;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Moq;
 using System.Net;
 
 namespace DynamicQR.Api.Endpoints.QrCodes.QrCodePost;
@@ -39,7 +40,7 @@ public sealed class QrCodePost : EndpointsBase
 
         try
         {
-            coreResponse = await _mediator.Send(coreCommand);
+            coreResponse = await _mediator.Send(coreCommand!, It.IsAny<CancellationToken>());
         }
         catch (StorageException)
         {

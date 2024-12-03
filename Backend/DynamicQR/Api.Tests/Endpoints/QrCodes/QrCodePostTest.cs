@@ -57,7 +57,7 @@ public sealed class QrCodePostTest
         var req = HttpRequestDataHelper.CreateWithJsonBody(HttpMethod.Post, new Dictionary<string, string>
         {
             { "Organization-Identifier", "org-123" }
-        }, null);
+        }, null!);
 
         // Act
         var result = await _function.RunAsync(req);

@@ -13,6 +13,8 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
 
     public QrCodeRepositoryService(TableServiceClient tableServiceClient)
     {
+        ArgumentNullException.ThrowIfNull(tableServiceClient);
+
         _tableClient = tableServiceClient.GetTableClient(tableName: "qrcodes");
     }
 

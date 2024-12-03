@@ -65,7 +65,7 @@ public sealed class QrCodeGetTests
 
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<DynamicQR.Application.QrCodes.Queries.GetQrCode.Request>(), default))
-            .ReturnsAsync((DynamicQR.Application.QrCodes.Queries.GetQrCode.Response)null);
+            .ReturnsAsync((DynamicQR.Application.QrCodes.Queries.GetQrCode.Response)null!);
 
         // Act
         var response = await _function.RunAsync(req, id);

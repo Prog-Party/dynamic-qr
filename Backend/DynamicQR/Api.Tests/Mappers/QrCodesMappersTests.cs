@@ -16,7 +16,7 @@ public sealed class QrCodesMappersTests
         string organizationId = "org123";
 
         // Act
-        var result = QrCodesMappers.ToCore(request, organizationId);
+        var result = QrCodesMappers.ToCore(request!, organizationId);
 
         // Assert
         result.Should().BeNull();
@@ -61,7 +61,7 @@ public sealed class QrCodesMappersTests
         DynamicQR.Application.QrCodes.Commands.CreateQrCode.Response? response = null;
 
         // Act
-        var result = QrCodesMappers.ToContract(response);
+        var result = QrCodesMappers.ToContract(response!);
 
         // Assert
         result.Should().BeNull();
@@ -91,7 +91,7 @@ public sealed class QrCodesMappersTests
         DynamicQR.Application.QrCodes.Queries.GetQrCode.Response? response = null;
 
         // Act
-        var result = QrCodesMappers.ToContract(response);
+        var result = QrCodesMappers.ToContract(response!);
 
         // Assert
         result.Should().BeNull();
@@ -133,7 +133,7 @@ public sealed class QrCodesMappersTests
         string organizationId = "org123";
 
         // Act
-        var result = QrCodesMappers.ToCore(request, id, organizationId);
+        var result = QrCodesMappers.ToCore(request!, id, organizationId);
 
         // Assert
         result.Should().BeNull();
@@ -178,7 +178,7 @@ public sealed class QrCodesMappersTests
         DynamicQR.Application.QrCodes.Commands.UpdateQrCode.Response? response = null;
 
         // Act
-        var result = QrCodesMappers.ToContract(response);
+        var result = QrCodesMappers.ToContract(response!);
 
         // Assert
         result.Should().BeNull();
