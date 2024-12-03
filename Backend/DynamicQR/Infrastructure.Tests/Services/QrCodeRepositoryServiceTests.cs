@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Azure.Core;
 using Azure.Data.Tables;
 using DynamicQR.Domain.Exceptions;
 using DynamicQR.Domain.Models;
@@ -7,6 +8,7 @@ using FluentAssertions;
 using Microsoft.Azure.Storage;
 using Moq;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Infrastructure.Tests.Services;
 
@@ -113,7 +115,7 @@ public sealed class QrCodeRepositoryServiceTests
 
         _tableClientMock
             .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Azure.Response.FromValue<DynamicQR.Infrastructure.Entities.QrCode>(null!, new Mock<Azure.Response>().Object));
+            .ReturnsAsync(new MockNullableResponse<DynamicQR.Infrastructure.Entities.QrCode>(404));
 
         // Act
         Func<Task> act = async () => await _repositoryService.ReadAsync(organizationId, id, CancellationToken.None);
@@ -156,7 +158,7 @@ public sealed class QrCodeRepositoryServiceTests
 
         _tableClientMock
             .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Azure.Response.FromValue<DynamicQR.Infrastructure.Entities.QrCode>(null!, new Mock<Azure.Response>().Object));
+            .ReturnsAsync(new MockNullableResponse<DynamicQR.Infrastructure.Entities.QrCode>(404));
 
         // Act
         Func<Task> act = async () => await _repositoryService.DeleteAsync(organizationId, id, CancellationToken.None);
@@ -165,5 +167,88 @@ public sealed class QrCodeRepositoryServiceTests
         await act.Should().ThrowAsync<QrCodeNotFoundException>();
 
         _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_NotFound_ShouldThrowStorageException()
+    {
+        // Arrange
+        var organizationId = "org123";
+        var id = "nonexistentId";
+
+        //// Create a mock of Azure.Response
+        //var mockResponse = new Mock<Response>();
+
+        //// Setup the IsError property to return true
+        //mockResponse.Setup(response => response.IsError).Returns(true);
+
+        //// You can also mock other members of the Response class as needed
+        //mockResponse.Setup(response => response.Status).Returns(500); // Example status code
+        //mockResponse.Setup(response => response.ReasonPhrase).Returns("Internal Server Error");
+
+        //// Use the mocked Response object
+        //Response mockedResponse = mockResponse.Object;
+
+        DynamicQR.Infrastructure.Entities.QrCode qrCode = new()
+        {
+            IncludeMargin = true,
+            BackgroundColor = "#FFFFFF",
+            ForegroundColor = "#000000",
+            ImageUrl = string.Empty,
+            ImageHeight = 256,
+            ImageWidth = 256,
+            PartitionKey = "PartitionKey",
+            RowKey = "RowKey"
+        };
+
+        var mockResponse = new Mock<Response>();
+
+        // Configure the mock response to simulate an error
+        mockResponse
+            .Setup(r => r.IsError)
+            .Returns(true);
+        mockResponse
+            .Setup(r => r.ReasonPhrase)
+            .Returns("Mocked Error: Entity not found.");
+
+        _tableClientMock
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Azure.Response.FromValue(qrCode, new Mock<Azure.Response>().Object));
+
+        _tableClientMock
+            .Setup(tc => tc.DeleteEntityAsync(
+                It.IsAny<string>(), // PartitionKey
+                It.IsAny<string>(), // RowKey
+                It.IsAny<ETag>(),   // ETag
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(mockResponse.Object);
+
+        // Act
+        Func<Task> act = async () => await _repositoryService.DeleteAsync(organizationId, id, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<StorageException>();
+
+        _tableClientMock.Verify(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCode>(organizationId, id, null, It.IsAny<CancellationToken>()), Times.Once);
+        _tableClientMock.Verify(client => client.DeleteEntityAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ETag>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    public class MockNullableResponse<T> : NullableResponse<T>
+    {
+        private readonly int _status;
+
+        public MockNullableResponse(int status)
+        {
+            _status = status;
+        }
+
+        public override bool HasValue => false;
+
+        public override T? Value => default;
+
+        public override Response GetRawResponse()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

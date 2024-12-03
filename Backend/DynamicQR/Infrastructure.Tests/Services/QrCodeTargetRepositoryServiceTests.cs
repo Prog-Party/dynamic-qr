@@ -42,7 +42,7 @@ public sealed class QrCodeTargetRepositoryServiceTests
     {
         // Arrange
         var qrCodeTarget = new QrCodeTarget { QrCodeId = "123", Value = "TestValue" };
-        var qrCodeTargetEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "Value", RowKey = "123", Value = "TestValue" };
+        var qrCodeTargetEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "123", RowKey = "123", Value = "TestValue" };
 
         _tableClientMock
             .Setup(client => client.AddEntityAsync(qrCodeTargetEntity, It.IsAny<CancellationToken>()))
@@ -53,7 +53,7 @@ public sealed class QrCodeTargetRepositoryServiceTests
 
         // Assert
         _tableClientMock.Verify(client => client.AddEntityAsync(It.Is<DynamicQR.Infrastructure.Entities.QrCodeTarget>(
-            entity => entity.PartitionKey == "Value" && entity.RowKey == "123"), It.IsAny<CancellationToken>()), Times.Once);
+            entity => entity.PartitionKey == "123" && entity.RowKey == "123"), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -61,10 +61,10 @@ public sealed class QrCodeTargetRepositoryServiceTests
     {
         // Arrange
         var id = "123";
-        var qrCodeTargetEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "Value", RowKey = id, Value = "TestValue" };
+        var qrCodeTargetEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = id, RowKey = id, Value = "TestValue" };
 
         _tableClientMock
-            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCodeTarget>("Value", id, null, It.IsAny<CancellationToken>()))
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCodeTarget>(id, id, null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(Response.FromValue(qrCodeTargetEntity, new Mock<Response>().Object));
 
         // Act
@@ -80,11 +80,11 @@ public sealed class QrCodeTargetRepositoryServiceTests
     {
         // Arrange
         var qrCodeTarget = new QrCodeTarget { QrCodeId = "123", Value = "UpdatedValue" };
-        var existingEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "Value", RowKey = "123", Value = "OriginalValue", ETag = new ETag("*") };
-        var updatedEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "Value", RowKey = "123", Value = "UpdatedValue", ETag = new ETag("*") };
+        var existingEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "123", RowKey = "123", Value = "OriginalValue", ETag = new ETag("*") };
+        var updatedEntity = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "123", RowKey = "123", Value = "UpdatedValue", ETag = new ETag("*") };
 
         _tableClientMock
-            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCodeTarget>("Value", qrCodeTarget.QrCodeId, null, It.IsAny<CancellationToken>()))
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCodeTarget>("123", qrCodeTarget.QrCodeId, null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(Response.FromValue(existingEntity, new Mock<Response>().Object));
 
         _tableClientMock
@@ -104,14 +104,14 @@ public sealed class QrCodeTargetRepositoryServiceTests
     {
         // Arrange
         var id = "123";
-        var entityToDelete = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = "Value", RowKey = id, ETag = new ETag("*") };
+        var entityToDelete = new DynamicQR.Infrastructure.Entities.QrCodeTarget { PartitionKey = id, RowKey = id, ETag = new ETag("*") };
 
         _tableClientMock
-            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCodeTarget>("Value", id, null, It.IsAny<CancellationToken>()))
+            .Setup(client => client.GetEntityIfExistsAsync<DynamicQR.Infrastructure.Entities.QrCodeTarget>(id, id, null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(Response.FromValue(entityToDelete, new Mock<Response>().Object));
 
         _tableClientMock
-            .Setup(client => client.DeleteEntityAsync("Value", id, It.IsAny<ETag>(), It.IsAny<CancellationToken>()))
+            .Setup(client => client.DeleteEntityAsync(id, id, It.IsAny<ETag>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new Mock<Response>().Object);
 
         // Act
@@ -119,6 +119,6 @@ public sealed class QrCodeTargetRepositoryServiceTests
 
         // Assert
         _tableClientMock.Verify(client => client.DeleteEntityAsync(
-            "Value", id, It.IsAny<ETag>(), It.IsAny<CancellationToken>()), Times.Once);
+            id, id, It.IsAny<ETag>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

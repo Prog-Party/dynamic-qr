@@ -34,7 +34,7 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
     {
         ArgumentNullException.ThrowIfNull(id);
 
-        Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>("Value", id, cancellationToken: cancellationToken);
+        Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>(id, id, cancellationToken: cancellationToken);
 
         if (data.HasValue)
             return data.Value!.ToCore();
@@ -47,7 +47,7 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
         ArgumentNullException.ThrowIfNull(qrCodeTarget);
         Entities.QrCodeTarget qrCodeTargetInput = QrCodeTargetMappers.ToInfrastructure(qrCodeTarget);
 
-        Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>("Value", qrCodeTarget.QrCodeId, cancellationToken: cancellationToken);
+        Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>(qrCodeTarget.QrCodeId, qrCodeTarget.QrCodeId, cancellationToken: cancellationToken);
 
         if (!data.HasValue)
             throw new QrCodeTargetNotFoundException(qrCodeTarget.QrCodeId);

@@ -15,7 +15,7 @@ public sealed class QrCodeTargetsMappersTests
         string id = "qr123";
 
         // Act
-        var result = QrCodeTargetsMappers.ToCore(request, id);
+        var result = QrCodeTargetsMappers.ToCore(request!, id);
 
         // Assert
         result.Should().BeNull();
@@ -47,7 +47,7 @@ public sealed class QrCodeTargetsMappersTests
         DynamicQR.Application.QrCodes.Commands.UpdateQrCodeTarget.Response? response = null;
 
         // Act
-        var result = QrCodeTargetsMappers.ToContract(response);
+        var result = QrCodeTargetsMappers.ToContract(response!);
 
         // Assert
         result.Should().BeNull();

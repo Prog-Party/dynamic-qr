@@ -11,7 +11,7 @@ public class MockHttpRequestData : HttpRequestData
     private readonly MemoryStream _bodyStream;
     private readonly HttpMethod _method;
 
-    public MockHttpRequestData(FunctionContext context, HttpMethod method, Dictionary<string, string>? headers = null, object body = null)
+    public MockHttpRequestData(FunctionContext context, HttpMethod method, Dictionary<string, string>? headers = null, object body = null!)
         : base(context)
     {
         Headers = new HttpHeadersCollection();
