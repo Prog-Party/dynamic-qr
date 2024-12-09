@@ -9,10 +9,11 @@ on:
       - main
     paths:
       - Backend/**
+      - '.github/workflows/backend.yml' #set this to the path to this file
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './Backend/DynamicQr/DynamicQr.Api' # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './Backend/DynamicQr.Api' # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
 
 jobs:
