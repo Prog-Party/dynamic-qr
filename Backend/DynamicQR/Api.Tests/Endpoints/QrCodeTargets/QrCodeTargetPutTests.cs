@@ -1,5 +1,4 @@
 ﻿using Api.Tests.Endpoints.QrCodes.Mocks;
-using DynamicQR.Api.Endpoints.QrCodes.QrCodePut;
 using DynamicQR.Api.Endpoints.QrCodeTargets.QrCodeTargetPut;
 using DynamicQR.Api.Mappers;
 using FluentAssertions;
