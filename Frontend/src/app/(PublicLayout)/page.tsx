@@ -1,9 +1,8 @@
 'use client'
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
+import PageContainer from '@/app/components/container/PageContainer';
+import GenerateStaticQr from '@/app/components/generate/GenerateStaticQR';
+import DashboardCard from '@/app/components/shared/DashboardCard';
 import { Box, Grid, Typography } from '@mui/material';
-// components
-import GenerateStaticQr from './components/generate/GenerateStaticQR';
-import DashboardCard from './components/shared/DashboardCard';
 
 const Dashboard = () => {
 

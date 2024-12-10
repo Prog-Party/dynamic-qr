@@ -1,6 +1,6 @@
 'use client';
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
+import PageContainer from '@/app/components/container/PageContainer';
+import DashboardCard from '@/app/components/shared/DashboardCard';
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from '@mui/material';
 

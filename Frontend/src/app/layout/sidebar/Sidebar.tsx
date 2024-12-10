@@ -89,9 +89,11 @@ const MSidebar = ({
               {/* ------------------------------------------- */}
               {/* Logo */}
               {/* ------------------------------------------- */}
-              <a href="/">
-                <Logo img="/images/logos/Logo-64x64.png" />
-              </a>
+
+              <Logo img="/images/logos/Logo-64x64.png" style={{
+                width: '32px',
+                height: '32px',
+              }} />
               <Box>
                 {/* ------------------------------------------- */}
                 {/* Sidebar Items */}
