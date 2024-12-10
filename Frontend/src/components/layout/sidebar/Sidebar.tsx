@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Box, Drawer, useMediaQuery } from "@mui/material";
+import Link from 'next/link';
 import { useEffect, useState } from "react";
 import { Logo, Sidebar } from 'react-mui-sidebar';
 import SidebarItems from "./SidebarItems";
@@ -139,9 +140,9 @@ const MSidebar = ({
           {/* Logo */}
           {/* ------------------------------------------- */}
 
-          <a href="/">
+          <Link href="/">
             <Logo img="/images/logos/Logo-64x64.png" />
-          </a>
+          </Link>
           {/* ------------------------------------------- */}
           {/* Sidebar Items */}
           {/* ------------------------------------------- */}

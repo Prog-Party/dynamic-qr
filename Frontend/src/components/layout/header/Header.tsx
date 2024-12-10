@@ -3,6 +3,7 @@ import Loading from "@/components/Loading";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AppBar, Badge, Box, IconButton, List, Stack, styled, Toolbar, useMediaQuery } from '@mui/material';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
+import Link from 'next/link';
 import { usePathname } from "next/navigation";
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -79,9 +80,9 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         {/* Logo */}
         {/* ------------------------------------------- */}
         {lgUp && !isAuthenticated && (
-          <a href="/">
+          <Link href="/">
             <Logo img="/images/logos/Logo-64x64.png" />
-          </a>
+          </Link>
         )}
 
         {lgUp && (
