@@ -12,7 +12,8 @@ public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        string connectionString = configuration.GetConnectionString("QrCodeStorageConnection");
+        //string connectionString = configuration.GetConnectionString("QrCodeStorageConnection");
+        string? connectionString = Environment.GetEnvironmentVariable("QrCodeStorageConnection");
 
         if (string.IsNullOrEmpty(connectionString))
         {
