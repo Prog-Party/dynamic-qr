@@ -92,7 +92,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
                   <NavItem
                     item={item}
                     key={item.id}
-                    pathDirect={pathDirect}
+                    pathDirect={pathDirect ?? ''}
                     onClick={toggleMobileSidebar}
                   />
                 );
