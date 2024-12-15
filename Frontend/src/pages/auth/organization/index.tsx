@@ -13,6 +13,7 @@ const OrganizationPage = () => {
       <DashboardCard title="Organization">
         <>
           <ul>
+            <li>Organization ID: {user?.organizationId}</li>
             <li>Name: {user?.nickname}</li>
             <li>E-mail: {user?.email}</li>
           </ul>
