@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 // mui imports
 import {
   List,
@@ -8,8 +8,8 @@ import {
   ListItemText,
   styled,
   useTheme,
-} from "@mui/material";
-import Link from "next/link";
+} from "@mui/material"
+import Link from "next/link"
 
 type NavGroup = {
   [x: string]: any;
@@ -31,9 +31,9 @@ interface ItemType {
 }
 
 const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const Icon = item.icon;
+  const Icon = item.icon
 
   const ListItemStyled = styled(ListItem)(() => ({
     padding: 0,
@@ -58,7 +58,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
         },
       },
     },
-  }));
+  }))
 
   return (
     <List component="div" disablePadding key={item.id}>
@@ -87,7 +87,7 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
         </ListItemButton>
       </ListItemStyled>
     </List>
-  );
-};
+  )
+}
 
-export default NavItem;
+export default NavItem

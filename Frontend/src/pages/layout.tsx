@@ -1,15 +1,14 @@
-"use client";
-import Header from "@/components/layout/header/Header";
-import Sidebar from "@/components/layout/sidebar/Sidebar";
-import { Box, Container, styled } from "@mui/material";
-import React, { useState } from "react";
-
+"use client"
+import Header from "@/components/layout/header/Header"
+import Sidebar from "@/components/layout/sidebar/Sidebar"
+import { Box, Container, styled } from "@mui/material"
+import React, { useState } from "react"
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
   minHeight: "100vh",
   width: "100%",
-}));
+}))
 
 const PageWrapper = styled("div")(() => ({
   display: "flex",
@@ -18,28 +17,28 @@ const PageWrapper = styled("div")(() => ({
   flexDirection: "column",
   zIndex: 1,
   backgroundColor: "transparent",
-}));
+}))
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }:LayoutProps) {
-  
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  const [isSidebarOpen, setSidebarOpen] = useState(true)
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
   return (<>
-           
+
     <MainWrapper className="mainwrapper">
-    {/* ------------------------------------------- */}
-    {/* Sidebar */}
-    {/* ------------------------------------------- */}
-    <Sidebar
-      isSidebarOpen={isSidebarOpen}
-      isMobileSidebarOpen={isMobileSidebarOpen}
-      onSidebarClose={() => setMobileSidebarOpen(false)}
-    />
+      {/* ------------------------------------------- */}
+      {/* Sidebar */}
+      {/* ------------------------------------------- */}
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        isMobileSidebarOpen={isMobileSidebarOpen}
+        onSidebarClose={() => setMobileSidebarOpen(false)}
+      />
       {/* ------------------------------------------- */}
       {/* Main Wrapper */}
       {/* ------------------------------------------- */}
@@ -67,6 +66,6 @@ export default function Layout({ children }:LayoutProps) {
         </Container>
       </PageWrapper>
     </MainWrapper>
-    </>
-  );
+  </>
+  )
 }

@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Card } from "@mui/material"
 
 type Props = {
   className?: string;
@@ -15,7 +15,7 @@ const BlankCard = ({ children, className }: Props) => {
     >
       {children}
     </Card>
-  );
-};
+  )
+}
 
-export default BlankCard;
+export default BlankCard

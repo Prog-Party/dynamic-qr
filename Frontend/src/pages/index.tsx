@@ -1,11 +1,10 @@
-'use client'
-import PageContainer from '@/components/container/PageContainer';
-import GenerateStaticQr from '@/components/generate/GenerateStaticQR';
-import DashboardCard from '@/components/shared/DashboardCard';
-import { Box, Grid, Typography } from '@mui/material';
+"use client"
+import PageContainer from "@/components/container/PageContainer"
+import GenerateStaticQr from "@/components/generate/GenerateStaticQR"
+import DashboardCard from "@/components/shared/DashboardCard"
+import { Box, Grid, Typography } from "@mui/material"
 
 const Dashboard = () => {
-
 
   return (
     <PageContainer title="Dashboard" description="this is Dashboard">
@@ -38,4 +37,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard;
+export default Dashboard

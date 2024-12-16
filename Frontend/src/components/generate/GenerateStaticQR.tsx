@@ -1,22 +1,22 @@
-import ColorPickerWithPopover from "@/components/ColorPickerWithPopover";
-import { calculateNewQrCodeId } from "@/utils/calculations/calculateNewQrCodeId";
-import calculateContrastRatio from "@/utils/colors/calculateContrastRatio";
-import InfoIcon from '@mui/icons-material/Info';
-import { FormControlLabel, Grid, Slider, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
-import Alert from '@mui/material/Alert';
-import { styled } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
-import { QRCodeSVG } from 'qrcode.react';
-import { useEffect, useState } from 'react';
-import { QRProps } from './GenerateStaticQR.d';
-import GenerateStaticQrContent from "./GenerateStaticQrContent";
+import ColorPickerWithPopover from "@/components/ColorPickerWithPopover"
+import { calculateNewQrCodeId } from "@/utils/calculations/calculateNewQrCodeId"
+import calculateContrastRatio from "@/utils/colors/calculateContrastRatio"
+import InfoIcon from "@mui/icons-material/Info"
+import { FormControlLabel, Grid, Slider, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material"
+import Alert from "@mui/material/Alert"
+import { styled } from "@mui/material/styles"
+import Tooltip from "@mui/material/Tooltip"
+import { QRCodeSVG } from "qrcode.react"
+import { useEffect, useState } from "react"
+import { QRProps } from "./GenerateStaticQR.d"
+import GenerateStaticQrContent from "./GenerateStaticQrContent"
 
 const SlimTableCell = styled(TableCell)(({ theme }) => ({
-  paddingTop: '0px',
-  paddingLeft: '0px',
-  paddingBottom: '12px',
-  paddingRight: '12px'
-}));
+  paddingTop: "0px",
+  paddingLeft: "0px",
+  paddingBottom: "12px",
+  paddingRight: "12px"
+}))
 
 const GenerateStaticQr = () => {
 
@@ -26,8 +26,9 @@ const GenerateStaticQr = () => {
   const [backgroundColor, setBackgroundColor] = useState("#ffffff")
   const [foregroundColor, setForegroundColor] = useState("#000000")
   const [imageUrl, setImageUrl] = useState("https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg")
-  const [imageHeight, setImageHeight] = useState(15) //in percentage
-  const [imageWidth, setImageWidth] = useState(15)// in percentage
+  //image width and height are in percentages
+  const [imageHeight, setImageHeight] = useState(15)
+  const [imageWidth, setImageWidth] = useState(15)
   const [imageHeightSameAsWidth, setImageHeightSameAsWidth] = useState(true)
   const [imageRatioExceeded, setImageRatioExceeded] = useState(false)
 
@@ -39,7 +40,7 @@ const GenerateStaticQr = () => {
 
   const qrCodePropsDefault: QRProps = {
     value: value
-  };
+  }
 
   const [qrCodeProps, setQrCodeProps] = useState(qrCodePropsDefault)
 
@@ -70,8 +71,10 @@ const GenerateStaticQr = () => {
       includeMargin: includeMargin,
       bgColor: backgroundColor,
       fgColor: foregroundColor,
-      size: size, //TODO: Make this configurable, when clicking on the qr code, there should be a popout to configure the barcode and download it, also change its size
-      level: 'H' //TODO: Make this configurable,
+      //TODO: Make this configurable, when clicking on the qr code, there should be a popout to configure the barcode and download it, also change its size
+      size: size,
+      //TODO: Make this configurable,
+      level: "H"
     }
 
     if (imageUrl) {
@@ -231,7 +234,7 @@ const GenerateStaticQr = () => {
                       Width
                     </Typography>
                     <Slider
-                      sx={{ width: '90%' }}
+                      sx={{ width: "90%" }}
                       aria-label="Width"
                       defaultValue={imageWidth}
                       valueLabelDisplay="auto"
@@ -258,7 +261,7 @@ const GenerateStaticQr = () => {
 
                     {!imageHeightSameAsWidth && (
                       <Slider
-                        sx={{ width: '90%' }}
+                        sx={{ width: "90%" }}
                         aria-label="Height"
                         defaultValue={imageHeight}
                         valueLabelDisplay="auto"
@@ -292,6 +295,6 @@ const GenerateStaticQr = () => {
     {/* TODO: Add a download button to download the qr code */}
     {/* TODO: Add a button to make this qr code dynamic, by clicking on the button, the configuration should be saved and the qr code should be dynamic. Somehow the user must then be able to login to save it in their account */}
   </>
-};
+}
 
-export default GenerateStaticQr;
+export default GenerateStaticQr

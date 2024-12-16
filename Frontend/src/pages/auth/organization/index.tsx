@@ -1,12 +1,12 @@
-'use client';
-import PageContainer from '@/components/container/PageContainer';
-import DashboardCard from '@/components/shared/DashboardCard';
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
-import { Typography } from '@mui/material';
+"use client"
+import PageContainer from "@/components/container/PageContainer"
+import DashboardCard from "@/components/shared/DashboardCard"
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react"
+import { Typography } from "@mui/material"
 
 const OrganizationPage = () => {
 
-  const { user } = useAuth0();
+  const { user } = useAuth0()
 
   return (
     <PageContainer title="Organization" description="this is Organization page">
@@ -26,5 +26,5 @@ const OrganizationPage = () => {
   )
 }
 
-export default withAuthenticationRequired(OrganizationPage);
+export default withAuthenticationRequired(OrganizationPage)
 

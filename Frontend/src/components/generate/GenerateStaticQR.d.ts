@@ -1,6 +1,6 @@
-export type ErrorCorrectionLevel = 'L' | 'M' | 'Q' | 'H';
+export type ErrorCorrectionLevel = "L" | "M" | "Q" | "H";
 
-export type CrossOrigin = 'anonymous' | 'use-credentials' | '' | undefined;
+export type CrossOrigin = "anonymous" | "use-credentials" | "" | undefined;
 
 export type ImageSettings = {
     /**

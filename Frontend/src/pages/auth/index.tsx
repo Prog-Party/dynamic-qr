@@ -1,9 +1,9 @@
-'use client'
-import PageContainer from '@/components/container/PageContainer';
-import { Box, Grid, Typography } from '@mui/material';
+"use client"
+import PageContainer from "@/components/container/PageContainer"
+import { Box, Grid, Typography } from "@mui/material"
 // components
-import GenerateStaticQr from '@/components/generate/GenerateStaticQR';
-import DashboardCard from '@/components/shared/DashboardCard';
+import GenerateStaticQr from "@/components/generate/GenerateStaticQR"
+import DashboardCard from "@/components/shared/DashboardCard"
 
 const Dashboard = () => {
 
@@ -38,4 +38,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard;
+export default Dashboard

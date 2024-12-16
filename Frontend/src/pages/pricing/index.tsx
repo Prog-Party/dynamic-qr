@@ -1,8 +1,7 @@
-'use client';
-import PageContainer from '@/components/container/PageContainer';
-import DashboardCard from '@/components/shared/DashboardCard';
-import { Typography } from '@mui/material';
-
+"use client"
+import PageContainer from "@/components/container/PageContainer"
+import DashboardCard from "@/components/shared/DashboardCard"
+import { Typography } from "@mui/material"
 
 const PricingPage = () => {
   return (
@@ -22,5 +21,5 @@ const PricingPage = () => {
   )
 }
 
-export default PricingPage;
+export default PricingPage
 

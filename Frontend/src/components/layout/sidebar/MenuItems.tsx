@@ -1,8 +1,8 @@
 import {
   IconLayoutDashboard
-} from "@tabler/icons-react";
+} from "@tabler/icons-react"
 
-import { uniqueId } from "lodash";
+import { uniqueId } from "lodash"
 
 const Menuitems = [
   {
@@ -27,6 +27,6 @@ const Menuitems = [
     icon: IconLayoutDashboard,
     href: "/auth/wallet",
   }
-];
+]
 
-export default Menuitems;
+export default Menuitems
