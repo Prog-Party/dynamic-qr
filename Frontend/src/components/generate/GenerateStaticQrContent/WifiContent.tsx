@@ -48,7 +48,7 @@ const WifiContent = ({ setValue }: GenerateStaticQRContentProps) => {
         </Select>
       </FormControl>
 
-      {security !== "nopass" && (
+      {security !== SecurityOptions.NOPASS.toString() && (
         <TextField
           size="small"
           fullWidth
