@@ -1,5 +1,5 @@
 "use client"
-import { createCode } from "@/api/qr-codes"
+import { createCode, getCodes } from "@/api/qr-codes"
 import PageContainer from "@/components/container/PageContainer"
 import DashboardCard from "@/components/shared/DashboardCard"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react"
@@ -18,9 +18,8 @@ const OrganizationPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const apiResult = await getCodes(user!.organizationId)
-      // setQrCodes(apiResult)
-      // console.log(apiResult)
+      const apiResult = await getCodes(user!.organizationId)
+      setQrCodes(apiResult)
     }
 
     fetchData()
