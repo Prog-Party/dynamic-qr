@@ -13,7 +13,7 @@ const WifiContent = ({ setValue }: GenerateStaticQRContentProps) => {
   const [ssid, setSsid] = useState("")
   const [password, setPassword] = useState("")
 
-  const [security, setSecurity] = useState(SecurityOptions.WPA)
+  const [security, setSecurity] = useState(SecurityOptions.WPA.toString())
   const [hidden, setHidden] = useState(false)
 
   const generateContent = (): string => {
@@ -42,9 +42,9 @@ const WifiContent = ({ setValue }: GenerateStaticQRContentProps) => {
           value={security}
           onChange={(e) => setSecurity(e.target.value)}
         >
-          <MenuItem value="WPA">WPA/WPA2</MenuItem>
-          <MenuItem value="WEP">WEP</MenuItem>
-          <MenuItem value="nopass">No Password</MenuItem>
+          <MenuItem value={SecurityOptions.WPA.toString()}>WPA/WPA2</MenuItem>
+          <MenuItem value={SecurityOptions.WEP.toString()}>WEP</MenuItem>
+          <MenuItem value={SecurityOptions.NOPASS.toString()}>No Password</MenuItem>
         </Select>
       </FormControl>
 
