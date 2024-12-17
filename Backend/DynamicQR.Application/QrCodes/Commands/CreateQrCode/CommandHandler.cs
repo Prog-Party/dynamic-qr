@@ -1,8 +1,10 @@
 using DynamicQR.Domain.Interfaces;
 using DynamicQR.Domain.Models;
 using MediatR;
+using System.Runtime.CompilerServices;
 using System.Text;
 
+[assembly: InternalsVisibleTo("Application.Tests")]
 namespace DynamicQR.Application.QrCodes.Commands.CreateQrCode;
 
 public class CommandHandler : IRequestHandler<Command, Response>
@@ -17,7 +19,7 @@ public class CommandHandler : IRequestHandler<Command, Response>
         _qrCodeTargetRepositoryService = qrCodeTargetRepositoryService ?? throw new ArgumentNullException(nameof(qrCodeTargetRepositoryService));
     }
 
-    private string GenerateQrCodeId()
+    internal string GenerateQrCodeId()
     {
         const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new();
@@ -67,6 +69,6 @@ public class CommandHandler : IRequestHandler<Command, Response>
         };
     }
 
-    private async Task<bool> IsQrCodeIdUnique(string id, string organisationId, CancellationToken cancellationToken) 
+    private async Task<bool> IsQrCodeIdUnique(string id, string organisationId, CancellationToken cancellationToken)
         => !await _qrCodeTargetRepositoryService.Exists(id, cancellationToken);
 }

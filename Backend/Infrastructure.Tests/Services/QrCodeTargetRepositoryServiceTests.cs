@@ -122,6 +122,7 @@ public sealed class QrCodeTargetRepositoryServiceTests
         _tableClientMock.Verify(client => client.DeleteEntityAsync(
             id, id, It.IsAny<ETag>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+
     [Fact]
     public async Task Exists_ShouldReturnTrueIfQrCodeIdExists()
     {
