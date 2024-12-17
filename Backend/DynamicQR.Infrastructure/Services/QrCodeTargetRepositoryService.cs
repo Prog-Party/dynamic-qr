@@ -85,6 +85,6 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
 
         Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>(id, id, cancellationToken: cancellationToken);
 
-        return data.HasValue;
+        return data.HasValue && data.Value != null;
     }
 }
