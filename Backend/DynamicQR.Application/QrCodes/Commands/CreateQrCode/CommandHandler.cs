@@ -20,7 +20,7 @@ public class CommandHandler : IRequestHandler<Command, Response>
     private string GenerateQrCodeId()
     {
         const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-        var random = new Random();
+        Random random = new();
         var result = new StringBuilder(QrCodeIdLength);
         for (int i = 0; i < QrCodeIdLength; i++)
         {
