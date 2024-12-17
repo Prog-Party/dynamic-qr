@@ -8,6 +8,8 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Net;
+using ApplicationRequest = DynamicQR.Application.QrCodes.Queries.GetAllQrCodes.Request;
+using ApplicationResponse = DynamicQR.Application.QrCodes.Queries.GetAllQrCodes.Response;
 
 namespace DynamicQR.Api.Endpoints.QrCodes.QrCodeGetAll;
 
@@ -23,21 +25,19 @@ public sealed class QrCodeGetAll : EndpointsBase
     ]
     [OpenApiHeaderOrganizationIdentifier]
     [OpenApiJsonResponse(typeof(List<Response>), Description = "The retrieved QR codes for the organization")]
-    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No QR codes found for the given organization.")]
+    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "Missing organization identifier header")]
     public async Task<HttpResponseData> RunAsync(
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "qr-codes")]
-        HttpRequestData req)
+        HttpRequestData req,
+        CancellationToken cancellationToken)
     {
         string organizationId = req.GetHeaderAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
-        Application.QrCodes.Queries.GetAllQrCodes.Request coreRequest = new() { OrganizationId = organizationId };
+        ApplicationRequest coreRequest = new() { OrganizationId = organizationId };
 
-        List<Application.QrCodes.Queries.GetAllQrCodes.Response> coreResponse = await _mediator.Send(coreRequest);
+        List<ApplicationResponse> coreResponse = await _mediator.Send(coreRequest, cancellationToken);
 
-        if (coreResponse == null || !coreResponse.Any())
-            return await CreateJsonResponse(req, "No QR codes found for the given organization.", HttpStatusCode.BadRequest);
-
-        List<Response> qrCodeResponses = coreResponse.Select(r => r.ToContract()).ToList();
+        List<Response> qrCodeResponses = coreResponse?.Where(x => x != null).Select(x => x.ToContract()!)?.ToList() ?? new();
 
         return await CreateJsonResponse(req, qrCodeResponses);
     }

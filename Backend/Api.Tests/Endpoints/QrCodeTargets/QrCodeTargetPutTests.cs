@@ -16,7 +16,7 @@ public sealed class QrCodeTargetPutTests
     private readonly Mock<IMediator> _mediatorMock;
     private readonly Mock<ILoggerFactory> _loggerFactoryMock;
     private readonly Mock<ILogger<QrCodeTargetPut>> _loggerMock;
-    private readonly QrCodeTargetPut _function;
+    private readonly QrCodeTargetPut _endpoint;
 
     public QrCodeTargetPutTests()
     {
@@ -28,12 +28,12 @@ public sealed class QrCodeTargetPutTests
                    It.IsAny<EventId>(),
                    It.IsAny<It.IsAnyType>(),
                    It.IsAny<Exception>(),
-                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                   (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                ));
 
         _loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(() => _loggerMock.Object);
 
-        _function = new QrCodeTargetPut(_mediatorMock.Object, _loggerFactoryMock.Object);
+        _endpoint = new QrCodeTargetPut(_mediatorMock.Object, _loggerFactoryMock.Object);
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public sealed class QrCodeTargetPutTests
         var id = "123";
 
         // Act
-        var result = await _function.RunAsync(req, id);
+        var result = await _endpoint.RunAsync(req, id, It.IsAny<CancellationToken>());
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -75,7 +75,7 @@ public sealed class QrCodeTargetPutTests
             .ThrowsAsync(new Microsoft.Azure.Storage.StorageException());
 
         // Act
-        var result = await _function.RunAsync(req, id);
+        var result = await _endpoint.RunAsync(req, id, It.IsAny<CancellationToken>());
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.BadGateway);
@@ -106,15 +106,16 @@ public sealed class QrCodeTargetPutTests
             .Setup(mediator => mediator.Send(It.IsAny<DynamicQR.Application.QrCodes.Commands.UpdateQrCodeTarget.Command>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResponse);
 
-        Response contractResponse = expectedResponse.ToContract();
+        Response? contractResponse = expectedResponse.ToContract();
 
         // Act
-        var result = await _function.RunAsync(req, id);
+        var result = await _endpoint.RunAsync(req, id, It.IsAny<CancellationToken>());
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var responseBody = await ((MockHttpResponseData)result).ReadAsJsonAsync<Response>();
-        responseBody.Id.Should().Be("123");
+        var body = await ((MockHttpResponseData)result).ReadAsJsonAsync<Response>();
+        body.Should().NotBeNull();
+        body!.Id.Should().Be("123");
     }
 }

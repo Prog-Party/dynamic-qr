@@ -1,79 +1,125 @@
+using Api.Tests.Endpoints.QrCodes.Mocks;
+using Api.Tests.Utility;
+using DynamicQR.Api.Attributes;
 using DynamicQR.Api.Endpoints.QrCodes.QrCodeGetAll;
+using DynamicQR.Api.Mappers;
 using DynamicQR.Application.QrCodes.Queries.GetAllQrCodes;
+using FluentAssertions;
 using MediatR;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using System.Net;
-using System.Text.Json;
-using Xunit;
+using ApplicationResponse = DynamicQR.Application.QrCodes.Queries.GetAllQrCodes.Response;
+using Response = DynamicQR.Api.Endpoints.QrCodes.QrCodeGetAll.Response;
 
+namespace Api.Tests.Endpoints.QrCodes;
+
+[ExcludeFromCodeCoverage]
 public class QrCodeGetAllTests
 {
     private readonly Mock<IMediator> _mediatorMock;
     private readonly Mock<ILogger<QrCodeGetAll>> _loggerMock;
+    private readonly Mock<ILoggerFactory> _loggerFactoryMock;
     private readonly QrCodeGetAll _endpoint;
 
     public QrCodeGetAllTests()
     {
         _mediatorMock = new Mock<IMediator>();
         _loggerMock = new Mock<ILogger<QrCodeGetAll>>();
-        _endpoint = new QrCodeGetAll(_mediatorMock.Object, _loggerMock.Object);
+
+        _loggerMock.Setup(x => x.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
+                    ));
+
+        _loggerFactoryMock = new Mock<ILoggerFactory>();
+        _loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(() => _loggerMock.Object);
+        _endpoint = new QrCodeGetAll(_mediatorMock.Object, _loggerFactoryMock.Object);
+    }
+
+    [Fact(Skip = "Skip this test until middleware is added to the tests")]
+    public async Task RunAsync_MissingOrganizationIdHeader_ReturnsBadRequest()
+    {
+        // Arrange
+        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Get);
+
+        // Act
+        var response = await _endpoint.RunAsync(req, It.IsAny<CancellationToken>());
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var body = await ((MockHttpResponseData)response).ReadAsStringAsync();
+        body.Should().Be(new OpenApiHeaderOrganizationIdentifierAttribute().ErrorMessage);
     }
 
     [Fact]
     public async Task RunAsync_ReturnsAllQrCodes()
     {
         // Arrange
-        var organizationId = "test-organization";
-        var qrCodes = new List<Response>
+        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Get, new Dictionary<string, string>
         {
-            new Response { Id = "1", Value = "Value1" },
-            new Response { Id = "2", Value = "Value2" }
+            { "Organization-Identifier", "org-123" }
+        });
+
+        var result = new List<ApplicationResponse>
+        {
+            new ApplicationResponse {
+                Id = "1",
+                Value = "Value1",
+                BackgroundColor = Color.FromArgb(255, 255, 255),
+                ForegroundColor = Color.FromArgb(255, 255, 255)
+            },
+            new ApplicationResponse {
+                Id = "2",
+                Value = "Value2",
+                BackgroundColor = Color.FromArgb(255, 255, 255),
+                ForegroundColor = Color.FromArgb(255, 255, 255)
+            }
         };
 
-        _mediatorMock.Setup(m => m.Send(It.IsAny<Request>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(qrCodes);
-
-        var request = new Mock<HttpRequestData>(MockBehavior.Strict);
-        request.Setup(r => r.Headers).Returns(new HttpHeadersCollection { { "Organization-Identifier", organizationId } });
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<Request>(), default))
+            .ReturnsAsync(result);
 
         // Act
-        var response = await _endpoint.RunAsync(request.Object);
+        var response = await _endpoint.RunAsync(req, It.IsAny<CancellationToken>());
 
         // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var body = await ((MockHttpResponseData)response).ReadAsJsonAsync<List<Response>>();
 
-        var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
-        var responseQrCodes = JsonSerializer.Deserialize<List<Response>>(responseBody);
-
-        Assert.Equal(qrCodes.Count, responseQrCodes.Count);
-        Assert.Equal(qrCodes[0].Id, responseQrCodes[0].Id);
-        Assert.Equal(qrCodes[0].Value, responseQrCodes[0].Value);
-        Assert.Equal(qrCodes[1].Id, responseQrCodes[1].Id);
-        Assert.Equal(qrCodes[1].Value, responseQrCodes[1].Value);
+        TestUtility.TestIfObjectsAreEqual(body, result.Select(x => x.ToContract()!).ToList());
     }
 
     [Fact]
-    public async Task RunAsync_ReturnsBadRequest_WhenNoQrCodesFound()
+    public async Task RunAsync_ReturnsEmptyArray_WhenNoQrCodesFound()
     {
         // Arrange
-        var organizationId = "test-organization";
-        var qrCodes = new List<Response>();
+        var req = HttpRequestDataHelper.CreateWithHeaders(HttpMethod.Get, new Dictionary<string, string>
+        {
+            { "Organization-Identifier", "org-123" }
+        });
 
-        _mediatorMock.Setup(m => m.Send(It.IsAny<Request>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(qrCodes);
+        var result = new List<ApplicationResponse>
+        {
+        };
 
-        var request = new Mock<HttpRequestData>(MockBehavior.Strict);
-        request.Setup(r => r.Headers).Returns(new HttpHeadersCollection { { "Organization-Identifier", organizationId } });
+        _mediatorMock
+            .Setup(m => m.Send(It.IsAny<Request>(), default))
+            .ReturnsAsync(result);
 
         // Act
-        var response = await _endpoint.RunAsync(request.Object);
+        var response = await _endpoint.RunAsync(req, It.IsAny<CancellationToken>());
 
         // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var body = await ((MockHttpResponseData)response).ReadAsJsonAsync<List<Response>>();
 
-        var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
-        Assert.Equal("No QR codes found for the given organization.", responseBody);
+        TestUtility.TestIfObjectsAreEqual(body, result.Select(x => x.ToContract()!).ToList());
     }
 }

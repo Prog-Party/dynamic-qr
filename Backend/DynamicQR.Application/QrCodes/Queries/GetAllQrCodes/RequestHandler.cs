@@ -21,7 +21,6 @@ public class RequestHandler : IRequestHandler<Request, List<Response>>
         return qrCodes.Select(qrCode => new Response
         {
             Id = qrCode.Id,
-            Value = qrCode.Value,
             BackgroundColor = qrCode.BackgroundColor,
             ForegroundColor = qrCode.ForegroundColor,
             ImageUrl = qrCode.ImageUrl,
