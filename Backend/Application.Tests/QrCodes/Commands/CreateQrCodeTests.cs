@@ -149,4 +149,49 @@ public sealed class CreateQrCodeTests
             repo.CreateAsync(It.IsAny<QrCodeTarget>(), It.IsAny<CancellationToken>()),
             Times.Once);
     }
+
+    [Fact]
+    public void GenerateQrCodeId_ShouldReturn8CharacterString()
+    {
+        // Act
+        var result = _handler.GenerateQrCodeId();
+
+        // Assert
+        result.Should().NotBeNullOrEmpty();
+        result.Length.Should().Be(8);
+        result.Should().MatchRegex("^[a-z0-9]{8}$");
+    }
+
+    [Fact]
+    public async Task Handle_ShouldGenerateUniqueQrCodeId()
+    {
+        // Arrange
+        var command = new Command
+        {
+            OrganisationId = "org456",
+            BackgroundColor = Color.White,
+            ForegroundColor = Color.Black,
+            ImageHeight = 300,
+            ImageWidth = 300,
+            ImageUrl = "http://example.com/image.png",
+            IncludeMargin = true,
+            Value = "TargetValue"
+        };
+
+        _qrCodeRepositoryServiceMock
+            .SetupSequence(repo => repo.ReadAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Throws(new Exception()) // Simulate ID already exists
+            .ReturnsAsync(new QrCode()); // Simulate unique ID
+
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Id.Should().NotBeNullOrEmpty();
+
+        _qrCodeRepositoryServiceMock.Verify(repo =>
+            repo.ReadAsync(command.OrganisationId, It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(2)); // Ensure uniqueness check is called twice
+    }
 }

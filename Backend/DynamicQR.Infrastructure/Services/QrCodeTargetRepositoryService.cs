@@ -78,4 +78,13 @@ public sealed class QrCodeTargetRepositoryService : IQrCodeTargetRepositoryServi
         if (response.IsError)
             throw new StorageException(response.ReasonPhrase);
     }
+
+    public async Task<bool> Exists(string id, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+
+        Azure.NullableResponse<Entities.QrCodeTarget> data = await _tableClient.GetEntityIfExistsAsync<Entities.QrCodeTarget>(id, id, cancellationToken: cancellationToken);
+
+        return data.HasValue;
+    }
 }
