@@ -86,4 +86,18 @@ public sealed class QrCodeRepositoryService : IQrCodeRepositoryService
         if (response.IsError)
             throw new StorageException(response.ReasonPhrase);
     }
+
+    public async Task<List<QrCode>> GetAllAsync(string organizationId, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(organizationId);
+
+        var qrCodes = new List<QrCode>();
+
+        await foreach (var qrCodeEntity in _tableClient.QueryAsync<Entities.QrCode>(qrCode => qrCode.PartitionKey == organizationId, cancellationToken: cancellationToken))
+        {
+            qrCodes.Add(qrCodeEntity.ToCore());
+        }
+
+        return qrCodes;
+    }
 }
