@@ -11,4 +11,6 @@ public interface IQrCodeTargetRepositoryService
     public Task UpdateAsync(QrCodeTarget qrCodeTarget, CancellationToken cancellationToken);
 
     public Task DeleteAsync(string id, CancellationToken cancellationToken);
+
+    public Task<bool> Exists(string id, CancellationToken cancellationToken);
 }
