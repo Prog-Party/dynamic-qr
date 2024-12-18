@@ -17,7 +17,7 @@ const WifiContent = ({ setValue }: GenerateStaticQRContentProps) => {
   const [hidden, setHidden] = useState(false)
 
   const generateContent = (): string => {
-    const pass = security === "nopass" ? "password" : password
+    const pass = security === SecurityOptions.NOPASS.toString() ? "password" : password
     const result = `WIFI:S:${ssid};T:${security};P:${pass};H:${hidden};;`
     return result
   }

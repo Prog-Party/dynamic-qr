@@ -1,10 +1,6 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
 /.vs/dynamic-qr/v17
-<<<<<<< HEAD
-/Frontend
-=======
-/Frontend/.env.development
->>>>>>> c9c188a (Ignore env development)
+Frontend/.env.development
