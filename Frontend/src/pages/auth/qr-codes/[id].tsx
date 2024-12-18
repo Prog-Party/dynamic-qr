@@ -32,7 +32,7 @@ const OrganizationPage = () => {
     <PageContainer title="QR code" description="welcome to a qr code page">
       <DashboardCard title="QR code information">
         <>
-                    Info over qr code
+            Info over qr code
         </>
       </DashboardCard>
     </PageContainer>
