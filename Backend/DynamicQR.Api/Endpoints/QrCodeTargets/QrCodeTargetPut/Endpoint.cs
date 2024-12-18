@@ -7,7 +7,6 @@ using Microsoft.Azure.Storage;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Moq;
 using System.Net;
 
 namespace DynamicQR.Api.Endpoints.QrCodeTargets.QrCodeTargetPut;
@@ -26,7 +25,9 @@ public sealed class QrCodeTargetPut : EndpointsBase
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code target")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway, Description = "No qr code target found with the given identifier.")]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-code-targets/{id}")] HttpRequestData req, string id)
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-code-targets/{id}")] HttpRequestData req,
+        string id,
+        CancellationToken cancellationToken)
     {
         var request = await ParseBody<Request>(req);
         if (request.Error != null) return request.Error;
@@ -37,7 +38,7 @@ public sealed class QrCodeTargetPut : EndpointsBase
 
         try
         {
-            coreResponse = await _mediator.Send(coreCommand!, It.IsAny<CancellationToken>());
+            coreResponse = await _mediator.Send(coreCommand!, cancellationToken);
         }
         catch (StorageException)
         {
@@ -46,6 +47,6 @@ public sealed class QrCodeTargetPut : EndpointsBase
 
         Response? responseContent = coreResponse.ToContract();
 
-        return await CreateJsonResponse(req, responseContent, HttpStatusCode.OK);
+        return await CreateJsonResponse(req, responseContent);
     }
 }

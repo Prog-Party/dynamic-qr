@@ -9,6 +9,9 @@ namespace DynamicQR.Api.Endpoints;
 
 public abstract class EndpointsBase
 {
+    public const string ParseBodySerializationError = "Cannot execute serialization when you pass the wrong arguments";
+    public const string ParseBodyNoBodyError = "Why is there no body passed through though?";
+
     protected readonly IMediator _mediator;
     protected readonly ILogger _logger;
 
@@ -32,6 +35,15 @@ public abstract class EndpointsBase
         return response;
     }
 
+    internal async Task<HttpResponseData> CreateResponse(HttpRequestData req, HttpStatusCode statusCode = HttpStatusCode.OK, string body = "")
+    {
+        var response = req.CreateResponse(statusCode);
+
+        await response.WriteStringAsync(body ?? string.Empty).ConfigureAwait(false);
+
+        return response;
+    }
+
     /// <summary>
     /// Parse the body to a typed class
     /// </summary>
@@ -42,11 +54,11 @@ public abstract class EndpointsBase
     {
         var body = await ReadBody(req);
         if (body == null)
-            return (new T(), await CreateJsonResponse(req, "Why is there no body passed through though?", HttpStatusCode.BadRequest));
+            return (new T(), await CreateResponse(req, HttpStatusCode.BadRequest, ParseBodyNoBodyError));
 
         var t = JsonConvert.DeserializeObject<T>(body);
         if (t == null)
-            return (new T(), await CreateJsonResponse(req, "Cannot execute serialization when you pass the wrong arguments", HttpStatusCode.BadRequest));
+            return (new T(), await CreateResponse(req, HttpStatusCode.BadRequest, ParseBodySerializationError));
 
         return (t, null);
     }

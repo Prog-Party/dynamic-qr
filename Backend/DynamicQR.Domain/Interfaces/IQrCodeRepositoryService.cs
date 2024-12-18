@@ -11,4 +11,6 @@ public interface IQrCodeRepositoryService
     public Task UpdateAsync(string organisationId, QrCode qrCode, CancellationToken cancellationToken);
 
     public Task DeleteAsync(string organisationId, string id, CancellationToken cancellationToken);
+
+    public Task<List<QrCode>> GetAllAsync(string organizationId, CancellationToken cancellationToken);
 }
