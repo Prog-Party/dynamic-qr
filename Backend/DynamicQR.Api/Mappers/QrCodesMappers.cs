@@ -40,6 +40,19 @@ public static class QrCodesMappers
         };
     }
 
+    public static Endpoints.QrCodes.QrCodeGetAll.Response? ToContract(this Application.QrCodes.Queries.GetAllQrCodes.Response response)
+        => response is null ? null : new Endpoints.QrCodes.QrCodeGetAll.Response
+        {
+            Id = response.Id,
+            BackgroundColor = ColorTranslator.ToHtml(response.BackgroundColor),
+            ForegroundColor = ColorTranslator.ToHtml(response.ForegroundColor),
+            ImageHeight = response.ImageHeight.GetValueOrDefault(),
+            ImageUrl = response.ImageUrl,
+            ImageWidth = response.ImageWidth.GetValueOrDefault(),
+            IncludeMargin = response.IncludeMargin,
+        };
+
+
     public static Endpoints.QrCodes.QrCodePut.Response? ToContract(this Application.QrCodes.Commands.UpdateQrCode.Response response)
     {
         return response is null ? null : new Endpoints.QrCodes.QrCodePut.Response

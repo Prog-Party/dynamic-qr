@@ -8,7 +8,6 @@ using Microsoft.Azure.Storage;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Moq;
 using System.Net;
 
 namespace DynamicQR.Api.Endpoints.QrCodes.QrCodePost;
@@ -27,7 +26,9 @@ public sealed class QrCodePost : EndpointsBase
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), HttpStatusCode.Created, Description = "Get a certain qr code")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway)]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req)
+    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "Missing organization identifier header")]
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "qr-codes")] HttpRequestData req,
+        CancellationToken cancellationToken)
     {
         string organizationId = req.GetHeaderAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
@@ -40,7 +41,7 @@ public sealed class QrCodePost : EndpointsBase
 
         try
         {
-            coreResponse = await _mediator.Send(coreCommand!, It.IsAny<CancellationToken>());
+            coreResponse = await _mediator.Send(coreCommand!, cancellationToken);
         }
         catch (StorageException)
         {

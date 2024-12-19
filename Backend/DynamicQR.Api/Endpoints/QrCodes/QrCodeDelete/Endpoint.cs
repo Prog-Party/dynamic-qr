@@ -1,4 +1,5 @@
 ﻿using DynamicQR.Api.Attributes;
+using DynamicQR.Api.Extensions;
 using DynamicQR.Domain.Exceptions;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
@@ -21,30 +22,25 @@ public sealed class QrCodeDelete : EndpointsBase
     [OpenApiOperation(nameof(QrCodeDelete), Tags.QrCode,
        Summary = "Delete a specific new qr code.")
     ]
-    [OpenApiParameter("Organization-Identifier", In = ParameterLocation.Header, Required = true, Description = "The organization identifier.")]
+    [OpenApiHeaderOrganizationIdentifier]
     [OpenApiPathIdentifier]
+    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "Missing organization identifier header")]
     [OpenApiResponseWithoutBody(HttpStatusCode.BadGateway)]
     [OpenApiResponseWithoutBody(HttpStatusCode.NotFound)]
     [OpenApiResponseWithoutBody(HttpStatusCode.NoContent)]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "qr-codes/{id}")] HttpRequestData req, string id)
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "qr-codes/{id}")] HttpRequestData req,
+        string id,
+        CancellationToken cancellationToken)
     {
+        string organizationId = req.GetHeaderAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
+
         _logger.LogInformation($"{typeof(QrCodeDelete).FullName}.triggered");
-
-        // Check if the header is present (place this in middleware)
-        if (!req.Headers.TryGetValues("Organization-Identifier", out var headerValues))
-        {
-            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            errorResponse.WriteString("Missing required header: Organization-Identifier");
-            return errorResponse;
-        }
-
-        var organizationId = headerValues.First();
 
         Application.QrCodes.Commands.DeleteQrCode.Command coreCommand = new() { Id = id, OrganisationId = organizationId };
 
         try
         {
-            await _mediator.Send(coreCommand);
+            await _mediator.Send(coreCommand, cancellationToken);
         }
         catch (StorageException)
         {
