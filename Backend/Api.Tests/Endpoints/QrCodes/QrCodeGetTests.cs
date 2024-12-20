@@ -1,13 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using Api.Tests.Endpoints.QrCodes.Mocks;
+﻿using Api.Tests.Endpoints.QrCodes.Mocks;
+using Api.Tests.Utility;
+using DynamicQR.Api.Attributes;
 using DynamicQR.Api.Endpoints.QrCodes.QrCodeGet;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Text.Json;
+using System.Net;
 
 namespace Api.Tests.Endpoints.QrCodes;
 
@@ -17,7 +18,7 @@ public sealed class QrCodeGetTests
     private readonly Mock<ILogger<QrCodeGet>> _loggerMock;
     private readonly Mock<ILoggerFactory> _loggerFactoryMock;
     private readonly Mock<IMediator> _mediatorMock;
-    private readonly QrCodeGet _function;
+    private readonly QrCodeGet _endpoint;
 
     public QrCodeGetTests()
     {
@@ -27,17 +28,17 @@ public sealed class QrCodeGetTests
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
         _mediatorMock = new Mock<IMediator>();
 
         _loggerFactoryMock = new Mock<ILoggerFactory>();
         _loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(() => _loggerMock.Object);
 
-        _function = new QrCodeGet(_mediatorMock.Object, _loggerFactoryMock.Object);
+        _endpoint = new QrCodeGet(_mediatorMock.Object, _loggerFactoryMock.Object);
     }
 
-    [Fact]
+    [Fact(Skip = "Skip this test until middleware is added to the tests")]
     public async Task RunAsync_MissingOrganizationIdHeader_ReturnsBadRequest()
     {
         // Arrange
@@ -45,12 +46,12 @@ public sealed class QrCodeGetTests
         string id = "test-id";
 
         // Act
-        var response = await _function.RunAsync(req, id);
+        var response = await _endpoint.RunAsync(req, id, It.IsAny<CancellationToken>());
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var body = await ((MockHttpResponseData)response).ReadAsStringAsync();
-        body.Should().Be("Missing required header: Organization-Identifier");
+        body.Should().Be(new OpenApiHeaderOrganizationIdentifierAttribute().ErrorMessage);
     }
 
     [Fact]
@@ -68,12 +69,12 @@ public sealed class QrCodeGetTests
             .ReturnsAsync((DynamicQR.Application.QrCodes.Queries.GetQrCode.Response)null!);
 
         // Act
-        var response = await _function.RunAsync(req, id);
+        var response = await _endpoint.RunAsync(req, id, It.IsAny<CancellationToken>());
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var body = await ((MockHttpResponseData)response).ReadAsStringAsync();
-        body.Should().Be("\"No qr code found with the given identifier.\"");
+        body.Should().Be("No qr code found with the given identifier.");
     }
 
     [Fact]
@@ -109,14 +110,12 @@ public sealed class QrCodeGetTests
             });
 
         // Act
-        var response = await _function.RunAsync(req, id);
+        var response = await _endpoint.RunAsync(req, id, It.IsAny<CancellationToken>());
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await ((MockHttpResponseData)response).ReadAsStringAsync();
+        var body = await ((MockHttpResponseData)response).ReadAsJsonAsync<Response>();
 
-        string qrCodeResponseString = JsonSerializer.Serialize(qrCodeResponse);
-
-        body.Should().BeEquivalentTo(qrCodeResponseString);
+        TestUtility.TestIfObjectsAreEqual(body, qrCodeResponse);
     }
 }

@@ -8,7 +8,6 @@ using Microsoft.Azure.Storage;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Moq;
 using System.Net;
 
 namespace DynamicQR.Api.Endpoints.QrCodes.QrCodePut;
@@ -27,8 +26,10 @@ public sealed class QrCodePut : EndpointsBase
     [OpenApiPathIdentifier]
     [OpenApiJsonPayload(typeof(Request))]
     [OpenApiJsonResponse(typeof(Response), Description = "Update a certain qr code")]
-    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier.")]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-codes/{id}")] HttpRequestData req, string id)
+    [OpenApiResponseWithoutBody(HttpStatusCode.BadRequest, Description = "No qr code found with the given identifier. Or Missing organization identifier header")]
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "qr-codes/{id}")] HttpRequestData req,
+        string id,
+        CancellationToken cancellationToken)
     {
         string organizationId = req.GetHeaderAttribute<OpenApiHeaderOrganizationIdentifierAttribute>();
 
@@ -41,15 +42,15 @@ public sealed class QrCodePut : EndpointsBase
 
         try
         {
-            coreResponse = await _mediator.Send(coreCommand!, It.IsAny<CancellationToken>());
+            coreResponse = await _mediator.Send(coreCommand!, cancellationToken);
         }
         catch (StorageException)
         {
-            return await CreateJsonResponse(req, null, HttpStatusCode.BadGateway);
+            return req.CreateResponse(HttpStatusCode.BadGateway);
         }
 
         Response? responseContent = coreResponse.ToContract();
 
-        return await CreateJsonResponse(req, responseContent, HttpStatusCode.OK);
+        return await CreateJsonResponse(req, responseContent);
     }
 }

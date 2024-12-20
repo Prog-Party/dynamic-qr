@@ -5,6 +5,9 @@ namespace DynamicQR.Api.Attributes;
 
 public class OpenApiHeaderOrganizationIdentifierAttribute : OpenApiParameterAttribute
 {
+    public string ErrorMessage
+        => $"Missing required header: {Name}";
+
     public OpenApiHeaderOrganizationIdentifierAttribute() : base("Organization-Identifier")
     {
         Description = "The organization identifier";
